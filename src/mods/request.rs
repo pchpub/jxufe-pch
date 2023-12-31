@@ -1,6 +1,8 @@
 use reqwest::{header::HeaderMap, Client};
+use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, io::Cursor};
 
+#[derive(Serialize, Deserialize)]
 pub enum WebPageBody {
     Text(String),
     RawU8(Vec<u8>),
