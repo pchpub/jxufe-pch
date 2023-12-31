@@ -9,10 +9,105 @@
 
 ## Table of Contents
 
+- [About the Project](#about-the-project)
+- [Features](#features)
+- [System Requirements](#system-requirements)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Author](#author)
+- [FAQs](#faqs)
 - [License](#license)
+
+### About the Project
+
+In order to improve the poor course selection experience, I wrote this program.
+At first, this project was used as a simple course schedule crawling project,
+but I was very angry that I did not grab the course selection for the first semester of 2023-2024,
+so this project was born Got it
+
+### Features
+
+- [x] login page
+- [x] reverse proxy
+- [x] static resource cache
+- [ ] dynamic resource cache
+
+### System Requirements
+
+Before installing and running JXUFE-PCH, please ensure your system meets the following requirements:
+
+#### Operating System
+
+- Windows: Windows 10 or later.
+- macOS: macOS 10.15 (Catalina) or later.
+- Linux: Most modern distributions like Ubuntu 20.04, Fedora 33, Debian 10, etc.
+
+#### Hardware
+
+- CPU: 512MHz or faster processor. (Use precompiled programs)
+- RAM: 100MB or more. (Use precompiled programs)
+- Storage: Minimum 60MB free space. (Use precompiled programs)
+
+#### Software Dependencies
+
+- Rust: Version 1.75.0 or later.
+- Git: Latest version.
+
+#### Network
+
+- Stable internet connection for downloading dependencies and updates.
+
+#### Additional Notes
+
+- When not using a precompiled program there may be a situation where it doesn't work on another machine (due to openssl)
+- Ensure all system drivers, especially graphics and network drivers, are up to date.
+
+### FAQs
+
+#### Q1: How to use precompiled programs?
+
+download the latest release from [here](https://github.com/pchpub/jxufe-pch/releases/tag/alpha-releases)
+
+#### Q2: How to use the source code?
+
+see [Installation](#installation)
+
+#### Q3: How to update?
+
+##### Precompiled programs
+
+1. Download the latest release from [here](https://github.com/pchpub/jxufe-pch/releases/tag/alpha-releases)
+2. Replace the old program with the new one
+3. Restart the program
+
+##### Source code
+
+1. Pull the latest code from the repository
+2. Compile the code
+3. Replace the old program with the new one
+4. Restart the program
+
+#### Q4: How to configure?
+
+see [Installation](#installation)
+
+#### Q5: How to run?
+
+see [Usage](#usage)
+
+#### Q6: How to stop?
+
+press `Ctrl+C` in the terminal
+
+#### Q7: How to uninstall?
+
+delete the program
+
+#### Q8: Why does the login page not appear?
+
+1. Check if the program is running
+2. Check if the port is occupied
+3. Check if the configuration is correct
+4. Check if the [static resource](https://github.com/pchpub/jxufe-pch/tree/master/static) is downloaded correctly
 
 ### Installation
 
