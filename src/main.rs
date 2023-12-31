@@ -250,7 +250,7 @@ fn main() -> std::io::Result<()> {
     let path = if args.len() > 1 {
         args[1].as_str()
     } else {
-        "./config.toml"
+        "./config.json"
     };
 
     let config = PchConfig::new(path).unwrap();
