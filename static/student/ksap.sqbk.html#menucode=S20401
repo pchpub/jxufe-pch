@@ -1,0 +1,224 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title></title>
+	<meta http-equiv="Content-Language" content="zh-cn" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="../css/Form.css" type="text/css" />
+	<link rel="stylesheet" href="../css/FormPlus.css" type="text/css" />
+
+	<script language="JavaScript" type="text/javascript" src='../js/Form.js'></script>
+	<script type="text/javascript" src='../js/Window.js'></script>
+	<script type="text/javascript" src='../js/Common.js'></script>
+	<script type="text/javascript" src='../js/Validate.js'></script>
+	<script type="text/javascript" src='../js/AjaxBase.js'></script>
+	<script type="text/javascript" src='../js/Ref_DropList.js'></script>
+	<script type="text/javascript" src='js/loadClassPath.js'></script>
+	
+	<script type="text/javascript" src="../custom/js/SetRootPath.jsp"></script>
+	<script type="text/javascript" src="../custom/js/jquery.js"></script>
+	<script type="text/javascript" src="../custom/js/jkingo.js"></script>
+	<script type="text/javascript" src="../custom/js/jwutil.js"></script>	
+	
+	<style type="text/css">
+		#theTHArea,#theTHArea2{border:0px;margin:0px;padding:0px;height:4mm;line-height:4mm;}
+	</style>
+		
+	<script type="text/javascript">
+		function MyWinOnLoad(){
+			SetHtmlTitle("申请补考","2");
+			InitData();
+		}
+		
+		function InitData(){
+			var loader=new ClassPathLoader("makeup",null);
+			var path=loader.getClassPath();
+
+			Ajax.doPost("../STU_DynamicInitDataAction.do?classPath="+path,"",fInitData);
+			
+			function fInitData(){
+				var xmlDoc=this.responseXML.documentElement;
+				
+				var xn=xmlDoc.getElementsByTagName("xn")[0].firstChild.nodeValue;
+				$("xn").value=xn;
+				var xq=xmlDoc.getElementsByTagName("xq")[0].firstChild.nodeValue;
+				$("xq").value=xq;
+				
+				var kslcdm=xmlDoc.getElementsByTagName("kslcdm")[0].firstChild.nodeValue;
+				$("kslcdm").value=kslcdm;
+				
+				var lcmc=xmlDoc.getElementsByTagName("kslcmc")[0].firstChild.nodeValue;
+				
+				var sXn=xn+"-"+(parseInt(xn)+1)+"学年"+(xq=="1"?"第二学期":"第一学期");
+				var sLc=xn+"-"+(parseInt(xn)+1)+"学年"+(xq=="1"?"第二学期":"第一学期")+lcmc;
+				
+				$("theTHArea").innerHTML="学年学期："+sXn;
+				$("lc").innerHTML="考试轮次："+sLc;
+				
+				var qssj=xmlDoc.getElementsByTagName("qssj")[0].firstChild.nodeValue;
+				var jssj=xmlDoc.getElementsByTagName("jssj")[0].firstChild.nodeValue;
+				$("theTHArea2").innerHTML="时间区段："+qssj+" 至 "+jssj;
+				
+				QryData();
+			}
+		}
+		
+		function QryData(){			
+			$("ActionForm").action="../taglib/DataTable.jsp?tableId=2536";
+   			$("ActionForm").target="frmReport";
+   			$("ActionForm").submit();
+		}
+		
+		function IKForm_RefreshData(webroot){
+			QryData();
+		}
+		
+		/**
+		function showTotalRecord(tableId, totalRecord){
+			if(totalRecord<1){
+				window.frames["frmReport"].location.href="../student/message.html";
+				return;
+			}
+			var rows=window.frames["frmReport"].document.getElementsByTagName('tbody')[0].rows;
+			for(var i=0,length=rows.length;i<length;i++){
+				var status=rows[i].cells[5].innerHTML;
+				if(status=='已申报'){
+					$("sFlag").value="1";return;
+				}
+			}
+		}*/
+		var g_obj;
+		function sign(a,xn,xq,kslcdm,sqs)
+		{
+			g_obj = a;
+			if(a.innerHTML=='申请')
+			{
+				if(sqs=="1"){
+					/*
+	    			var width=window.document.body.offsetWidth;
+	    			var title = "申请说明";
+	    			var json = {"_title":title,"_width":"880px","_height":"440px","_top":"100px","_left":(width-880)/2,"_isStop":true,"_isMove":true,"_imgsrc":"../images/"};
+	    			cKWindow = new CKWindow(json);
+	    			cKWindow.setSrc("ksap.sqbk_sqs.jsp?xn="+xn+"&xq="+xq+"&kslcdm="+kslcdm,"100%","100%");
+					cKWindow.openWindow();
+					*/
+					var width=window.document.body.offsetWidth;
+	    			var title = "申请说明";
+					var myurl = _webRootPath + "student/ksap.sqbk_sqs.jsp?xn="+xn+"&xq="+xq+"&kslcdm="+kslcdm;
+					var kingoDialog = getKingoDialog();
+					if(!kingoDialog){
+						var json = {"_title":title,"_width":"880px","_height":"440px","_top":"100px","_left":(width-880)/2,"_isStop":true,"_isMove":true,"_imgsrc":"../images/","_func":"closeWindow"};
+		    			cKWindow = new CKWindow(json);
+		    			cKWindow.setSrc(myurl,"100%","100%");
+						cKWindow.openWindow();
+					}else{
+						var _width = 880; 
+						var _height = 480;
+						var _upFrameId = window.frameElement && window.frameElement.id || '';
+						kingoDialog.openModalDialog({"url":myurl,"title":title,"width":_width,"height":_height,"upFrameId":_upFrameId});
+					}
+				}
+				else
+				{
+                    if (!confirm("确定要申请当前补考?")) {
+                        return;
+                    }
+					savedata(a);
+				}
+			}else if(a.innerHTML=='取消'){
+
+
+				if (!confirm("确定要取消当前补考申请?")) {
+					return;
+				}
+
+				var oPTd=g_obj.parentNode;
+				var tr=oPTd.parentNode;
+				var l=tr.cells.length;
+				var kcdm=tr.cells[l-3].innerHTML;
+				var cxxn=tr.cells[l-2].innerHTML;
+				var cxxq=tr.cells[l-1].innerHTML;
+				
+				$("ActionForm").action="../STU_MakeupExamApplyAction.do?hidOption=cancel&kcdm="+kcdm
+					+"&cxxn="+cxxn+"&cxxq="+cxxq;
+	   			$("ActionForm").target="hidFrm";
+	   			$("ActionForm").submit();
+	   			
+				a.innerHTML='申请';oPTd.innerHTML='未申请';
+
+			}
+		}
+
+			//cKWindow弹出框右边叉的关闭时间
+			function closePop(){
+				cKWindow.closeWindow();
+			}
+
+			//cKWindow弹出框右边叉的关闭事件
+			function closeWindow(){
+				cKWindow.closeWindow();
+			}
+		
+		
+		function savedata(){
+			var oPTd=g_obj.parentNode;
+			var tr=oPTd.parentNode;
+			var l=tr.cells.length;
+			var kcdm=tr.cells[l-3].innerHTML;
+			var cxxn=tr.cells[l-2].innerHTML;
+			var cxxq=tr.cells[l-1].innerHTML;
+			$("ActionForm").action="../STU_MakeupExamApplyAction.do?hidOption=apply&kcdm="+kcdm
+				+"&cxxn="+cxxn+"&cxxq="+cxxq;
+   			$("ActionForm").target="hidFrm";
+   			$("ActionForm").submit();
+			g_obj.innerHTML='取消';oPTd.innerHTML='已申请';
+
+		}
+		
+	
+	</script>	
+  </head>
+  
+ <body onload="KAF_WinOnLoad(this)">
+ 	<div id="thePageArea">
+ 	<table width="100%" height="100%" align="center">
+		<tbody>
+			<tr>
+				<td height='26px' align="center" valign="top" colspan="2">
+					<form method="post" id="ActionForm" target="frmReport">
+						<div id="theOptArea" style="padding:0px;margin:0px;">
+							<div id="divTitle"></div>
+							<div id="divTip" style="display:none;"></div>
+							<div id="divButton">
+								<input type="hidden" id="xn" name="xn"/>
+								<input type="hidden" id="xq" name="xq"/>
+								<input type="hidden" id="kslcdm" name="kslcdm"/>
+								
+								<input type="button" name="btnSubmit" id="btnSubmit" value="检索" class="button" onclick="QryData()"/>
+							</div>
+							<div id="divLine"></div>
+						</div>
+					</form>
+				</td>
+			</tr>
+			<tr>
+				<td id="theTHArea">
+				</td>
+				<td id="lc" width="70%">
+				</td>
+			</tr>
+			<tr>
+				<td id="theTHArea2" colspan="2">
+				</td>
+			</tr>
+			<tr>
+				<td id="theRptArea" align="center" valign="top" colspan="2">
+					<iframe name="frmReport" height="100%" width="100%" id="frmReport" frameborder="0" scrolling="no"></iframe>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<iframe style="display:none;" id="hidFrm" name="hidFrm"></iframe>
+	</div>
+ </body>
+</html>

@@ -1,0 +1,228 @@
+@CHARSET "UTF-8";
+
+html,body{
+	font-family:"宋体";
+	font-size:12px;
+}
+
+/*******************banner area*******************/
+.bg-banner-left{ background-image:url(../../images/blue/banner_left.gif);}
+
+.bg-banner-center-l{ background-image:url(../../images/blue/banner_centerl.gif);}
+
+.bg-banner-center{ background-image:url(../../images/blue/banner_center.gif);}
+
+.bg-banner-center-r{ background-image:url(../../images/blue/banner_centerr.gif);}
+
+.bg-banner-right{ background-image:url(../../images/blue/banner_right.gif);}
+
+/*******************main_tools area*******************/
+.bg-tools-left{ 
+	width:207px;height:21px;background-image:url(../../images/blue/tool/left.gif);
+}
+
+.bg-tools-marquee{ 
+	font-size:12px;background-image:url(../../images/blue/tool/bg.gif);
+}
+
+.bg-tools-desk{ 
+	width:70px;height:21px;background-image:url(../../images/blue/tool/desk.gif);
+}
+.bg-tools-themeSTYLE{
+	width:70px;height:21px;background-image:url(../../images/blue/tool/themeStyle.gif);
+}
+.bg-tools-linkMSG{ 
+	width:70px;height:21px;background-image:url(../../images/blue/tool/linkMSG.gif);
+}
+.bg-tools-linkSP{ 
+	width:70px;height:21px;background-image:url(../../images/blue/tool/linkSP.gif);
+}
+.bg-tools-linkEmail{ 
+	width:70px;height:21px;background-image:url(../../images/blue/tool/linkEmail.gif);
+}
+.bg-tools-linkPWD{ 
+	width:70px;height:21px;background-image:url(../../images/blue/tool/linkPWD.gif);
+}
+.bg-tools-linkMENU{ 
+	width:70px;height:21px;background-image:url(../../images/blue/tool/linkMENU.gif);
+}
+
+.bg-tools-fresh{ 
+	width:50px;height:21px;background-image:url(../../images/blue/tool/fresh.gif);
+}
+
+.bg-tools-help{ 
+	width:50px;height:21px;background-image:url(../../images/blue/tool/help.gif);
+}
+
+.bg-tools-logout{ 
+	width:55px;height:21px;background-image:url(../../images/blue/tool/logout.gif);
+}
+
+/*******************main_index area*******************/
+.bg-index-tree{ 
+	width:7px;height:100%;background-image:url(../../images/blue/menu/polebg.gif);
+}
+
+.bg-index-button-push{ 
+	border: none;
+	height: 50px;
+	width: 7px;	
+	font-family: "宋体";
+	background-image:url(../../images/blue/menu/push.gif);
+}
+
+.bg-index-button-pull{ 
+	border: none;
+	height: 50px;
+	width: 7px;	
+	font-family: "宋体";
+	background-image:url(../../images/blue/menu/pull.gif);
+}
+
+/*******************foot area*******************/
+.bg-foot-bottom{ 
+	font-family:"宋体";
+	font-size:12px;
+	height:6px;
+	background-image:url(../../images/blue/bottom.gif);
+}
+
+/******************system title********************/
+/******************system title********************/
+.td_title {width:100%;height:43px;
+     line-height:43px;font-size:12px;
+     font-weight:bold;
+     text-align:center;
+     background-repeat:repeat-x;
+     color:#015436;
+     background-image:url(../../images/blue/main_menu.gif);
+ }
+ /*为科研服务和管理人员两个菜单*/
+.td_title2 {width:100%;height:24px;
+     line-height:24px;
+     font-size:13px;
+     font-weight:bold;
+     text-align:center;
+     background-repeat:repeat-x;
+     color:#000000;
+     background-image:url(../../images/blue/top_menu.gif);
+     margin-top: 1px;
+ }
+.td_content {display:none;overflow:auto;padding:2px;}
+
+/*主页面左边菜单*/
+.td_child_menu{
+	 width:100%;
+     height:24px;
+     line-height:24px;font-size:12px;
+     font-weight:bold;
+     text-align:center;
+     color:#000000;
+     background-image:url(../../images/blue/child_menu.gif);
+     background-repeat:repeat-x;
+     cursor: hand;
+}
+/*主页面左边菜单*/
+.td_child_menu_mouseover{
+     height:24px;
+     line-height:24px;font-size:12px;
+     font-weight:bold;
+     text-align:center;
+     color:#E87538;
+     background-image:url(../../images/blue/child_menu.gif);
+     background-repeat:repeat-x;
+     cursor: hand;
+}
+
+/*页面弹出菜单的样式*/
+.td_child_menu_page{
+	 width:100%;
+     height:24px;
+     line-height:24px;font-size:12px;
+     font-weight:bold;
+     text-align:left;
+     color:#000000;
+     background-image:url(../../images/blue/child_menu_page.gif);
+     background-repeat:no-repeat;
+     background-color:#E7ECE7;
+     cursor: hand;
+     padding-left:10px;
+     border: solid 1px #8D938F;
+}
+/*页面弹出菜单的样式*/
+.td_child_menu_mouseover_page{
+     height:24px;
+     line-height:24px;font-size:12px;
+     font-weight:bold;
+     text-align:left;
+     color:#E87538;
+     background-image:url(../../images/blue/child_menu_page.gif);
+     background-repeat:no-repeat;
+     background-color:#E7ECE7;
+     cursor: hand;
+     padding-left:10px;
+     border: solid 1px #8D938F;
+     border-style: inset;
+}
+/*主页面左边菜单--有下级的时候*/
+.td_child_menu_haveChild{
+     width:10px;height:24px;
+     line-height:24px;font-size:12px;
+     font-weight:bold;
+     text-align:center;
+     background-image:url(../../images/blue/child_menu_flag.gif);
+     background-color: #EAEDEA;
+     background-position-x:right;
+     cursor: hand;
+}
+.popmenu_table {border:1px solid #BBC0BD; width:100%; height:100%;border-collapse:collapse;}
+.recentlyuse{
+    height:99%;width:96%;border:solid 1px #B3D4A6;border-bottom:none;
+    background-color: #E1EBE1;padding-left: 10px;font-weight:bold;color:#0C7CCB;font-size: 13px;
+    text-align:left;padding-top:3px;
+}
+
+/* 为教师教辅人员提供的服务--个人信息 页面table样式   也可用于类似table布局的页面*/
+#infoTab table{
+	border: 1px solid #73c5da;
+}
+#infoTab table thead{
+	background-color: #73c5da;
+}
+#infoTab table .tdbt{
+	text-align:center;
+	border: 1px solid #73c5da;
+	font-size: 9pt;
+}
+#infoTab table .tdnr{
+	text-align:left;
+	border: 1px solid #73c5da;				 
+	font-size: 9pt;
+}
+#infoTab table .foot{
+	text-align: center;
+	background-color: #b2ddfc;
+	line-height:3mm;
+}
+
+/* TAB显示背景色和字体颜色设置(如在线消息,学生端功能TAB页) */
+.tab_bgcolor {
+	background-color: #ECF1F4;
+}
+.tab_bgcolor_on {
+	background-color: #0085C2!important;
+}
+.tab_color{
+	color: #017CC2;
+}
+.tab_color_on{
+	color: #FFFFFF;
+}
+
+/*为教师、为学生提供的服务TAB页背景色*/
+.tab-buttons-panel li.tab-show {
+    /**background: url(wt-right-on1.png) no-repeat right top;*/
+    border-width: 0px 0px 0px 0px;
+    background-color: #0085C2;
+}

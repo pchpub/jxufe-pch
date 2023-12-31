@@ -1,0 +1,1420 @@
+var jq = jq$ = j$ = jQuery.noConflict(); 
+
+var kingo_usermenubean = null;//整个用户可以使用的菜单封装的js类
+var kingo_list_normal_use_menuitem = null;
+var kingo_list_normal_count = 10;//常用功能最多显示的个数	
+		
+String.prototype.startWith=function(str){
+	var reg=new RegExp("^"+str);
+	return reg.test(this);
+}
+String.prototype.endWith=function(str){
+	var reg=new RegExp(str+"$");
+	return reg.test(this);
+}
+
+function $id(id){
+	return j$("#" + id);
+}
+
+var focusFunctions = [];
+function getUserNormalUse(){
+  	var url = _webRootPath+"frame/menu/getUserDefinedHomePage.action";
+  	var params="records=10";
+  	j$.ajax({
+  		type: "POST",
+  		url: url,
+  		data: params, 
+  		dataType: "json",
+  		success: function(response){
+  			focusFunctions = response;
+  		}
+  	});
+}
+  
+// 点击用户名
+j$(".header-user").on("click",function(){
+      	j$(".bread-crumb").hide();
+      	j$(".header-mores .dropdown-menu").hide();
+      	calculateHeight();
+	j$("#frmDesk").attr("src",_webRootPath + "frame/desk/showUserInfo.action");
+});
+  	//页面顶部右边的按钮
+   j$(".header-btn div,.header-btn li").on("click",function(){
+       j$(".header-btn div,.header-btn li").removeClass("active");
+       j$("#frmTool_info").css("display","none");
+       var me = j$(this);
+       me.addClass("active");
+       var me_name = me.attr("name");
+       switch ( me_name ){
+       	case "home"://主页
+        	j$(".bread-crumb").hide();
+        	j$(".header-mores .dropdown-menu").hide();
+        	calculateHeight();
+	        // 显示左边导航菜单(如果隐藏的话)
+   			var control_menu_name = j$("#control-menu").attr("name");
+        	if ("indent" == control_menu_name){
+        		j$("#control-menu").triggerHandler("click");
+        	}
+			j$("#frmDesk").attr("src",_webRootPath+"frame/home/homepage.jsp");
+			j$("#frmDesk").attr("scrolling","auto");
+       		break;	
+       	case "myapps"://我的应用
+        	j$(".bread-crumb").hide();
+	       	j$(".header-mores .dropdown-menu").hide();
+        	calculateHeight();
+	        // 隐藏左边导航菜单(如果显示的话)
+   			var control_menu_name = j$("#control-menu").attr("name");
+        	if ("dedent" == control_menu_name){
+        		j$("#control-menu").triggerHandler("click");
+        	}
+        	var _myapps_url = getMyappsUrl();
+			j$("#frmDesk").attr("src", _myapps_url);
+       		break;	
+       case "mypic": // 画像
+        	j$(".bread-crumb").hide();
+        	j$(".header-mores .dropdown-menu").hide();
+        	calculateHeight();
+			var _portrait_url = _webRootPath+"dss/portrait/tchportrait.ctn.html?gh="+_loginid+"&xm="+encodeURIComponent(encodeURIComponent(_userName));
+			if ("1" == _isOnlyStu) {
+				_portrait_url = _webRootPath+"dss/portrait/stuportrait.ctn.html?xn="+_currentXn+"&xq_m="+_currentXq+"&yhxh="+_loginid+"&xm="+encodeURIComponent(encodeURIComponent(_userName));
+			}
+			j$("#frmDesk").attr("src",_portrait_url);
+			j$("#frmDesk").attr("scrolling","auto");
+       		break;	
+       case "search": // 搜索：传入输入值并查询
+        	j$(".bread-crumb").hide();
+        	j$(".header-mores .dropdown-menu").hide();
+        	calculateHeight();
+			j$("#frmDesk").attr("src",_webRootPath+"common/userDefined/user.function.jsp?key=");
+       		break;    
+       	case "stustatus"://学籍信息
+        	j$(".bread-crumb").hide();
+	       	j$(".header-mores .dropdown-menu").hide();
+        	calculateHeight();
+			j$("#frmDesk").attr("src",_webRootPath + "student/stu.xsxj.xjda.jbxx.html");
+       		break;	
+       	case "course"://课程表
+        	j$(".bread-crumb").hide();
+	       	j$(".header-mores .dropdown-menu").hide();
+        	calculateHeight();
+			if (_usertype == 'STU'){
+				j$("#frmDesk").attr("src",_webRootPath + "student/xkjg.wdkb.jsp");
+			} else {
+				//j$("#frmDesk").attr("src",_webRootPath + "frame/desk/showLessonSchedule4User.action");
+				j$("#frmDesk").attr("src",_webRootPath + "wjstgdfw/jxap.jxapb.html");
+			}
+       		break;	
+       	case "exam"://考试
+        	j$(".bread-crumb").hide();
+	       	j$(".header-mores .dropdown-menu").hide();
+        	calculateHeight();
+			j$("#frmDesk").attr("src",_webRootPath + "student/ksap.ksapb.html");
+       		break;	
+       	case "score"://成绩
+        	j$(".bread-crumb").hide();
+	       	j$(".header-mores .dropdown-menu").hide();
+        	calculateHeight();
+			j$("#frmDesk").attr("src",_webRootPath + "student/xscj.chjfb.jsp");
+       		break;	
+       	case "mores": //更多
+	    	j$(".header-mores .dropdown-menu").show();
+       		break;	
+       case "myfocus": // 关注的服务
+        	j$(".bread-crumb").hide();
+        	calculateHeight();
+			j$("#frmDesk").attr("src",_webRootPath+"common/userDefined/userDefined.yhzdygn.jsp");
+       		break;    
+       case "recentlyuse": // 最近使用功能(用户操作日志)
+        	j$(".bread-crumb").hide();
+        	calculateHeight();
+			j$("#frmDesk").attr("src",_webRootPath+"common/userDefined/user.operlog.jsp");
+       		break;    
+       case "message": // 消息中心
+        	j$(".bread-crumb").hide();
+        	calculateHeight();
+            j$("#frmDesk").attr("src",_webRootPath+"common/popmsg/popmsg.getReceiveLog.jsp");
+            //j$("#frmDesk").attr("src",_webRootPath+"common/popmsg/popmsg.sendOnlineMessage.jsp");
+           if (_usertype == "STU" || _teaFsMessage!="1") {
+               // STU: 用户类型为学生查看消息
+               j$("#frmDesk").attr("src",_webRootPath+"common/popmsg/popmsg.getReceiveLog.jsp");
+           } else {
+               j$("#frmDesk").attr("src",_webRootPath+"common/popmsg/onlinemessage.jsp");
+           }
+       		break;
+       case "schoolnotice": // 校内通知
+        	j$(".bread-crumb").hide();
+        	calculateHeight();  
+			j$("#frmDesk").attr("src",_webRootPath+"cms/SchoolNotice.jsp");
+       		break;    
+       case "document": // 文档下载
+        	j$(".bread-crumb").hide();
+        	calculateHeight();
+			j$("#frmDesk").attr("src",_webRootPath+"docmanager/showFileInfos.action");
+       		break;    
+       case "usersecret": // 账号安全
+        	j$(".bread-crumb").hide();
+        	calculateHeight();
+			j$("#frmDesk").attr("src",_webRootPath+"frame/desk/showUserModifyPassword.action");
+       		break;    
+       case "theme"://主题切换
+       		j$(".bread-crumb").hide();
+        	calculateHeight();
+            j$("#frmDesk").attr("src",_webRootPath+"theme/themeservlet?p=getThemePage");
+       		break;
+	   case "jsjy"://预约教室
+		   var _url = _webRootPath+"jsgl/jsjy/jssq.jsp";
+		   window.open(_url);
+		   break;
+	   case "jsjysh"://审核教室预约
+		   var _url = _webRootPath+"jsgl/jsjy/jsjysh.jsp";
+		   window.open(_url)
+		   break;
+       	case "fullscreen"://全屏
+       		// https://github.com/kayahr/jquery-fullscreen-plugin
+		    j$(document).fullScreen(true);
+		    j$(".header-fullscreen").css("display","none");
+		    j$(".header-exitfullscreen").css("display","");
+		    setTimeout(function(){
+			    initHomepage();
+		    },100);
+       		break;
+       	case "exitfullscreen"://退出全屏
+		    j$(document).fullScreen(false);
+		    j$(".header-fullscreen").css("display","");
+		    j$(".header-exitfullscreen").css("display","none");
+		    setTimeout(function(){
+			    initHomepage();
+		    },100);
+       		break;
+       	case "systemversion"://回顾经典
+       		// https://github.com/kayahr/jquery-fullscreen-plugin
+		    j$(".header-systemversion").css("display","none");
+		    j$(".header-systemversion-new").css("display","");
+			window.location.replace(_webRootPath + "MainFrm.html");			    
+       		break;
+       	case "systemversion-new"://体验新版
+		    j$(".header-systemversion").css("display","");
+		    j$(".header-systemversion-new").css("display","none");
+			window.location.replace(_webRootPath + "frame/homes.html");			    
+       		break;
+       	case "lock"://锁屏
+       		alert("此功能正在实现中...");
+       		break;
+       	case "help": //帮助
+		    //var help = _webRootPath+"/help/index.html";
+		    //window.open(help); 
+		    doHelp();       		
+       		break;	
+       	case "exit"://退出系统
+       		if (confirm("确定要退出系统？")){
+				window.location.href=_webRootPath+"DoLogoutServlet";
+       		}
+       		break;
+       
+       }
+   });
+   
+   // 更多鼠标移入、移出事件
+   jQuery(".header-mores").on("mouseover", function(){
+   		jQuery(".header-mores").trigger("click");
+   })
+   jQuery(".header-mores .dropdown-menu").on("mouseout", function(){
+   		jQuery(".header-mores .dropdown-menu").hide();
+   })
+
+	jQuery(".header-btn div,.header-btn li").on("mouseout",function(){
+		var _name = j$(this).attr("name");
+		if(_name != "mores") {
+			jQuery(".header-mores .dropdown-menu").hide();
+		}
+	});
+
+/**
+ * 依据主题获取主控页面
+ */
+function getMyappsUrl() {
+    //alert("_themeid="+_themeid);
+    var _myapps_url = _webRootPath + "frame14/menu/myapps.home.jsp?pmenucode="+_rootMenuCode;
+    if(_themeid=="1"){
+        //1-经典主控
+        //_myapps_url = _webRootPath + "frame14/menu/myapps.jsp?pmenucode="+_rootMenuCode;
+        _myapps_url = _webRootPath + "frame14/menu/myapps.classical.jsp?pmenucode="+_rootMenuCode+"&flag=1";
+    } else if (_themeid=="2"){
+        //2-清新主控
+        _myapps_url = _webRootPath + "frame14/menu/myapps.fresh.jsp?pmenucode="+_rootMenuCode+"&flag=1";
+    } else {
+        //3-靓丽主控
+        _myapps_url = _webRootPath + "frame14/menu/myapps.home.jsp?pmenucode="+_rootMenuCode;
+    }
+    return _myapps_url ;
+}
+
+// 打开帮助文档(保存文件位于../uploads/help.chm)
+function doHelp(){
+	var show_filename = encodeURI(encodeURI("青果教务系统应用培训教程.chm"));
+	var url = _webRootPath+"docmanager/fileDownload.action?name="+show_filename+"&fileSavePath=help.chm";
+	window.location.target  = "_download";
+	window.location.href  = url;
+}    
+   
+   j$(".header-home").trigger("click");
+   //左边菜单的显示和隐藏操作
+   j$("#control-menu").on("click",function(){
+      var me = j$(this);
+      var name = me.attr("name");
+      switch (name){
+          case 'dedent':
+              me.attr({"name":"indent","title":"显示菜单"});
+              me.empty().append('<i class="fa fa-indent" aria-hidden="true"></i>');
+              j$(".index-left-panel").animate({'margin-left': '-205px'});
+              j$(".index-right-panel").animate({'margin-left': '6px'});
+              break;
+          case 'indent':
+              me.attr({"name":"dedent","title":"隐藏菜单"});
+              me.empty().append('<i class="fa fa-dedent" aria-hidden="true"></i>');
+              j$(".index-left-panel").animate({'margin-left': '0'});
+              j$(".index-right-panel").animate({'margin-left': '211px'});
+              break;
+      }
+      
+   });
+   
+   //计算页面中间部分(工作区)的高度
+   function calculateHeight(){
+       var articleH = j$(window).outerHeight()-j$("footer").outerHeight()-j$("header").outerHeight();
+       j$("article").css("height",articleH+"px");
+       var crumb = j$(".bread-crumb").css("display");
+       //var workingAreaH = articleH-(crumb=="none" ? 0 : 40);  //工作区高度： 面包屑导航区高度30px + 上下padding 5*2 = 50px
+       var workingAreaH = articleH-(crumb=="none" ? 20 : 50);  //工作区高度： 面包屑导航区高度30px + 上下padding 5*2 + 下部padding 10px= 50px
+       //alert("calculateHeight()::workingAreaH="+workingAreaH);
+       j$("#frmDesk").css("height", workingAreaH+"px");
+   };
+   
+	//获取菜单数据
+function getMenu4Stu(){
+	kingo_usermenubean = new UserMenuBean();
+	var menu = kingo_usermenubean.AllMenuArray;
+	var len = menu.length;
+	var newMenu = null;
+	//渲染菜单
+	for(var i=0;i<len;i++){
+		var code = menu[i].menucode;
+		var parentid = menu[i].parentid;
+		//if (parentid=="ROOT"){ continue; }
+		if (menu[i].iscanuse == "0") { continue; }
+		//console.log(parentid+":"+code+":"+menu[i].iscanuse);
+		var child = [];
+		for(var j=0;j<len;j++){
+			if(code == menu[j].parentid){
+			   child.push(menu[j]); 
+			}
+		}
+		//console.log("child.length="+child.length);
+		child.length>0 && (menu[i].child = child);
+		if( menu[i].parentid == "ROOT"){ // S0：学生应用  T0：学生应用
+			newMenu = menu[i];
+		}
+	}
+	return newMenu.child;
+}
+
+	//获取菜单数据(管理端应用)
+function getMenu4Adm(){
+	kingo_usermenubean = new UserMenuBean();
+	var menu = kingo_usermenubean.AllMenuArray;
+	var len = menu.length;
+	var newMenu = [];
+	//渲染菜单
+	for(var i=0;i<len;i++){
+		var code = menu[i].menucode;
+		var parentid = menu[i].parentid;
+		if (menu[i].iscanuse == "0") { continue; }
+		if (parentid == "ROOT"  || parentid == "JW"){ 
+			var child = [];
+			for(var j=0;j<len;j++){
+				if(code == menu[j].parentid){
+				   child.push(menu[j]); 
+				}
+			}
+			//console.log("child.length="+child.length);
+			child.length>0 && (menu[i].child = child);
+			if( menu[i].parentid == "ROOT"){
+				newMenu = child;
+			}				
+		}
+	}
+	return newMenu;
+}	
+
+//关注的服务与最近使用
+function renderUsemenu(){
+    $("accordion").style.height="90%";
+    kingo_usermenubean = new UserMenuBean();
+    // 初始化用户关注的服务
+    var url = _webRootPath+"frame/menu/getUserDefinedMenus4StuTeaNew.action";
+    var params = "records=12";
+    var _height = window.screen.height ;
+    if (_height>=900 && _height<960){
+        params = "records=10";
+    }else if (_height>=960 && _height<1024){
+        params = "records=12";
+    } else if (_height>=1024){
+        params = "records=14";
+    } else if (_height<=720){
+        params = "records=5";
+    } else {
+        // >720 .. <900
+        params = "records=6";
+    }
+    jQuery.ajax({
+        type: "POST",
+        url: url,
+        data: params,
+        dataType: "text",
+        success: setUDM
+    })
+}
+    function setUDM(response){
+        var html="<table style=\"width:100%;height:100%;padding:0px;margin:0px;border-collapse: collapse;\" >\n" +
+            "<tr id=\"userDefinedArea\" style=\"height: 185px;\">\n" +
+            "<td style=\"vertical-align: top;\">\n" +
+            "<table style=\"width:100%;height:100%;\" class=\"ctltable\">\n" +
+            "<tr style=\"height:40px;line-height: 40px;\">\n" +
+            "<td id=\"userDefined\" class=\"leftmenu_header\" title=\"管理关注的服务\">\n" +
+            "<span style=\"float: left;color:white;\">关注的服务</span>\n" +
+            "<span style=\"float: right; margin:0px 10px 0px 0px; \">\n" +
+            "<img src=\""+_webRootPath+"frame14/img/actor_right.png\"></img>\n" +
+            "</span>\n" +
+            "</td>\n" +
+            "</tr>\n" +
+            "<tr valign=\"top\">\n" +
+            "<td id=\"menuArea2\" class=\"leftmenu_content\">\n" +response+
+            "</td>\n" +
+            "</tr>  \n" +
+            "</table>" +
+            "</td>\n" +
+            "</tr>\n" +
+            "<tr style=\"height:8px;background-color: #FFF;\"><td></td></tr>     \n" +
+            "<tr style=\"height:230px;\">\n" +
+            "<td id=\"normalUseArea\">\n" +
+            "<table style=\"width:100%;height:100%;\">\n" +
+            "                                     <tr style=\"height:40px;line-height: 40px;\">\n" +
+            "                                       <td id=\"userNormalUse\" class=\"leftmenu_header\" >\n" +
+            "                                             最近使用\n" +
+            "                                        </td>\n" +
+            "                                     </tr>\n" +
+            "                                     <tr>\n" +
+            "                                        <td  valign=\"top\" id=\"normal_use_menu\" class=\"leftmenu_content\" >\n" + showNormalUseMenu()+
+            " </td>\n" +
+            "                                     </tr>\n" +
+            "                                  </table>\t\n" +
+            "    </td>\n" +
+            "</tr>"
+            "</table>";
+
+        j$(".index-left-panel #accordion").empty().append(html);
+
+        menuEventBind();//菜单事件绑定
+
+        // 关注的服务[定制功能]
+        jQuery("#userDefined").click(function(){
+            //清空当前位置
+            j$("#page-path").empty().append("");
+            jQuery("#focusFun").html("");
+            // 加载定制服务页面
+            loadingWorkarea(_webRootPath+"common/userDefined/userDefined.yhzdygn.jsp","");
+        })
+// 关注的服务,最近使用功能(userNormalUse)鼠标事件
+        jQuery("#userDefined,userNormalUse").mouseover(function(){
+            jQuery(this).css("cursor","pointer");
+        }).mouseout(function(){
+            jQuery(this).css("cursor","");
+        })
+    }
+
+/**
+ * 加载工作区内容
+ * url      -- 要加载内容的URL
+ * frmname  -- Iframe的ID，为空值取frmDesk
+ */
+function loadingWorkarea(url, frmname){
+    if (!frmname){ frmname = "frmDesk"; }
+    window.document.getElementById(frmname).contentWindow.location.replace(url);
+}
+function showNormalUseMenu(){
+    var result_href = [''];
+    var normalMenuList = kingo_list_normal_use_menuitem.getCurrentNormalUseMenus();
+    var normal_td = document.getElementById("normal_use_menu");
+    if (normalMenuList.length>0){
+        var length = normalMenuList.length;
+        for (var i=0;i<length;i++){
+            var objItem = normalMenuList[i];
+            var menucode = objItem.getMenucode();
+            var menuname = objItem.getMenuname();
+            var pageUrl =  objItem.getPageUrl();
+            if (menucode==null || menuname==null) {
+                continue ;
+            }
+            result_href.push('<li onclick="NormalPageOpenByMenucode(\''+menucode+'\')">');
+            result_href.push('<span style="color:#EC9C14;font-size:13px;">&diams;</span><a href="javascript:void(0)" style="text-decoration : none;color:black;margin-top:2px;padding-left:0px;" ');
+            result_href.push('');
+            result_href.push(' title=\''+menuname+'\'');
+            result_href.push(' onclick="NormalPageOpenByMenucode(\''+menucode+'\')" menucode=\''+menucode+'\'> ');
+            if (menuname.length>12)
+                result_href.push(menuname.substr(0,27)+"");//标题太长时候省略
+            else
+                result_href.push(menuname);
+            result_href.push('</a>');
+            result_href.push('</li>');
+            //if (i!=length) result_href.push('<br>');
+        }
+    } else {
+        result_href.push('<li><span style="color:#EC9C14;font-size:13px;">&diams;</span><a style="text-decoration : none;color:black;margin-top:2px;padding-left:6px;">您没有最近使用的功能!</a></li>');
+    }
+    //alert("normalMenuList="+result_href);
+    //if (normal_td){
+    //    normal_td.innerHTML = "<ul>"+result_href.join("")+"</ul>";
+    //}
+    return "<ul>"+result_href.join("")+"</ul>";
+}
+
+//渲染左侧导航菜单
+function renderMenu(){
+	if ("1" == _isOnlyRkjs || "1" == _isOnlyStu) {
+		renderMenu4Stu();
+	} else {
+		renderMenu4Adm();
+	}
+}
+
+//渲染菜单(管理端应用)
+function renderMenu4Adm(){
+	var menu = getMenu4Adm();//获取菜单数据
+	var len = menu.length;
+	var htmlArry = [];
+	for(var i=0;i<1;i++){
+		var _pmenucode = "JW";  // menu[i].menucode
+		var _pmenuname = "主控";
+		htmlArry.push('<div class="panel panel-default">');
+		htmlArry.push('<div class="panel-heading" role="tab" id="heading'+_pmenucode+'">');
+		htmlArry.push(' <h4 class="panel-title">');
+          	htmlArry.push('<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+_pmenucode+'" aria-expanded="true" aria-controls="collapse'+_pmenucode+'"> '+_pmenuname+'</a>');
+           htmlArry.push(' </h4></div>');
+           htmlArry.push(' <div id="collapse'+_pmenucode+'" class="panel-collapse collapse'+(i==0 ? ' in':'')+'" role="tabpanel" aria-labelledby="heading'+_pmenucode+'">');
+           htmlArry.push(' <div class="panel-body">');
+           htmlArry.push(' <ul class="left-menu">');
+           var child = menu; //menu[i].child;
+           if (child){
+            var clen =child.length; 
+            for(var j=0;j<clen;j++){
+            	var iconpath = child[j].iconpath;
+            	if (child[j].iconpath=="#"){
+	            	iconpath = "../img/app/default.png";
+	            }
+	            iconpath = iconpath.replace("../","../frame14/")
+            	htmlArry.push("<li class='menu-item' data-link='"+child[j].linkfile+"' data-code='"+child[j].menucode+"'>"
+	            	+"<img src='"+iconpath+"'/>"
+	            	+child[j].menuname+"</li>");
+            } 
+           }
+           htmlArry.push('</ul></div> </div>');
+        	htmlArry.push('</div>');
+	}
+	j$(".index-left-panel #accordion").empty().append(htmlArry.join(""));
+	
+	menuEventBind();//菜单事件绑定
+	
+}
+
+//渲染菜单(学生应用和教师应用)
+function renderMenu4Stu(){
+	var menu = getMenu4Stu();//获取菜单数据
+	var len = menu.length;
+	var htmlArry = [];
+	//查看是否设置
+	var url = _webRootPath+"frame/menu/getIsOpenTreeMenu.action";
+	j$.ajax({
+		type: "POST",
+		url: url,
+		data: "",
+		dataType: "json",
+		success: function(response){
+			if(response=="1"){
+				//使用layui轻框架做树状菜单
+				var content= "<!DOCTYPE html>\n" +
+					"<html>\n" +
+					"<head>\n" +
+					"  <meta charset=\"utf-8\">\n" +
+					"  <title>Layui</title>\n" +
+					"  <meta name=\"renderer\" content=\"webkit\">\n" +
+					"  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n" +
+					"  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\">\n" +
+					"<link rel=\"stylesheet\" type=\"text/css\" media=\"screen\" href=\"../frame/home/js/layui/css/layui.css\">\n" +
+					"<link rel=\"stylesheet\" type=\"text/css\" media=\"screen\" href=\"../frame/home/js/layui/css/modules/laydate/default/laydate.css\">" +
+					"<link rel=\"stylesheet\" type=\"text/css\" media=\"screen\" href=\"../frame/home/js/layui/css/modules/layer/default/layer.css\">\n" +
+					"<link rel=\"stylesheet\" type=\"text/css\" media=\"screen\" href=\"../frame/home/js/layui/css/modules/code.css\">\n" +
+					"<script type=\"text/javascript\" src=\"../frame/home/js/layui/layui.js\"></script>\n" +
+					"</head>\n" +
+					"<body>\n" +
+					"<div class=\"layui-row\" id=\"demo-box\" style=\"margin: 0 auto; max-width: 970px;\">\n" +
+					"  <div class=\"layui-col-xs9\" style='width: 100%;'>\n";
+
+				for (var i = 0; i < len; i++) {
+					var menus = menu[i].child;
+					if (menus) {
+						var clen = menus.length;
+						var pMemuinfo={};
+
+						for (var j = 0; j < clen; j++) {
+							content+=	"    <div class=\"layui-panel\">\n" ;
+							content+= "      <ul class=\"layui-menu\">\n";
+							content += generateMenuTree(menus[j],"1",pMemuinfo);
+							content+="</div>  \n" ;
+							content+="</ul> \n"
+						}
+					}
+					content+="    </div></div></div><script></script></body></html>";
+				}
+
+				htmlArry.push(content);
+				j$(".index-left-panel #accordion").empty().append(htmlArry.join(""));
+
+				menuEventBind();//菜单事件绑定
+			}else {
+				for (var i = 0; i < len; i++) {
+					htmlArry.push('<div class="panel panel-default">');
+					htmlArry.push('<div class="panel-heading" role="tab" id="heading' + menu[i].menucode + '">');
+					htmlArry.push(' <h4 class="panel-title">');
+					htmlArry.push('<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse' + menu[i].menucode + '" aria-expanded="true" aria-controls="collapse' + menu[i].menucode + '"> ' + menu[i].menuname + '</a>');
+					htmlArry.push(' </h4></div>');
+					htmlArry.push(' <div id="collapse' + menu[i].menucode + '" class="panel-collapse collapse' + (i == 0 ? ' in' : '') + '" role="tabpanel" aria-labelledby="heading' + menu[i].menucode + '">');
+					htmlArry.push(' <div class="panel-body">');
+					htmlArry.push(' <ul class="left-menu">');
+					var child = menu[i].child;
+					if (child) {
+						var clen = child.length;
+						for (var j = 0; j < clen; j++) {
+							var iconpath = child[j].iconpath;
+							if (child[j].iconpath == "#") {
+								iconpath = "../img/app/default.png";
+							}
+							iconpath = iconpath.replace("../", "../frame14/")
+							htmlArry.push("<li class='menu-item' data-link='" + child[j].linkfile + "' data-code='" + child[j].menucode + "'>"
+								+ "<img src='" + iconpath + "'/>"
+								+ child[j].menuname + "</li>");
+						}
+					}
+					htmlArry.push('</ul></div> </div>');
+					htmlArry.push('</div>');
+				}
+				j$(".index-left-panel #accordion").empty().append(htmlArry.join(""));
+
+				menuEventBind();//菜单事件绑定
+
+			}
+		}
+	});
+
+}	
+
+//递归遍历生成树结构语句
+function generateMenuTree(node,first,pMenuinfo){
+	var nodestr="";
+
+	if(node.child==null){
+		nodestr+="    <li class='menu-item' style='padding: 5px 0px 5px 8px;' data-flag='1' data-plink='"+pMenuinfo.linkfile+"' data-pcode='"+pMenuinfo.menucode+"' data-pname='"+pMenuinfo.menuname+"' data-link='"+node.linkfile+"' data-code='"+node.menucode+"'>\n" +
+		"             <div class=\"layui-menu-body-title\" title='"+node.menuname+"'>"+node.menuname+"</div>\n" +
+		"            </li>\n" ;
+	}else{
+		var iconpath="";
+		if(first=="1") {
+			iconpath = node.iconpath;
+			if (node.iconpath == "#") {
+				iconpath = "../img/app/default.png";
+			}
+			iconpath = iconpath.replace("../", "../frame14/");
+		}
+		nodestr+="        <li class=\"layui-menu-item-group layui-menu-item-up \" lay-options=\"{type: 'group'}\" style='width: 100%;padding: 5px 15px "+(first=="1"?"5px":"0px")+" 8px;' >\n" +
+			"          <div class=\"layui-menu-body-title\" style='width: 100%;margin:0;padding: 0;' menucode='"+node.menucode+"' menuname='"+node.menuname+"'>\n" +
+			(first=="1"?"            <img width=\"18\" height=\"18\" src='"+iconpath+"'>&nbsp;"+node.menuname+"</img>":node.menuname) +
+			"            <i class=\"layui-icon layui-icon-down\"></i>\n" +
+			"          </div>\n" ;
+		for(var i=0;i<node.child.length;++i){
+			if(i==0) {
+				nodestr+= "      <ul class=\"layui-menu\">\n";
+			}
+			var pMenuinfoTemp={};
+
+			pMenuinfoTemp.linkfile=(pMenuinfo.linkfile==null?"":pMenuinfo.linkfile+",")+node.linkfile;
+			pMenuinfoTemp.menucode=(pMenuinfo.menucode==null?"":pMenuinfo.menucode+",")+node.menucode;
+			pMenuinfoTemp.menuname=(pMenuinfo.menuname==null?"":pMenuinfo.menuname+",")+node.menuname;
+			nodestr+=generateMenuTree(node.child[i], "0",pMenuinfoTemp)
+			if(i==node.child.length-1){
+				nodestr+=	"       </ul>\n" ;
+			}
+		}
+		nodestr+="</li>"
+	}
+	return nodestr;
+}
+
+//菜单事件绑定
+function menuEventBind(){
+	j$(".menu-item").on("click",function(){
+		var me = j$(this);
+		clickMenuObj(me);
+	})	
+}
+
+//菜单事件绑定
+function clickMenuObj(menuObj) {
+	//树状菜单
+	var flag = menuObj.data("flag");
+	if (flag == "1") {
+		j$(".menu-item").removeClass("layui-menu-item-checked");
+	}else {
+		j$(".menu-item").removeClass("active");
+		menuObj.addClass("active");
+		j$(".header-btn div").removeClass("active");
+	}
+	//面包屑导航的渲染
+	var crumb = j$(".bread-crumb");
+	if (crumb.css("display") == "none") {
+		crumb.show();  // 2019-12-06
+	}
+	calculateHeight();
+	var linkfile = menuObj.data("link");
+	var code = menuObj.data("code");
+	//树状菜单
+	var _menuname = menuObj.text();
+	if (flag == "1") {
+		//树状菜单重新生成面包屑导航
+		var plink = menuObj.data("plink");
+		var pcode = menuObj.data("pcode");
+		var pname = menuObj.data("pname");
+
+		var path= "<label><img src='"+_webRootPath+"frame/images/currentwz.png' style='border:0px;width:14px;height:18px;margin-bottom:5px;'></img></label>";
+
+		if(plink!='undefined'){
+			var links = plink.split(",");
+			var codes = pcode.split(",");
+			var names = pname.split(",");
+
+
+			for (var j = 0; j < links.length; ++j) {
+				if (j == 0) {
+					path += "<span id='" + codes[j] + "' class='menu-level-1' onclick='clickBread(this,\"" + links[j] + "\");'>" + names[j] + "</span>";
+				} else {
+					path += "<span id='" + codes[j] + "' class='menu-level-" + (j + 1) + "' onclick='clickBread(this,\"" + links[j] + "\");'>→&ensp;" + names[j] + "</span>";
+				}
+			}
+			path+="<span id='"+code+"' class='menu-level-"+(links.length+1)+"' onclick='clickBread(this,\""+linkfile+"\");'>→&ensp;"+_menuname+"</span>";
+		}else{
+			path+="<span id='"+code+"' class='menu-level-1' onclick='clickBread(this,\""+linkfile+"\");'>"+_menuname+"</span>";
+		}
+		j$("#page-path").empty().append(path);
+	} else{
+		var _pmenucode = menuObj.parents(".panel-default").find(".panel-heading").attr("id");  // 上一级菜单 headingS0
+		var _pmenuname = menuObj.parents(".panel-default").find(".panel-title").text().trim();
+		_pmenucode = _pmenucode.replace("heading", "");
+		//alert("_pmenucode="+_pmenucode + "/_pmenuname=" + _pmenuname);
+		var current= "<img src='"+_webRootPath+"frame/images/currentwz.png' style='border:0px;width:14px;height:18px;margin-bottom:5px;'></img>";
+
+		var path = "<label>"+current+"</label>"+//当前位置：
+			//"<span id='"+_pmenucode+"' onclick='clickBread(this);'>"+_pmenuname+"</span>&ensp;→&ensp;"+
+			"<span id='"+_pmenucode+"' onclick='clickBread(this);'>"+_pmenuname+"</span>"+
+			"<span id='"+code+"' class='menu-level-2' onclick='clickBread(this,\""+linkfile+"\");'>→&ensp;"+_menuname+"</span>";
+		j$("#page-path").empty().append(path);
+	}
+
+	
+	showBannerAttentionTips(code,_menuname);
+	
+	var pageUrl = getPageUrl(linkfile, code);
+	if ("ZZ" == code || "TF"==code) { // 掌上校园 (喜鹊儿 )、在线教学
+		window.open(linkfile);
+	} else {
+		j$("#frmDesk").attr("src",pageUrl);
+	}
+	
+	//判断该功能是否已经被关注
+	var len = focusFunctions.length;
+	var focus = j$("#focusFun");
+	focus.data("code",code);
+	if(len>0){
+		var i;
+		for(i=0;i<len;i++){
+			if(code == focusFunctions[i].menucode){
+				focus.css("background-image","url(images/index/focused.png)");
+				focus.empty().append('<div data-toggle="tooltip" data-placement="left" title="该功能已经被关注" class="focus-inner"></div>');
+				focus.data("isFocus","1");
+				break;
+			}
+		}
+		if(i == len ){
+			focus.css("background-image","url(images/index/focus.png)");
+			focus.empty().append('<div data-toggle="tooltip" data-placement="left" title="关注该功能" class="focus-inner"></div>');
+			focus.data("isFocus","0");
+		}
+		 j$('[data-toggle="tooltip"]').tooltip();
+	}
+}
+
+/**
+* 依据原始访问地址和菜单代码，组织新的访问地址
+*/
+function getPageUrl(linkfile, menucode){
+	var pageUrl = linkfile;
+	if (menucode == _rootMenuCode){
+	
+		// 学生应用、教师应用、管理员(S0, T0, JW), 显示我的应用主页面，隐藏面包屑导航区
+		jQuery(".bread-crumb").hide();
+		calculateHeight();
+		pageUrl = _webRootPath + "frame14/menu/myapps.home.jsp?pmenucode="+menucode;
+		
+	} else {
+		if(linkfile=="/frame/jw/teacherstudentmenu.jsp"){
+            pageUrl = _webRootPath + linkfile;
+		}
+		else if (linkfile.indexOf(_webRootPath) == -1){
+			pageUrl = _webRootPath + linkfile;
+		}
+	    if (pageUrl.indexOf("?")==-1){
+		   pageUrl = pageUrl + "?menucode=" + menucode;
+	    } else {
+		   pageUrl = pageUrl + "&menucode=" + menucode;
+	    }
+        if ("S0" == menucode || "T0" == menucode || "JW92" == menucode || "JW93" == menucode || "JW94" == menucode || "JW95" == menucode) {
+
+            // 管理端下的学生应用和教师应用
+            pageUrl = _webRootPath + "frame14/menu/myapps.home.jsp?pmenucode="+menucode;
+            // 主题适配 2022-03-17
+			if (_themeid == "1") {
+				// 主控模式1：经典
+                pageUrl = _webRootPath + "frame14/menu/myapps.classical.jsp?pmenucode="+menucode+"&flag=1";
+			} else if (_themeid == "2") {
+                // 主控模式2：清新
+                pageUrl = _webRootPath + "frame14/menu/myapps.fresh.jsp?pmenucode="+menucode+"&flag=1";
+			} else {
+                // 主控模式3：靓丽
+                pageUrl = _webRootPath + "frame14/menu/myapps.home.jsp?pmenucode="+menucode;
+			}
+		} else if (linkfile.startWith("http") || linkfile.startWith("https")){
+			// 喜鹊儿官网
+		} else if (linkfile.indexOf("teacherstudentmenu.jsp")>-1){
+			// 标签页显示 保持原有URL
+		} else if (linkfile.indexOf("/frame/menus/")>-1) {
+            // /frame/menus/21.jsp  21:教师队伍 22:导师资格  23:学业导师 24:助教管理
+            if (pageUrl.indexOf("/21.jsp")>-1
+                || pageUrl.indexOf("/22.jsp")>-1
+                || pageUrl.indexOf("/23.jsp")>-1
+                || pageUrl.indexOf("/24.jsp")>-1 ) {
+                pageUrl = _webRootPath + "frame/jw/teacherstudentmenu.jsp?menucode="+menucode;
+            } else {
+                if (isSVG()){
+                    if (pageUrl.indexOf(menucode+".jsp")>-1 && pageUrl.indexOf("SVG"+menucode+".jsp")==-1){
+                        // pageUrl = _webRootPath + "frame14/menu/myappsstu.jsp?pmenucode="+menucode;
+                        pageUrl = pageUrl.replace(menucode+".jsp", "SVG"+menucode+".jsp");
+                    }
+                }
+            }
+		} else if (linkfile.indexOf("/frame14/menu/myapps.jsp?pmenucode")>-1) {
+            // 原有配置如/frame14/menu/myapps.jsp?pmenucode=SJ0706，转换为自动生成扁平化二级导航页
+            if (linkfile.indexOf("showtop=")>-1){
+                pageUrl = _webRootPath + "frame14/menu/myappsstu.jsp?pmenucode="+menucode;
+                pageUrl += "&showtop=1";
+            } else {
+                pageUrl = _webRootPath + "frame/jw/teacherstudentmenu.jsp?menucode="+menucode;
+            }
+		} else if (linkfile == "#" || linkfile == ""){
+			// 未配置为空或#，转换为自动生成扁平化二级导航页
+			//pageUrl = _webRootPath + "frame14/menu/myappsstu.jsp?pmenucode="+menucode;
+            pageUrl = _webRootPath + "frame/jw/teacherstudentmenu.jsp?menucode="+menucode;
+		} else {
+			// /KZCSAction.do?menucode=JW07  ??
+			// 其它的保持原有URL
+			
+		}
+		
+	}
+	/**
+	if (!linkfile.startWith("/frame")){
+		pageUrl = _webRootPath+linkfile;
+	}
+	*/
+	pageUrl = pageUrl.replace("//","/");
+	return pageUrl;
+}
+
+//  是否支持SVG
+function isSVG() {
+	var vgtype = window.SVGAngle || document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1") ? "SVG" : "VML";
+	return vgtype == "SVG";
+}
+
+// 面包屑导航时的点击
+function clickBread(obj, linkfile){
+	var _menucode = j$(obj).attr("id");
+	var _menuname = j$(obj).html();
+	var src = "";
+	if (_menucode == _rootMenuCode){  // S0, T0, JW
+		// 学生应用和教师应用, 显示我的应用主页面，隐藏面包屑导航区
+		jQuery(".bread-crumb").hide();
+		calculateHeight();
+		//src = _webRootPath + "frame14/menu/myapps.home.jsp?pmenucode="+_menucode;
+        src = getMyappsUrl();
+	} else {
+		src = getPageUrl(linkfile, _menucode);
+		var css_clsname = jQuery(obj).attr("class");
+		var css_level = css_clsname.split("-")[2];
+		//alert("css_clsname="+css_clsname+"/css_level="+css_level);
+		for(var level = parseInt(css_level)+1; level <= 8; level++){
+			// 递归移去下一级菜单信息的显示
+			var menu_level_info = jQuery(".menu-level-"+level).html();
+			if (menu_level_info != null){
+				jQuery(".menu-level-"+level).remove();
+			}					
+		}
+	}
+	
+	// 加关注、加评价		
+    var trimStartPattern=new RegExp("^(\\s+)+","g");
+	_menuname = _menuname.replace("→","").replace(trimStartPattern,"");
+	showBannerAttentionTips(_menucode, _menuname);
+	
+	str = src.replace("//","/");
+	j$("#frmDesk").attr("src",src);		
+}
+
+//主题渲染
+function renderTheme(){
+	var theme = _stylePathPrefix;
+ 		j$(".header-theme").data("theme",theme);
+	j$("body").addClass(j$(".header-theme").data("theme"));
+} 
+//获取当前主题
+function getCurrentTheme(){
+	return j$(".header-theme").data("theme");
+}
+//修改主题
+function updateTheme(theme,isSave){
+	j$("body").attr("class",theme);
+	isSave && j$(".header-theme").data("theme",theme);
+}
+//跳转页面
+function jumpPage(munecode){
+	var menu = j$("li[data-code='"+munecode+"']");
+	if(! menu.parents(".panel-collapse").hasClass("in")){
+		menu.parents(".panel").find(".panel-title a").trigger("click");
+	}
+	menu.trigger("click");
+	
+}
+
+// 显示版权信息
+function showCopyright(){
+	var str="&copy;2000-"+new Date().getFullYear();
+	if(G_SCHOOL_CODE!="10471"){//河南中医药大学去掉超链接
+	    str+=" <a href=http://www.kingosoft.com target=_blank style='color:#FFFFFF;'>";
+	}
+	str=str+"青果软件集团有限公司";
+	if(G_SCHOOL_CODE!="10471"){//河南中医药大学去掉超链接
+	    str+="</a>";
+	}
+	str+=" All Rights Reserved";
+	try{
+   if(G_SCHOOL_CODE=="12827"){//陕西国防工业职业技术学院
+       str+=" <a href='https://beian.miit.gov.cn' target='_blank' style='color:#FFFFFF;'>备案号：陕ICP备06002608号</a>";
+   }
+   if(G_SCHOOL_CODE=="14753") {//河南城建职业学院
+       str+=" <a href='https://beian.miit.gov.cn' target='_blank' style='color:#FFFFFF;'>豫ICP备2021022007号</a>";
+   }
+   if(G_SCHOOL_CODE=="13774"){//豫章师范学院
+   	  str="";
+   }
+}catch(e){
+}
+	j$(".copyright").html(str);
+}
+
+function myShowModalDialog(url, width, height, fn) {
+    //if (navigator.userAgent.indexOf("Chrome") >=0 || navigator.userAgent.indexOf("Firefox")>=0 ) {
+    if (navigator.userAgent.indexOf("IE")<0 ) {
+        window.returnCallBackValue354865588 = fn;
+        var paramsChrome = 'height=' + height + ', width=' + width + ', top=' + (((window.screen.height - height) / 2) - 50) +
+            ',left=' + ((window.screen.width - width) / 2) + ', toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no';
+        var pop=window.open(url, "newwindow", paramsChrome);
+        pop.moveTo((screen.width - width) / 2, (screen.height - height) / 2);
+    }
+    else {
+        var params = 'dialogWidth:' + width + 'px;dialogHeight:' + height + 'px;status:no;scroll=auto;dialogLeft:'
+                    + ((window.screen.width - width) / 2) + 'px;dialogTop:' + (((window.screen.height - height) / 2) - 50) + 'px;';
+        var tempReturnValue = window.showModalDialog(url, "", params);
+        fn.call(window, tempReturnValue);
+    }
+}
+function myReturnValue(value) {
+    if(value=="appraise"){
+        var sp_define=document.getElementById("sp_define").innerHTML;
+        sp_define=sp_define.replace("focus.png","focused.png").replace("title=\"评价\"","title=\"查看评价\"");
+        document.getElementById("sp_define").innerHTML=sp_define;
+    }
+}
+// 显示校内通知
+function toschoolnotice(schoolNoticeId) {
+	var url = _webRootPath + "cms/viewSchoolNoticeDetail.action?schoolNoticeId=" + schoolNoticeId;
+	//获取当前可用屏幕宽度和高度
+	var maxWidth = 1024;//screen.availWidth-224;
+	var maxHeight = screen.availHeight;
+	//myShowModalDialog(url, maxWidth, maxHeight, function (retStr) {});	
+	maxHeight = parent.document.body.clientHeight - 30;
+	window.dialogManagement.openModalDialog({"url":url,"title":"查看通知公告","width":maxWidth,"height":maxHeight});
+}	
+function toschoolnotice_bj(schoolNoticeId) {	
+	var url = _webRootPath+"wjstgdfw/AssistantSendNoticeView.jsp?optype=view&schoolNoticeId="+schoolNoticeId;
+	//获取当前可用屏幕宽度和高度
+	var maxWidth = 1024;//screen.availWidth-224;
+	var maxHeight = screen.availHeight;
+	//myShowModalDialog(url, maxWidth, maxHeight, function (retStr) {});	
+	maxHeight = parent.document.body.clientHeight - 30;
+	window.dialogManagement.openModalDialog({"url":url,"title":"查看通知公告","width":maxWidth,"height":maxHeight});
+}
+// 文档下载
+function todocmanager(fileId) {
+	var url = _webRootPath + "docmanager/FileMain.jsp?pfileId=" + fileId;
+	//获取当前可用屏幕宽度和高度
+	var maxWidth = 1024;//screen.availWidth-224;
+	var maxHeight = screen.availHeight;
+	//myShowModalDialog(url, maxWidth, maxHeight, function (retStr) {});	
+	maxHeight = parent.document.body.clientHeight - 30;
+	window.dialogManagement.openModalDialog({"url":url,"title":"文档下载","width":maxWidth,"height":maxHeight});
+}	
+
+// 消息中心
+function toMessage() {
+   	jQuery(".bread-crumb").hide();
+   	calculateHeight();
+	jQuery("#frmDesk").attr("src",_webRootPath+"common/popmsg/popmsg.getReceiveLog.jsp");
+}	
+
+// 关注的服务
+function toMyfocus() {
+   	jQuery(".bread-crumb").hide();
+   	calculateHeight();
+	jQuery("#frmDesk").attr("src",_webRootPath+"common/userDefined/userDefined.yhzdygn.jsp");
+}	
+
+// 我的关注 菜单跳转服务 
+function showMyPage(pageTitle,menucode,pageUrl,pmenuname,pmenucode,plinkfile){
+	NormalPageOpenByMenucode(menucode);
+}
+
+// 最近使用 菜单跳转服务 
+function NormalPageOpenByMenucode(menucode){
+	var _url = _webRootPath + "frame/normalusemenu/getBreadcrumbsInfoNew.action?menucode="+menucode;
+    jQuery.ajax({
+ 		type: "POST",
+ 		url: _url,
+ 		data: {}, 
+ 		dataType: "json",
+ 		async: false,  // 同步执行 
+ 		success: function(data) {
+ 			var linkfile = data.linkfile ;
+ 			var menuName = data.menuName ;
+ 			var breadcrumbsInfo = data.breadcrumbsInfo ; 	
+			// 面包屑导航的渲染
+			var crumb = jQuery(".bread-crumb",parent.window.document);
+			if(crumb.css("display") == "none"){
+				crumb.show();  
+			}
+			parent.calculateHeight();
+		    jQuery("#page-path").html(breadcrumbsInfo);
+		    // 跳转到最近使用菜单功能页
+		    var pageUrl = getPageUrl(linkfile, menucode);
+            if (linkfile.startWith("http") || linkfile.startWith("https") || "TF"==menucode){//在线教学
+                window.open(linkfile);
+            }
+            else{
+                jQuery("#frmDesk").attr("src",pageUrl);
+			}
+			// 显示关注和评价
+			showBannerAttentionTips(menucode, menuName);		    
+		    // 保存最近使用功能
+		   	kingo_list_normal_use_menuitem.setNewNormalItem(linkfile,breadcrumbsInfo,menuName,menucode);
+ 		}
+ 	});
+}	
+
+// 显示加关注/评价
+function showBannerAttentionTips(menucode, menuName){
+	//alert("menucode"+menucode+"/menuName="+menuName);
+	//var attention = "&#43;&#20851;&#27880;"; //汉字[+关注]的unicode码
+    var url = _webRootPath + "frame/menu/isMyservice.action";
+    var params = "hidKey="+menucode;
+    jQuery.ajax({
+        type: "POST",
+        url: url,
+        data: params,
+        dataType: "text",
+        success: showMyservice
+    })
+
+}	
+function showMyservice(response) {
+    var helps = "<img src='../frame14/img/nav/help2.png' title='\u5e2e\u52a9' style='border:0px;width:20px;height:20px;margin-bottom:5px;'></img>"; //汉字[+帮助]的unicode码
+    if(response!=""){
+        var str=response.split("|");
+        var menucode=str[0];
+        var menuName=str[1];
+        var isdefined=str[2];
+        var isappraised=str[3];
+        var attention ="",appraise="",attinfo="";
+        attention = "<img src='../frame14/img/nav/appraise.png' title='&#20851;&#27880;' style='border:0px;width:20px;height:20px;margin-bottom:2px;'></img>"; //汉字[+关注]的unicode码
+        appraise = "<img src='../frame14/img/nav/focus.png' title='\u8bc4\u4ef7' style='border:0px;width:20px;height:20px;margin-bottom:5px;'></img>"; //汉字[+评价]的unicode码
+        // 加关注,addMyservice方法位于Main_tools.jsp中
+        attinfo = "<span style='float:right' id='sp_define'><a id='a_define' href='javascript:void(0);' onclick='addMyservice(\""+menucode+"\",\""+menuName+"\")'>"+attention+"</a>";
+        attinfo += "&ensp;&ensp;<a id='a_appraise' href='javascript:void(0);' onclick='appraiseMyservice(\""+menucode+"\",\""+menuName+"\")'>"+appraise+"</a>";
+        if(isdefined=="1" && isappraised=="0"){
+            attention = "<img src='../frame14/img/nav/appraised.png' title='&#21462;&#28040;&#20851;&#27880;' style='border:0px;width:20px;height:20px;margin-bottom:2px;'></img>";
+            appraise = "<img src='../frame14/img/nav/focus.png' title='\u8bc4\u4ef7' style='border:0px;width:20px;height:20px;margin-bottom:5px;'></img>";
+            attinfo = "<span style='float:right' id='sp_define'><a id='a_define' href='javascript:void(0);' onclick='delMyservice(\""+menucode+"\",\""+menuName+"\")'>"+attention+"</a>";
+            attinfo += "&ensp;&ensp;<a id='a_appraise' href='javascript:void(0);' onclick='appraiseMyservice(\""+menucode+"\",\""+menuName+"\")'>"+appraise+"</a>";
+        }
+        else if(isdefined=="1" && isappraised=="1"){
+            attention = "<img src='../frame14/img/nav/appraised.png' title='&#21462;&#28040;&#20851;&#27880;' style='border:0px;width:20px;height:20px;margin-bottom:2px;'></img>";
+            appraise = "<img src='../frame14/img/nav/focused.png' title='&#26597;&#30475;&#35780;&#20215;' style='border:0px;width:20px;height:20px;margin-bottom:5px;'></img>";
+            attinfo = "<span style='float:right' id='sp_define'><a id='a_define' href='javascript:void(0);' onclick='delMyservice(\""+menucode+"\",\""+menuName+"\")'>"+attention+"</a>";
+            attinfo += "&ensp;&ensp;<a id='a_appraise' href='javascript:void(0);' onclick='appraiseMyservice(\""+menucode+"\",\""+menuName+"\")'>"+appraise+"</a>";
+        }
+        else if(isdefined=="0" && isappraised=="1"){
+            attention = "<img src='../frame14/img/nav/appraise.png' title='&#20851;&#27880;' style='border:0px;width:20px;height:20px;margin-bottom:2px;'></img>";
+            appraise = "<img src='../frame14/img/nav/focused.png' title='&#26597;&#30475;&#35780;&#20215;' style='border:0px;width:20px;height:20px;margin-bottom:5px;'></img>";
+            attinfo = "<span style='float:right' id='sp_define'><a id='a_define' href='javascript:void(0);' onclick='addMyservice(\""+menucode+"\",\""+menuName+"\")'>"+attention+"</a>";
+            attinfo += "&ensp;&ensp;<a id='a_appraise' href='javascript:void(0);' onclick='appraiseMyservice(\""+menucode+"\",\""+menuName+"\")'>"+appraise+"</a>";
+        }
+        attinfo += "&ensp;&ensp;<a  href='javascript:void(0);' onclick='helps(\""+menucode+"\",\""+menuName+"\")'>"+helps+"</a></span>";
+        jQuery("#focusFun").html(attinfo);
+
+        // 记录当前操作的功能代码
+        jQuery("#menucode_current").val(menucode);
+    }
+}
+// 加关注
+function addMyservice(menucode,menuname){
+	//alert("menucode/menuname="+menucode+"/"+menuname);
+	if (!confirm("您确信要将\""+menuname+"\"加为关注的服务？")){
+		return false;
+	}
+    // 初始化用户关注的服务
+	var url = _webRootPath + "frame/menu/addMyservice.action";
+	var params = "hidKey="+menucode;
+	jQuery.ajax({
+		type: "POST",
+		url: url,
+		data: params, 
+		dataType: "text",
+		success: setMyservice
+	})	
+	
+	function setMyservice(response){
+		//alert("setMyservice.response="+response);
+        var sp_define=document.getElementById("sp_define").innerHTML;
+        if(response=="1"){
+            sp_define=sp_define.replace("addMyservice","delMyservice").replace("appraise.png","appraised.png").replace("title=\"关注\"","title=\"取消关注\"");//关注改成取消关注
+            document.getElementById("sp_define").innerHTML=sp_define;
+        }
+        renderUsemenu();
+
+	}
+}
+//取消关注
+function delMyservice(menucode,menuname){
+    //alert("menucode/menuname="+menucode+"/"+menuname);
+    if (!confirm("您确信要取消\""+menuname+"\"的关注？")){
+        return false;
+    }
+    // 初始化用户关注的服务
+    var url = _webRootPath + "frame/menu/delMyservice.action";
+    var params = "hidKey="+menucode;
+    jQuery.ajax({
+        type: "POST",
+        url: url,
+        data: params,
+        dataType: "text",
+        success: setMyservice2
+    })
+
+    function setMyservice2(response){
+        //alert("setMyservice.response="+response);
+        var sp_define=document.getElementById("sp_define").innerHTML;
+        if(response=="1"){
+            sp_define=sp_define.replace("delMyservice","addMyservice").replace("appraised.png","appraise.png").replace("title=\"取消关注\"","title=\"关注\"");
+            document.getElementById("sp_define").innerHTML=sp_define;
+        }
+        renderUsemenu();
+    }
+}
+// 服务评价
+function appraiseMyservice(menucode,menuname){
+    var url = _webRootPath + "frame14/Main.appraiseMenu.jsp?menucode="+menucode+"&menuname="+encodeURIComponent(encodeURIComponent(menuname));
+       var maxWidth="870"; 
+       var maxHeight="530"; 
+       myShowModalDialog(url, maxWidth, maxHeight, function (result) {
+       	if (result != null) {
+        }
+	});	
+}
+// 帮助
+function helps(menucode,menuname){
+    //var url = _webRootPath + "help/treeIndex.jsp?menucode="+menucode+"&menuname="+encodeURIComponent(encodeURIComponent(menuname));
+    var url = _webRootPath + "kms/systemhelp.jsp?menucode="+menucode+"&menuname="+encodeURIComponent(encodeURIComponent(menuname));
+    var title = menuname;
+    var kingoDialog = getKingoDialog();
+    if (!kingoDialog) {
+        var maxWidth="1200";
+        var maxHeight="675";
+        myShowModalDialog(url, maxWidth, maxHeight, function (result) {
+            if (result != null) {
+            }
+        });
+    } else {
+        var _width = 960;
+        var _height = 600;
+        var _upFrameId = window.frameElement && window.frameElement.id || '';
+        kingoDialog.openModalDialog({"url":url,"title":title,"width":_width,"height":_height, "upFrameId":_upFrameId});
+    }
+}
+// 显示附加功能
+function showMyPlus(pageTitle,menucode,pageUrl,pmenuname,pmenucode,plinkfile){
+	showMyPage(pageTitle,menucode,pageUrl,pmenuname,pmenucode,plinkfile);
+    hidePlusMenu();		//隐藏层
+}
+
+// 初始化用户附加功能 				
+function loadingUserAttachMenus(pmenucde){
+
+	var url = _webRootPath+"frame/menu/getUserAttachMenus.action";
+	var params = "pmenucde="+pmenucde;
+	//alert(url+"?"+params);
+	jQuery.ajax({
+		type: "POST",
+		url: url,
+		data: params, 
+		dataType: "text",
+		success: setMyMenu
+	})					
+	
+	function setMyMenu(response){
+		jQuery("#fgDiv").html(response);
+		if (response!=null && response != ""){
+			var li_count = jQuery("#fgDiv>ul").attr("count");
+			//alert("li_count="+li_count);
+			var li_column = Math.ceil(li_count/16.0);
+			//alert("li_column="+li_column);
+			jQuery("#fgDiv").css("width", (li_column*270)+"px");
+			// 显示[附加功能]
+			jQuery("#banner_plusmenu").css("display","");
+		} else {
+			// 隐藏[附加功能]
+			jQuery("#banner_plusmenu").css("display","none");
+		}
+	}
+}
+
+function showPlusMenu(){
+   //显示隐藏层
+   jQuery('#bgDiv').css('display', 'block')    //遮挡背景层(半透明)
+		.width(window.innerWidth+"px")
+		.height(window.innerHeight+"px");  
+   jQuery('#fgDiv').css('display', 'block')
+		.css('right','5px')
+		.css('top','95px');  //逻辑业务窗口
+	/**
+   jQuery('#fgDiv').css('display', 'block')
+		.css('left',(window.innerWidth-300)/2+"px")
+		.css('top',(window.innerHeight-100)/2+"px");  //逻辑业务窗口
+	*/
+	// 重置附加功能层边框颜色
+	var lhcolor = jQuery(".navbar-default").css("background-color");
+	jQuery("#fgDiv").css("border-color",lhcolor);
+};
+
+function hidePlusMenu(){
+   //隐藏层 隐藏起来
+   jQuery('#bgDiv').css('display', 'none');  //遮挡背景层(半透明)
+   jQuery('#fgDiv').css('display', 'none');  //逻辑 添加/修改 界面
+};	
+
+// 版本标识 V20
+function isVersion20(){
+	return true;
+}	
+
+// 设置学年学期(用户自定义)
+function setXnxq() {
+    var menucode=document.getElementById("menucode_current").value;
+	var url = _webRootPath+"frame/Main_footer_setYearTerm.jsp?menucode=JW042101&fmenucode="+menucode;
+	/**
+	var obj = new Object(); 
+	myShowModalDialog(url, "300", "165", function (result) {
+		if (result != null) {
+			if (result == "saveOk"){
+			    window.location.reload();
+			}
+		}
+	});
+	*/
+	var dialogId = window.dialogManagement.openModalDialog({"url":url,"title":"设置学年学期","width":360,"height":180});	
+}	
+
+// 关闭设置学年学期窗口
+function closeXnxqSetting(result){
+	if (result != null) {
+		if (result == "saveOk"){
+			// 学年学期切换后，更新学年学期显示并刷新工作区内容
+			var _src = jQuery("#frmDesk").attr("src");
+		    jQuery("#frmDesk").attr("src",_src);
+		    updateYearTerm();
+		}
+	}
+}
+
+// 管理人员设置学年学期
+function updateYearTerm(){
+	var url = _webRootPath+"frame/desk/showYearTerm4User.action";
+    var menucode=document.getElementById("menucode_current").value;
+    if(menucode!=""){
+        menucode=menucode.substring(0,2);
+    }
+	var params = "";
+	jQuery.ajax({
+		type: "POST",
+		url: url,
+		data: params, 
+		dataType: "json",
+		success: function(response){
+			// xn, xq_m, xnxqDesc
+			 //var kslcmc=response.kslcmc;
+            jQuery("#xn").val(response.xn);
+            jQuery("#xq_m").val(response.xq_m);
+			var xnxqDesc=response.xnxqDesc;
+			/*
+			if(menucode=="5C"){
+                 xnxqDesc+=kslcmc;
+			}
+			*/
+            jQuery("#yearterm").text(xnxqDesc).css("margin-right","15px");
+		}
+	})			
+}
+
+function myLoadMessage(iframeName){
+	/**
+	if(loadingObjs[0]){
+		loadingObjs[0].close();
+	}
+	*/
+}	
+
+function initHomepage(){
+
+   	if ("kingo.guest" == _loginid) {
+   		// 如果是游客，则跳转到登录页
+		window.location.href = _Path;    	
+		return ;
+   	}
+
+    if(_dlxssy=="1"){
+        document.getElementById("header-home").className="header-home active";
+        document.getElementById("header-apps").className="header-apps";
+        j$(".bread-crumb").hide();
+        j$(".header-mores .dropdown-menu").hide();
+        calculateHeight();
+
+        j$("#frmDesk").attr("src",_webRootPath+"frame/home/homepage.jsp");
+        j$("#frmDesk").attr("scrolling","auto");
+	}
+	else{//主控页面
+        document.getElementById("header-home").className="header-home";
+        document.getElementById("header-apps").className="header-apps active";
+        j$(".bread-crumb").hide();
+        j$(".header-mores .dropdown-menu").hide();
+        calculateHeight();
+        // 隐藏左边导航菜单(如果显示的话)
+        var control_menu_name = j$("#control-menu").attr("name");
+        if ("dedent" == control_menu_name){
+            j$("#control-menu").triggerHandler("click");
+        }
+        var _myapps_url = getMyappsUrl();
+        j$("#frmDesk").attr("src", _myapps_url);
+	}
+   	//alert(j$(".bread-crumb").css("display"));
+   	var breadcrumbcss = j$(".bread-crumb").css("display");
+   	if (breadcrumbcss == "none") {
+   		j$(".bread-crumb").hide();
+    }
+	jQuery('#fgDiv').mouseleave(function(){
+		hidePlusMenu();
+	});
+   	
+    calculateHeight();
+    // 最近使用功能初始化
+    kingo_list_normal_use_menuitem = new NormalUseMenuBeanList();
+    kingo_list_normal_use_menuitem.init();
+
+    if(_qygzfw=="1"){
+        renderUsemenu();
+        //renderMenu();
+	}else{
+        renderMenu();
+	}
+
+    renderTheme();
+    showCopyright();
+
+    var username=_userName;
+    var schoolname=_schoolName;
+    if(G_SCHOOL_CODE == "10610") {//四川大学
+        j$(".header-school").text("教材管理服务平台");
+        document.title="KINGOSOFT高校教材管理服务平台";
+    }
+    else if(G_SCHOOL_CODE=="110720") {//江汉大学(工程实践)
+        j$(".header-school").text("工程实践教学管理系统");
+        document.title="KINGOSOFT高校工程实践教学管理系统";
+    }
+    else if(G_SCHOOL_CODE=="10729"){//西安美术学院
+        j$(".header-school").text("教学综合管理服务平台(本科生)");
+        document.title="KINGOSOFT高校教学综合管理服务平台(本科生)";
+	}
+    else if(G_SCHOOL_CODE=="107291"){//西安美术学院
+        j$(".header-school").text("教学综合管理服务平台(研究生)");
+        document.title="KINGOSOFT高校教学综合管理服务平台(研究生)";
+    }
+    else if(G_SCHOOL_CODE=="13774"){//豫章师范学院
+        j$(".header-school").text(G_SCHOOL_NAME+"教学管理平台");
+        document.title=G_SCHOOL_NAME+"教学管理平台";
+    }
+    else
+	{
+        j$(".header-school").text("教学综合管理服务平台");
+	}
+
+    var headeruser= "<img src='"+_webRootPath+"frame/images/user.png' style='border:0px;width:14px;height:14px;margin-bottom:5px;'></img>";
+    j$(".header-user label").html("&ensp;&ensp;"+headeruser+"["+_loginid+"]"+username); //用户：
+    j$("#yearterm").text(_xnxqDesc).css("margin-right","15px");
+    if (_isManager == "1"){
+    	updateYearTerm();
+    	jQuery(".yearterm").css("cursor","pointer");
+      	jQuery(".yearterm").on("click",function(){
+      		setXnxq();
+	      })
+     }
+     j$('[data-toggle="tooltip"]').tooltip();
+     
+     //getUserNormalUse();//用户已经关注的功能
+}
+
+(function(){
+  initHomepage();
+}());

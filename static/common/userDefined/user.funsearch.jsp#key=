@@ -1,0 +1,101 @@
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+	<head>
+		<title></title>
+		<meta http-equiv="Content-Language" content="zh-cn" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel="stylesheet" type="text/css" href="../../css/Form.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/ctl_popwinc.css"></link>
+		
+		<script type="text/javascript" src='../../js/Common.js'></script>
+		<script type="text/javascript" src='../../js/Form.js'></script>
+ 		<script type="text/javascript" src='../../js/Window.js'></script>
+		<script type="text/javascript" src='../../js/Validate.js'></script>
+		<script type="text/javascript" src="../../custom/js/SetRootPath.jsp"></script>
+		<script type="text/javascript" src="../../custom/js/jquery.js"></script>
+		<script type="text/javascript" src="../../custom/js/jkingo.js"></script>
+		<script type="text/javascript" src="../../custom/js/jwutil.js"></script>
+		<script type="text/javascript" src="../../custom/js/jquery.validate.js"></script>
+		<script type="text/javascript" src="../../custom/js/kingo.validate.js"></script>
+		<script type="text/JavaScript">
+			var cKWindowFK=null;
+			function MyWinOnLoad() {
+				SetHtmlTitle("功能搜索", "2");
+				objForm.init( {
+					action :"../SchoolAreaAction.do",
+					tableId : {
+						frmReport :"5327091"
+					}
+				});
+				qryData();				
+			}
+			
+			//显示对应地址的页面, 调用Main_index.jsp页面中的showMyPage方法
+			function showPage(pageTitle,menucode,pageUrl,pmenuname,pmenucode,plinkfile){
+				parent.showMyPage(pageTitle,menucode,pageUrl,pmenuname,pmenucode,plinkfile);
+			}
+			
+			function qryData(){
+				$("ActionForm").action='../../taglib/DataTable.jsp?tableId=5327091';
+				$("ActionForm").target="frmReport";
+				$("ActionForm").submit();
+			}
+			function closeCK(){
+				cKWindowFK.closeWindow();
+			}
+			
+			function goToFrame(e,obj){
+				var e = window.event ? window.event : e;
+				var x=e.keyCode;
+				if(x != 13) return false;	
+				if(x < 48 || x > 57) e.returnValue=false;
+				qryData();
+			}				
+			
+		</script>
+	</head>
+	<body onload="KAF_WinOnLoad(this)">
+		<table border=0 width="100%" height="100%" align="center" style="margin: 0px auto;">
+			<tr>
+				<td align="center">
+					<form method="post" id="ActionForm" action="" target="frmReport">
+						<div id="theOptArea" style="width:100%;">
+							<div id="divTitle"></div>
+							<div id="divTip"></div>
+							<div id="divButton">
+								<input type="hidden" id="hidOption" name="hidOption" />
+								<input type="hidden" name="hidKey" id="hidKey" />
+								<input type="button" id="btnQry" name="btnQry" value="检索" onclick="qryData()" class="button"/>
+							</div>
+							<div id="divLine"></div>
+							<div id="theSearchArea">
+								<table width="100%">
+									<tr>
+										<td >
+											关键词
+											<input id="menuname" name="menuname" style="width: 210px" class="input" type="text" value="" onkeypress='goToFrame(event,this)'/>
+											排序
+											<select name="px" style="width: 150px;">
+												<option value="orderid" selected="selected"">功能序号</option>
+												<option value="menuname">功能名称</option>
+											</select>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</form>
+				</td>
+			</tr>
+			<tr>
+				<td id="theRptArea">
+					<iframe scrolling="no" id="frmReport" name="frmReport" style="width: 100%; height: 100%;" src="" frameborder="0"></iframe>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>
+

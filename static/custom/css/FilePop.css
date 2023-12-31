@@ -1,0 +1,38 @@
+body {
+	background-color: #FFFFFF;
+	text-align: left;
+}
+
+#content {
+	padding-left: 7px; 
+	padding-top: 5px;
+	padding-right: 7px;
+	padding-bottom: 5px;
+}	
+
+.even {background-color: #F4FEF9;cursor:pointer;}
+.odd {background-color: #ffffff;cursor:pointer;}
+.selected {background-color: #89BFA7;cursor:pointer;}
+
+.button
+{
+	border:1px solid #CCCCCC;
+	background-color: #F5FAFF;
+	/**min-width: 50px; */
+	min-height: 25px;
+	padding: 2px 12px;
+	padding: 4px 4px 2px 4px\9;	/** all IE */
+	font-size: 12px;
+    border-radius: 3px;	
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0){
+	/* For Chrome and Safari */
+	padding: 0px 4px 2px 4px;
+} 
+
+.tdLab {
+	text-align: right;
+	padding-right: 5px;
+}
+

@@ -1,0 +1,536 @@
+body {
+  font-family: "Microsoft YaHei", SimSun, "Open Sans", Arial, Helvetica, Sans-Serif;
+  min-width: 1024px;
+  overflow-x:  hidden;
+}
+@media screen and (max-width: 1024px) {
+  body {
+    overflow-x: scroll;
+  }
+}
+/*主题*/
+.blue header,.blue .panel-heading{
+	background-color: #468DBB;
+	background-color: #FFFFFF;
+}
+.blue article {
+	background-color: #F4F4F4;
+	background-color: #E5E5E5;
+}
+.blue footer{
+	background-color: #5068D2;
+}
+.blue .menu-item.active,.blue .menu-item:hover{
+	/**background-color:#D9ECF9;*/
+	/**background-color:#95BDD7;*/
+	background-color:#3E4A86;
+	color:#FFFFFF;
+	font-weight: bold;
+}
+.blue .bread-crumb, .bread-crumb a{
+	background-color: #FFFFFF!important;
+	color: #333!important;
+}
+
+.green header,.green footer,.green .panel-heading{
+	background-color: #43955B
+}
+.green .bread-crumb,.green .menu-item.active,.green .menu-item:hover{
+	background-color:#C8F4D5;
+}
+/*---end--主题*/
+footer {
+  height: 30px;
+  width: 100%;
+  line-height: 30px;
+  color: white;
+  /**text-align: center;*/
+  text-align: left;
+}
+.control-menu {
+  margin-left: 5px;
+  margin-right: 5px;
+  font-size: 20px;
+}
+.control-menu:hover {
+  cursor: pointer;
+  color: #333;
+}
+.edit-pwd {
+  margin-right: 20px;
+}
+footer.fixed {
+  position: fixed;
+  bottom: 0;
+}
+header {
+  height: 60px ;
+  line-height: 60px;
+}
+header img {
+  /**height: 45px;*/
+}
+.header-title {
+  font-family: "Microsoft YaHei", "Open Sans", Arial, Helvetica, Sans-Serif;
+  /**font-size: 32px;*/
+  /**margin-left: 15px;*/
+  color: white;
+  letter-spacing: 1px;
+}
+.header-title img {
+	margin-right: 0px;
+}
+.header-school,
+.banner_titleName {
+    vertical-align: middle;
+    font-family: "Microsoft YaHei";
+    font-size: 24px;
+    font-weight: normal;
+    /**color: #FFFFFF;*/
+    color: #5068D2;
+    letter-spacing: 2px;
+    margin-left: 15px;
+    padding-top: 2px;
+}
+
+.header-btn {
+  /**color: #333;*/
+  color: #FFF;
+  height:60px;
+}
+.header-btn .header-mores {
+  color: #333;
+}
+
+.header-btn li {
+}
+
+.h-btn{
+  margin-left: 15px;
+  display: inline-block;
+  /**
+  width: 22px;
+  height: 22px;
+  */
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.h-btn:hover,.header-btn:hover {
+  cursor: pointer;
+}
+.header-user i {
+  font-size: 16px;
+  margin-right: 5px;
+  margin-top: -2px;
+  vertical-align: middle;
+}
+.header-user {
+  margin-right: 30px;
+}
+.header-user:hover,.header-user label:hover{
+	cursor: pointer;
+}
+.header-home1 {
+  background-image: url("../../../frame14/img/nav/home.png");
+}
+.header-home1:hover,
+.header-home1.active {
+  background-image: url("../../../frame14/img/nav/home2.png");
+}
+.header-apply1{
+  background-image: url("../../../frame14/img/nav/apps.png");
+}
+.header-apply1:hover,
+.header-apply1.active {
+  background-image: url("../../../frame14/img/nav/apps2.png");
+}
+.header-search1{
+  background-image: url("../../../frame14/img/nav/funsearch.png");
+}
+.header-search1:hover,
+.header-search1.active {
+  background-image: url("../../../frame14/img/nav/funsearch2.png");
+}
+.header-theme1 {
+  background-image: url("../../../frame14/img/nav/theme.png");
+}
+.header-theme1:hover,
+.header-theme1.active {
+  background-image: url("../../../frame14/img/nav/theme2.png");
+}
+.header-help1 {
+  background-image: url("../../../frame14/img/nav/help.png");
+}
+.header-help1:hover,
+.header-helpe1.active {
+  background-image: url("../../../frame14/img/nav/help2.png");
+}
+.header-exit1 {
+  background-image: url("../../../frame14/img/nav/exit.png");
+}
+.header-exit1:hover,
+.header-exit1.active {
+  background-image: url("../../../frame14/img/nav/exit2.png");
+}
+.index-left-panel {
+  width: 210px;
+  /**background-color: #F2F2F2;*/
+  background-color: #5068D2;
+  /**border-right:1px solid #7F7F7F; */
+  float: left;
+  /**margin-top: 5px;*/
+  border-right: 1px solid #E5E5E5;
+  height: 100%;
+  overflow-y: auto;
+}
+.index-left-panel .panel-body {
+  padding: 0;
+}
+.index-left-panel .panel-default > .panel-heading {
+  /**color: white;*/
+  color: #3E4A86;
+  font-weight: bold;
+  text-align: center;
+  display: none;
+}
+.index-left-panel .panel{
+  font-size: 14px;    
+  background-color: #5068D2;
+  color: #FFFFFF;
+}
+
+.navbar-default .navbar-nav>li>a {
+	font-family: "Microsoft YaHei";
+	font-size: 14px;    
+    color: #333;
+}
+
+.panel-default{
+  border-color: #5068D2;
+}
+.index-left-panel .panel-default > .panel-heading .panel-title > a {
+  display: block;
+}
+.index-left-panel .panel-group .panel {
+  margin-bottom: -6px;
+}
+.index-left-panel .panel-body {
+    border-top: 0px solid #ddd!important;
+    padding-top: 3px;
+}
+.left-menu {
+  padding: 0px;
+  margin: 0;
+}
+.menu-item {
+  list-style: none;
+  height: 36px;
+  line-height: 36px;
+  text-align: left;
+  padding-left: 20px;
+  border-bottom: 0px solid #dddddd;
+}
+.menu-item img {
+	width: 18px;
+	height: 18px;
+	margin-right: 5px;
+}
+.left-menu li:nth-child(odd) {
+  background-color: #FEFEFE;
+  /**background-color: #F2F2F2;
+  background-color: #5068D2;*/
+}
+.menu-item:hover{
+	cursor:pointer;
+}
+
+.index-right-panel {
+  height: 100%;
+  padding: 0px 10px; 
+  margin-top: 10px;
+  margin-left: 210px;
+  margin-right: 0px;
+  border: 0px solid #E9E8F9;
+  /**
+  height: 800px;
+  */
+  overflow: auto;
+  /**background-color: #F5F5F5;*/
+  /**background-color: #E5E5E5;*/
+  /**background-color: RED;*/
+}
+iframe {
+  border: 0;
+  overflow:auto;
+}
+.bread-crumb{
+  height: 30px;
+  line-height: 30px;
+  padding-left: 10px;
+  /**margin-bottom: 10px;*/
+  display:none;
+  
+}
+#page-path{
+	float: left;
+	height: 30px;
+	padding-left: 20px;
+	overflow: hidden;
+}
+.bread-crumb span{
+  	margin: 2px 3px;
+}
+span#threemenu, .menu-level-1, .menu-level-2, .menu-level-3, .menu-level-4, .menu-level-5, menu-level-6, .menu-level-7 {
+  	margin-left: 0px;
+}
+.function-focus{
+ 	float: right;
+ 	width: 210px;
+	height: 30px;
+	line-height: 30px;
+	vertical-align: middle;
+	background-repeat: no-repeat;
+	background-position: center;
+ 	/**background-image: url("../../../images/index/focus.png");*/
+ 	margin-top: 0px;
+ 	margin-right: 15px;
+ }
+ .function-focus:hover{
+ 	cursor:pointer;
+ 	/**background-image: url("../../../images/index/focused.png");*/
+ }
+ .focus-inner{
+ 	width:100%;
+ 	height:100%;
+ }
+/*dialog*/
+.kingo-mask {
+    position: absolute;
+    top: 0;
+    left: -9999px;
+    background-color: #000;
+    min-height: 400px;
+    z-index: 1100;
+    width: 100%;
+    overflow-y: hidden;
+    opacity: 0.4;
+}
+.masked{
+	left:0;
+}
+div.kingo-dialog {
+    min-width: 300px;
+    min-height: 180px;
+    margin: 0 auto;
+    position: absolute !important;
+    display: none;
+    box-shadow: 0px 0px 12px 4px #888;
+    opacity: 1;
+    z-index:1200;
+}
+div.dialog-medium {
+    width: 55%;
+    height: 400px;
+}
+div.dialog-small {
+    width: 40%;
+    height: 350px;
+}
+div.dialog-large {
+    width: 70%;
+    height: 450px;
+}
+.kingo-dialog > div.dialog-header {
+    height: 34px;
+    padding: 0;
+    line-height: 32px;
+    cursor: move;
+    box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.05);
+    -webkit-box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.05);
+    color: #333;
+    /**border: 1px solid #C2C2C2;*/
+    background: #fafafa;
+}
+.dialog-header > div.dialog-title {
+    float: left;
+}
+div.dialog-title > i {
+    display: block;
+    width: 30px;
+    height: 32px;
+    position: relative;
+    float: left;
+    font-size: 1.2em;
+    line-height: 32px;
+    text-align: center;
+    margin-right: -10px;
+}
+div.dialog-title > span {
+    line-height: 32px;
+    margin-left: 10px;
+    font-size: 1.2em;
+}
+.dialog-header > div.dialog-bar {
+    float: right;
+    padding-right: 15px;
+}
+.dialog-bar > a.dialog-loader {
+    display: none;
+    border-left: 0;
+}
+.dialog-bar > a {
+    text-decoration: none;
+    font-size: 14px;
+    text-align: center;
+    display: inline-block;
+    line-height: 32px;
+    padding: 0;
+    margin: 0;
+    color: #333;
+    min-width: 30px;
+    height: 32px;
+    float: left;
+    position: relative;
+    font-family: Arial, Helvetica, sans-serif;
+    /* border-left: 1px solid rgba(0, 0, 0, 0.09); */
+}
+.kingo-dialog > div.dialog-body {
+    width: 100%;
+    background: #fff;
+    overflow-y: auto;
+}
+.dialog-body > iframe.dialog-frame {
+    width: 100%;
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+.edit-pwd:hover{
+	cursor:pointer;
+	color:#CE757B;
+}
+#focusFun {
+	display: '';
+}
+.copyright,.copyright a{
+  font-family: "Microsoft YaHei", "Open Sans", Arial, Helvetica, Sans-Serif;
+}
+.copyright{
+  margin-left: 27%;
+}
+.fa {
+	margin-left: 10px;
+	margin-right: 5px;
+}
+
+.fa-windows-banner {
+	margin-top: 2px;
+	background-image: url("../../../favicon.ico");
+    /*background-size: 50% 50%;按比例缩放*/
+    background-size: 27px 27px; /*!*这个是按数值缩放*!*/
+    background-repeat: no-repeat;/*还有repeat-x,y等*/	
+}
+
+.navbar-nav>li>a {
+    padding-top: 20px;
+    padding-bottom: 15px;
+    height:60px;
+}
+
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover {
+    color: #FFF;
+   /* background-color: #5068D2;*/
+    background-color:#1271d5;
+}
+
+.navbar-default .navbar-nav>li>a {
+	font-family: "Microsoft YaHei";
+	font-size: 14px;    
+    /**color: #333;*/
+    color: #FFF;
+}
+
+.navbar-right {
+	padding-right: 15px;
+}
+
+.navbar-default {
+	background-color: #FFFFFF;
+}
+
+ul.dropdown-menu li {
+	height: 30px;
+	line-height: 30px;
+	margin-left: 10px;
+	font-family: "Microsoft YaHei";
+	font-size: 14px;
+}
+ul.dropdown-menu li .fa, .header-user .fa{
+  color: #5068D2;
+}
+ul.dropdown-menu li:hover {
+  cursor: pointer;
+  color: #5068D2;
+}
+
+
+
+/****** 附加功能的显示 ******/
+#bgDiv {                 /*隐藏背景层*/
+     position: absolute;  /*绝对定位*/
+     left: 0px;
+     top: 0px;
+     background-color: black;
+     opacity: 0.3; /*设置不透明度，即可以看到层下面的内容，但是由于层的遮挡，背景是不可以进行操作的*/
+     display: none;
+ }
+
+#fgDiv {                 /*隐藏逻辑业务窗口层*/
+    position: absolute;  /*绝对定位*/
+    width: 270px;
+    max-height: 590px;
+    border: 1px solid #BBB;
+    background-color: #FFFFFF; /**#e7e7e7;*/
+    display: none;
+}
+
+#fgDiv ul {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-left: 0px;
+}
+
+a {
+   text-decoration: none;
+}
+
+#fgDiv a {
+   color: #333;
+}
+
+#fgDiv a:hover {
+   color: #FF0000;
+}
+
+#fgDiv li {
+	list-style: none;
+    position: relative;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: top;
+    margin-left: 15px;
+    padding: 2px 0 4px;
+    width: 249px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 14px;
+    color: #000;
+	/* 不换行，超出部分...表示 */
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+			

@@ -1,0 +1,395 @@
+* {
+  font-family: "Microsoft YaHei", SimSun, "Open Sans", Arial, Helvetica, Sans-Serif!important;
+}
+
+.fa {
+    font: normal normal normal 14px/1 FontAwesome!important;
+}
+
+a {
+	color: #333!important;
+}
+
+a:hover {
+	color: #FF0000!important;
+}
+
+.div_wapper{
+	background-color: #FFFFFF;
+	margin-bottom: 10px;
+}
+.div_top {
+	margin-top: 10px;
+}
+.div_header{
+	height:30px;
+	line-height:30px;
+	background-color: #F2F2F2;
+	background-color: #FFFFFF;
+	border-bottom: 1px solid #468DBB;
+	border-bottom: 1px solid #CCCCCC;
+}
+.div_header p{
+	font-weight:bold;
+	margin:0;
+	font-size:14px;
+	/**padding-left:10px;*/
+}
+.div_header p i{
+	margin-right:5px;
+}
+.content{
+	padding: 10px;
+	margin-top: 0px;
+	overflow: auto;
+}
+/*常用功能*/
+
+.fun_list{
+	/**width:115px;*/
+	width:30%;
+	height:25px;
+	line-height:25px;
+	float:left;
+	margin:0 15px 10px 0;
+	white-space:nowrap; 
+	overflow:hidden; 
+	text-overflow:ellipsis;
+}
+.fun_list:hover{
+	cursor:pointer;
+	color:#057CAF;
+	text-overflow:inherit;
+	overflow:visible;
+}
+.fun_list img{
+	margin-right:5px;
+}
+.fun-add{
+	border:1px solid #00A2E8;
+	text-align:center;
+	color:#00A2E8;
+}
+
+.fun-add:hover{
+	cursor:pointer;
+	background:#00A2E8;
+	color:white;
+}
+/*交换信息*/
+.time-choose{
+	margin-right:10px;
+}
+.time-choose span{
+	margin-left:15px;
+}
+.time-choose span:hover{
+	cursor:pointer;
+	color:#057CAF;
+}
+.time-choose .active{
+	color:#057CAF;
+}
+/*数据标准集*/
+.data-list{
+	float:left;
+	width:33.333%;
+	height:100%;
+	display: table;
+}
+
+.data-inner{
+	display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+.data-inner>div:hover{
+	border:1px solid #057CAF;
+	cursor:pointer;
+}
+.data-num{
+	font-size:28px;
+	color:#057CAF;
+	font-weight:bold;
+	margin-bottom:10px;
+}
+.data-title{
+	font-size:15px;
+	color:#022B3C;
+}
+/*交换信息*/
+.chart_wapper{
+	height:100%;
+	width:100%;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    max-width: 100%;
+}
+
+ul>li {
+	min-height: 21px;
+	margin-bottom: 5px;
+    list-style: none;
+    cursor: pointer;
+}
+ul>li:hover{
+	color: #468DBB;
+}
+
+.arow {
+    margin-right: 15px;
+}
+
+.top {
+    color: red;
+    margin-right: 5px;
+}
+
+.float-right {
+    float: right;
+}
+
+#feedback{
+	display: none;
+}
+
+.fa {
+	margin-left: 10px;
+	margin-right: 5px;
+}
+
+.prodline {
+   margin-top: 10px;	
+}
+.prodlinesub{
+	margin-top: 5px;
+}
+.prodconfigsub{
+	margin-left: 60px;
+}
+
+  	.content {
+  		background-color: #FFFFFF;
+  		text-align: center;
+  	}
+
+    div.col-xs-1, div.col-xs-2, div.col-xs-3, div.col-xs-4, div.col-xs-5, div.col-xs-6, div.col-xs-7, div.col-xs-8, div.col-xs-9, div.col-xs-10, div.col-xs-11, div.col-xs-12,
+    div.col-sm-1, div.col-sm-2, div.col-sm-3, div.col-sm-4, div.col-sm-5, div.col-sm-6, div.col-sm-7, div.col-sm-8, div.col-sm-9, div.col-sm-10, div.col-xs-11, div.col-sm-12 {
+  		padding-left: 5px;
+  		padding-right: 5px;
+  	}
+  	
+  	.fa {
+  		font-size: 120%;	
+  		/**color: #468DBB;*/
+  		/**color: #5068D2;*/
+  	}
+  	
+	.more {
+	    float: right;
+	    padding-right: 10px;
+	}    	
+  	
+  	.span_title {
+  		float: left;
+  		/**color: #5068D2;*/
+  		color: #000000;
+  		font-size: 14px;
+  		font-weight: bold;
+  		padding-left: 10px; 
+  	}
+  	
+  	.div_tips { height: 180px; }
+  	.div_tips .content{ height: 145px; overflow: hidden;	}
+  	
+	#div_recentlyusemenu { height: 210px; }
+  	#desk_recentlyusemenu { height: 175px; overflow: hidden; }
+	#div_normalusemenu { height: 230px; }
+  	#desk_normalusemenu { height: 195px; overflow: hidden; }
+    #div_toding,#div_toding1,#div_todin2,#div_toding3 { height: 230px; }
+  	#desk_toding { height: 195px; overflow: hidden; }
+  	
+  	#desk_workprocessing { height: 270px;  padding-top: 25px; margin-top: 10px;}
+  	
+  	#div_notice,#div_question,#div_messages {
+  		height: 300px;
+  	}
+  	#desc_notice,#desk_question,#desk_messages {
+  		height: 265px;
+  		overflow: hidden;
+  	}
+  	
+  	#div_lessonschedule { height: 450px; overflow: hidden; }
+  	#desk_lessonschedule { height: 415px; overflow: hidden; }
+
+  	#div_docdownload { height: 260px; overflow: hidden; }
+  	#desk_docdownload { height: 225px; overflow: hidden; }
+
+  	#div_xiqueer { height: 180px; overflow: hidden; }
+  	#desk_xiqueer { height: 145px; overflow: hidden; }
+
+	.datalist tr {
+	    height: 30px!important;
+	    line-height: 30px!important;
+	}
+	  	
+	ul {
+		white-space:nowrap;
+	}
+  	
+  	/** 最近使用功能、关注的服务等 */
+  	.content ul>li {
+  		float: left;
+  		/**clear: both;*/
+  		text-align: left;
+  		width: 32%;
+  		
+		display: block;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;				
+  		
+  	}
+  	
+  	/** 消息提醒列表  */
+	#desk_messages ul>li {
+		width: 100%;
+		height: 26px;
+		line-height: 26px;
+		padding-bottom: 0px;
+	}
+  	
+	#desk_messages ul>li img {
+		padding-left: 5px;
+		padding-right: 8px;
+	}
+  	
+	.noadvice {
+  		width: 100%; 
+  		height: 30px; 
+  		margin: 0px auto; 
+  		text-align: center;
+  	}
+  	
+  	.noadvice ul>li {
+  		float: left;
+  		/**clear: both;*/
+  		text-align: center;
+  		width: 100%;  	
+  	}
+  	
+  	.ul_scores strong {
+  		padding-left: 15px;
+  		font-weight: bold;
+  	}
+  	
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+    color: #555;
+	color: #000000;
+    background-color: #FFFFFF;
+	font-size: 14px;
+	font-weight: bold;
+    cursor: default;
+    /**
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+    */
+    border: 0px solid #ddd;
+    border-bottom: 2px solid #368AE2;
+}  	
+  	
+.nav>li>a {
+    position: relative;
+    display: block;
+    /**padding: 10px 15px;*/
+    padding: 6px 10px;
+	font-size: 14px;
+    font-weight: bold;
+}
+
+div.datalist table {
+	width: 100%;
+	height: 99%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+#mt_myservice  {
+	padding-top : 7px;
+}
+
+/** 教学工作进程 */
+.wp_top {
+    margin-bottom: -10px!important; 
+}
+.wp_bottom {
+    margin-top: -5px!important;
+}
+.wp_top ul>li, .wp_bottom ul>li {
+	margin-bottom: 0px;
+}
+.stepInfo ul>li {
+	margin-bottom: 0px;
+}
+
+.stepInfo .stepIco {
+   margin-top: 5px!important;
+}
+.stepInfo li {
+    margin-left: 5px!important;
+}
+
+/* 待办事项，管理人员显示该TAB */
+#li_dblc1 {
+	display: none;
+}
+
+#desk_todoing .datalist,
+#desk_dblc1 .datalist,
+#desk_finished .datalist
+ {
+	overflow-y: auto!important;
+	height: 175px;
+}
+
+#myTodoingTab {
+	height: 34px;
+}
+
+.myTodoingTabContent {
+	overflow-y: auto;
+	height: 190px;
+}
+
+#desk_messages ul {
+	overflow-y: auto!important;
+	height: 250px!important;
+}
+
+/* 定义滚动条样式 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background-color: rgba(240, 240, 240, 1);
+}
+ 
+/*定义滚动条轨道 内阴影+圆角*/
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 0px rgba(240, 240, 240, .5);
+  border-radius: 10px;
+  background-color: rgba(240, 240, 240, .5);
+}
+ 
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 0px rgba(240, 240, 240, .5);
+  background-color: rgba(240, 240, 240, .5);
+  background-color: #C1C1C1;
+}
+
+

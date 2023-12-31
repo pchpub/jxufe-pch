@@ -1,0 +1,41 @@
+#msgForm {
+	Z-INDEX:1976;
+	POSITION:absolute;
+	bottom:-200px;
+}
+
+#msgForm TD {
+	font-family: verdana,Geneva,Arial,Helvetica,sans-serif; 
+	font-size: 11px; 
+	COLOR: #000000;
+}
+
+#msgForm .style1 {color: #4D7EE3;font-weight: bold;}
+#msgForm .style2 {color: #FFFFFF;}
+#msgForm .style3 {color: #4D7EE3;}
+
+#msgForm A {
+	COLOR: blue; TEXT-DECORATION: none
+}
+#msgForm A:link {
+	COLOR: blue; TEXT-DECORATION: none
+}
+#msgForm A:visited {
+	COLOR: blue; TEXT-DECORATION: none
+}
+#msgForm A:hover {
+	COLOR: blue; TEXT-DECORATION: none
+}
+
+#msgForm A.white {
+	COLOR: #FFFFFF; TEXT-DECORATION: none
+}
+#msgForm A:link.white {
+	COLOR: #FFFFFF; TEXT-DECORATION: none
+}
+#msgForm A:visited.white {
+	COLOR: #FFFFFF; TEXT-DECORATION: none
+}
+#msgForm A:hover.white {
+	COLOR: #FFFFFF; TEXT-DECORATION: none
+}

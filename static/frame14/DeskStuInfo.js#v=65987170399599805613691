@@ -1,0 +1,448 @@
+j$(document).ready(function(){	
+
+	// 动态主题样式(加载用户设置的主题样式: KingoCommon.css 已在SetRootPath.jsp文件中处理）
+	/**
+	var contextPath = parent.parent.getContextPath() ; 			
+	var themename = parent.parent.getThemename() ; 			
+	var themefile = "custom/css/"+themename+"/KingoCommon.css";
+	Skin.loadSkin(themefile,contextPath+"/");
+	*/
+	
+	// [更多]校内通知
+	jQuery("#mt_schoolnotice").click(function(){
+		window.location.replace(_webRootPath+"cms/SchoolNotice.jsp");
+	})
+	
+	// [更多]文档下载
+	jQuery("#mt_docdownload").click(function(){
+		window.location.replace(_webRootPath+"docmanager/showFileInfos.action");
+	})	
+	
+	// 详细教学安排表
+	jQuery("#mt_lessonschedule").click(function(){
+   		window.location.replace(_webRootPath+"frame/desk/showLessonSchedule4User.action");
+	})
+	// [更多]待办事项
+	jQuery("#mt_spywlc").click(function(){
+		window.location.replace(_webRootPath+"cms/dblcNotice.action?lczt=0&flag=all");
+	})
+	jQuery("#mt_schoolnotice,#mt_docdownload,#mt_lessonschedule,#mt_spywlc").mouseover(function(){
+		jQuery(this).css("cursor","pointer");
+	}).mouseout(function(){
+		jQuery(this).css("cursor","default");
+	});
+	
+	// 教务工作进程前移一周
+	jQuery("#wp_pre").live("click", function(){
+		var currentWeek = jQuery("#currentWeek").val();
+		loadingWorkingProcessV14("pre",parseInt(currentWeek)-1);	
+	});	
+	// 教务工作进程后移一周
+	jQuery("#wp_next").live("click", function(){
+		var currentWeek = jQuery("#currentWeek").val();
+		loadingWorkingProcessV14("next",parseInt(currentWeek)+1);	
+	});	
+	
+	// 后期事件绑定,鼠标移到教务工作进程上时显示不全的完整显示
+	jQuery(".wp_top ul li,.wp_bottom ul li").live("mouseover",function() {
+	    if (this.offsetWidth < this.scrollWidth) {
+	    	var _title = j$(this).find("a").html();
+	        j$(this).css("text-overflow","")
+	        		.css("overflow","visible")
+	        		//.css("border","1px solid red")
+	        		.attr("title",_title);
+	    }
+	});	
+	jQuery(".wp_top ul li,.wp_bottom ul li").live("mouseout",function() {
+        j$(this).css("text-overflow","ellipsis").css("overflow","hidden");
+	});	
+	
+	// 前一周教学安排表
+	jQuery("#prejxz").live("click", function(){
+		var _jxz = jQuery("#jxz").val();
+		//alert("prejxz="+_jxz+":"+(_jxz != "1"));
+		if (_jxz != "1"){
+			jQuery("#jxz").val(parseInt(_jxz)-1);
+			showMyjxzkb();
+		}
+	});
+	
+	// 下一周教学安排表
+	jQuery("#nextjxz").live("click", function(){
+		var _jxz = jQuery("#jxz").val();
+		//alert("nextjxz="+_jxz+":"+(_jxz != "30"));
+		if (_jxz != "30"){
+			jQuery("#jxz").val(parseInt(_jxz)+1);
+			showMyjxzkb();
+		}
+	});
+	
+	jQuery("#byterm,#byweek").mouseover(function(){
+		jQuery(this).css("cursor","pointer");
+	}).mouseout(function(){
+		jQuery(this).css("cursor","default");
+	});
+		
+	// 点击按学期显示课表
+	jQuery("#byterm").live("click",function(){
+		kbmethod = "byterm";  
+		changeKbmethod(kbmethod);
+		xnxqCallBack();
+	})
+	
+	// 点击按周显示课表
+	jQuery("#byweek").live("click",function(){
+		kbmethod = "byweek";  
+		changeKbmethod(kbmethod);
+		xnxqCallBack();
+	})
+	
+	// 初始化桌面记录
+	doInit();
+	
+})
+
+function doInit(){
+	
+	if (G_USER_TYPE == "STU"){
+		kutil.loadDropList4Single({selId:"xnxq", cbName: "StMsXnxqDxDesc", initValue:dqxn+"-"+dqxq, selNull:false, callback:xnxqCallBack});
+	    j$("#url_spywlc3").css("color","#000000");
+	    j$("#desk_dblc0").css("display","none");
+	    j$("#desk_dblc1").css("display","none");
+	    j$("#desk_dblc3").css("display","");
+	    jQuery("#mt_spywlc").click(function(){
+		   window.location.replace(_webRootPath+"cms/dblcNotice.action?lczt=3&flag=all");
+	    })
+	} else {
+		kutil.loadDropList4Single({selId:"xnxq",cbName:"Ms_KBBP_FBXQLLJXAP",initValue:dqxn+","+dqxq, selNull:false, callback:xnxqCallBack});  // 发布课表的学年学期
+	    
+	    loadingDblcNotice();   	//待处理
+		loadingZblcNotice();	//在处理
+	    j$("#url_spywlc0").css("color","#000000");
+	    j$("#desk_dblc0").css("display","");
+	    j$("#desk_dblc1").css("display","none");
+	    j$("#desk_dblc3").css("display","none");
+	}
+	loadingWdsqNotice();
+	
+	// 加载个人事务
+	//loadingSelfbusiness();
+	// 加载校内通知
+	loadingSchoolNotice();	
+	// 加载文件下载
+	loadingDocDownload();
+	// 如果用户类型不为STU，则桌面加载教学安排表和教务工作进程(2015.04.24日学生调整为与管理员同样的桌面)
+	//if (G_USER_TYPE != "STU") {	
+	
+		var _isOnlyStu = parent.isOnlyStu ;
+		var _isOnlyRkjs = parent.isOnlyRkjs ;
+		if (_isOnlyStu=="1" || _isOnlyRkjs=="1"){
+			jQuery("#desk_workprocessing").css("display","none");	
+		} else {
+			// 加载教务工作进程
+			jQuery("#desk_workprocessing").css("display","");
+			loadingWorkingProcessV14("init");
+		}
+	//}
+	
+	// 加载调课信息
+	//loadingTkxx();
+}
+
+function xnxqCallBack(){
+	//alert("dqxnxq="+dqxn+"-"+dqxq+"/dqjxz="+dqjxz);
+	// 加载我的课表标题(学年学期+当前日期对应的周次)
+	//loadingLessonScheduleTitle();
+	// 如果发布课表的学年学期记录数=0，给出提示
+	var jls = jQuery("#xnxq option").size();
+	if (jls == 0){
+		var _isOnlyStu = parent.isOnlyStu ;
+		if (_isOnlyStu=="1"){
+			jQuery("#desk_lessonschedule").html("<div style='padding-top: 10px; padding-left: 10px;'>未发布网上选课结果。</div>");
+		} else {
+			jQuery("#desk_lessonschedule").html("<div style='padding-top: 10px; padding-left: 10px;'>未发布教学安排结果。</div>");
+		}
+	} else {
+		// 加载教学安排表
+		jQuery("#jxz").val(dqjxz);
+        var xnxq=jQuery("#xnxq").val();
+        var xn=dqxn,xq=dqxq;
+        if(xnxq!=""){
+            if (G_USER_TYPE == "STU") {
+                xn = xnxq.split('-')[0];
+                xq = xnxq.split('-')[1];
+            }
+            else{
+                xn = xnxq.split(',')[0];
+                xq = xnxq.split(',')[1];
+			}
+        }
+		loadingMyLessonSchedule(xn, xq, dqjxz);
+	}
+}
+
+/**
+* 选择学年学期刷新用户课表信息
+*/
+function showMyxnxqkb(){
+	var dqxnxq = dqxn+"-"+dqxq;
+	var _xnxq = jQuery("#xnxq").val();
+	//alert("_xnxq="+_xnxq+"/dqxnxq="+dqxnxq);
+	var _xn = "";
+	var _xq = "";
+	if (G_USER_TYPE == "STU"){
+		_xn = _xnxq.split("-")[0];
+		_xq = _xnxq.split("-")[1];
+	} else {
+		_xn = _xnxq.split(",")[0];
+		_xq = _xnxq.split(",")[1];
+	}
+	var _jxz = dqjxz ;
+	if (_xnxq == dqxnxq){
+		// 当前学年学期
+		_jxz = dqjxz;
+	} else if (_xnxq > dqxnxq) {
+		// 当前学年学期之后
+		_jxz = "1";
+	} else if (_xnxq < dqxnxq) {
+		// 当前学年学期之前
+		_jxz = "18";
+	}
+	jQuery("#jxz").val(_jxz);
+	//alert("_jxz="+_jxz);
+	loadingMyLessonSchedule(_xn, _xq, _jxz);
+}
+
+/**
+* 选择教学周刷新用户课表信息
+*/
+function showMyjxzkb(){
+	var _xnxq = jQuery("#xnxq").val();
+	//alert("_xnxq="+_xnxq);
+	var _xn = "";
+	var _xq = "";
+	if (G_USER_TYPE == "STU"){
+		_xn = _xnxq.split("-")[0];
+		_xq = _xnxq.split("-")[1];
+	} else {
+		_xn = _xnxq.split(",")[0];
+		_xq = _xnxq.split(",")[1];
+	}	
+	//alert("G_USER_TYPE="+G_USER_TYPE+"/_xn="+_xn+"/_xq="+_xq);
+	var _jxz = jQuery("#jxz").val();
+	//alert("_jxz="+_jxz);
+	loadingMyLessonSchedule(_xn, _xq, _jxz);
+}
+
+// 加载个人事务
+function loadingSelfbusiness(){
+	var _url = _webRootPath + "frame/StuInfo.jsp";
+	kutil.doAjax(_url, "", doPostLoading);
+	function doPostLoading(response) {
+		j$("#desk_selfbusiness").html(response);
+	}
+}
+
+// 加载校内通知
+function loadingSchoolNotice(){
+	var _url = _webRootPath + "cms/bbsSchoolNotice.action?recordsPerPage=9";
+	kutil.doAjax(_url, "", doPostLoading);
+	function doPostLoading(response) {
+		j$("#desk_notice").html(response);
+	}
+}
+
+// 加载文件下载
+function loadingDocDownload(){
+	var _url = _webRootPath + "docmanager/bbsFileInfo.action";
+	kutil.doAjax(_url, "", doPostLoading);
+	function doPostLoading(response) {
+		j$("#desk_docdownload").html(response);
+	}
+}
+
+// 加载教学安排表
+function loadingLessonSchedule(){
+	//var _url = _webRootPath + "frame/desk/showLessonScheduleInfos.action";
+	var _url = _webRootPath + "frame/desk/showLessonScheduleInfosV14.action";
+	kutil.doAjax(_url, "", doPostLoading);
+	function doPostLoading(response) {
+		j$("#desk_lessonschedule").html(response);
+	}
+}
+
+// 加载教学安排表
+function loadingMyLessonSchedule(xn,xq,jxz){
+	if (xn==null || xq==null || jxz==null){
+		return ;
+	}
+
+	if (kbmethod == "byterm"){  
+		var _url = _webRootPath + "frame/desk/showLessonScheduleInfosV14.action?xn="+xn+"&xq="+xq;
+		kutil.doAjax(_url, "", doPostLoading);
+	} else {
+		var _url = _webRootPath + "frame/desk/showLessonScheduleInfosV14.action?xn="+xn+"&xq="+xq+"&jxz="+jxz;
+		kutil.doAjax(_url, "", doPostLoading);
+	}
+	
+	function doPostLoading(response) {
+		//alert("response="+response);
+		j$("#desk_lessonschedule").html(response);
+	}
+}
+
+// 加载我的课表标题(学年学期+当前日期对应的周次)
+function loadingLessonScheduleTitle(){
+	var _url = _webRootPath + "frame/desk/showXnxqWeekinfo.action";
+	kutil.doAjax(_url, "", doPostLoading);
+	function doPostLoading(response) {
+		//var title = '<img src="img/desktop_schedule.png" style="margin-right: 5px;"></img>我的课表&nbsp;&nbsp;'+response+"";
+		//j$("#mt_lessonSchedule>.desk_title").html(title);
+		var title = '('+response+")";		
+		j$("#desk_lessonschedule_jxz").html(title);
+	}
+}
+
+// 加载教务工作进程
+function loadingWorkingProcess(){
+	var _url = _webRootPath + "frame/desk/showWorkingProcessInfos.action";
+	kutil.doAjax(_url, "", doPostLoading);
+	function doPostLoading(response) {
+		j$("#desk_workprocessing").html(response);
+	}
+}
+function loadingWorkingProcessV14(opertion,currentWeek){
+	var _url = _webRootPath + "frame/desk/showWorkingProcessInfosV14.action";
+	var _params = "operation="+opertion+"&currentWeek="+currentWeek+"&v="+Math.random();
+	//kutil.doAjax(_url, _params, doPostLoadingWorkingProcessV14);
+	
+	jQuery.ajax({
+		type: "GET",  //POST在FF、谷歌浏览器下不输出
+		url: _url,
+		data: _params, 
+		dataType: "text",
+		async: true,
+		success: doPostLoadingWorkingProcessV14
+	})	
+	
+	function doPostLoadingWorkingProcessV14(response) {
+		jQuery("#desk_workprocessing").html(response);
+	}
+}
+
+// 加载调课信息
+function loadingTkxx(){
+	var _url = _webRootPath + "public/bbsTkxx.action?from=loginpage&recordsPerPage=7";
+	kutil.doAjax(_url, "", doPostLoading);
+	function doPostLoading(response) {
+		j$("#desk_tkxx").html(response);
+		setTimeout(function(){
+			var lsheight = j$("#desk_lessonschedule").height();
+			var tkheight = j$("#desk_tkxx").height();
+			if (lsheight>tkheight){
+				j$("#desk_tkxx").height(lsheight);
+			}
+		}, 300);
+	}
+}
+// 加载待办流程通知
+function loadingDblcNotice(){
+	var _url = _webRootPath + "cms/dblcNotice.action?lczt=0";
+	kutil.doAjax(_url, "", doPostLoading);
+	function doPostLoading(response) {
+		j$("#desk_dblc0").html(response);
+		setTimeout(function(){
+		   var lsheight = j$("#desk_lessonschedule").height();
+		   var tkheight = j$("#desk_dblc0").height();
+		   if (lsheight>tkheight){
+			 j$("#desk_dblc0").height(lsheight);
+		   }
+		}, 300);
+	}
+}
+// 加载当前在办流程通知
+function loadingZblcNotice(){
+	var _url = _webRootPath + "cms/dblcNotice.action?lczt=1";
+	kutil.doAjax(_url, "", doPostLoading);
+	function doPostLoading(response) {
+		j$("#desk_dblc1").html(response);
+		setTimeout(function(){
+		   var lsheight = j$("#desk_lessonschedule").height();
+		   var tkheight = j$("#desk_dblc1").height();
+		   if (lsheight>tkheight){
+			 j$("#desk_dblc1").height(lsheight);
+		   }
+		}, 300);
+	}
+}
+// 加载我的申请通知
+function loadingWdsqNotice(){
+	var _url = _webRootPath + "cms/dblcNotice.action?lczt=3";
+	kutil.doAjax(_url, "", doPostLoading);
+	function doPostLoading(response) {
+		j$("#desk_dblc3").html(response);
+		setTimeout(function(){
+		   var lsheight = j$("#desk_lessonschedule").height();
+		   var tkheight = j$("#desk_dblc3").height();
+		   if (lsheight>tkheight){
+			 j$("#desk_dblc3").height(lsheight);
+		   }
+		}, 300);
+	}
+}
+// 加载教室动态
+function loadingJsdt(){
+	var _url = _webRootPath + "public/bbsJsdt.action?from=loginpage&recordsPerPage=7";
+	kutil.doAjax(_url, "", doPostLoading);
+	function doPostLoading(response) {
+		j$("#desk_jsdd").html(response);
+	}
+}
+
+    j$("#url_spywlc0").live("mouseover",function(){
+		j$("#url_spywlc0").css("color","#000000");
+		// [更多]待办事项
+	    jQuery("#mt_spywlc").click(function(){
+		    window.location.replace(_webRootPath+"cms/dblcNotice.action?lczt=0&flag=all");
+	    })
+		j$("#url_spywlc1").css("color","#8a6d3b");	
+		//j$("#url_spywlc2").css("color","#ffffff");	
+		j$("#url_spywlc3").css("color","#8a6d3b");	
+		j$("#desk_dblc0").css("display","");
+		j$("#desk_dblc1").css("display","none");
+		//j$("#desk_dblc2").css("display","none");
+		j$("#desk_dblc3").css("display","none");
+		//j$(this).parent().parent().attr("title","点击查看更多审批业务");
+	})
+	// 
+	j$("#url_spywlc1").live("mouseover",function(){
+		j$("#url_spywlc0").css("color","#8a6d3b");
+		//j$("#url_spywlc2").css("color","#ffffff");
+		j$("#url_spywlc3").css("color","#8a6d3b");
+		j$("#url_spywlc1").css("color","#000000");
+		// [更多]待办事项
+	    jQuery("#mt_spywlc").click(function(){
+		    window.location.replace(_webRootPath+"cms/dblcNotice.action?lczt=1&flag=all");
+	    })
+		j$("#desk_dblc0").css("display","none");
+		//j$("#desk_dblc2").css("display","none");
+		j$("#desk_dblc3").css("display","none");
+		j$("#desk_dblc1").css("display","");
+		
+	})
+
+	j$("#url_spywlc3").live("mouseover",function(){
+		j$("#url_spywlc0").css("color","#8a6d3b");
+		//j$("#url_spywlc2").css("color","#ffffff");
+		j$("#url_spywlc1").css("color","#8a6d3b");
+		j$("#url_spywlc3").css("color","#000000");
+		// [更多]待办事项
+	    jQuery("#mt_spywlc").click(function(){
+		    window.location.replace(_webRootPath+"cms/dblcNotice.action?lczt=3&flag=all");
+	    })
+		j$("#desk_dblc0").css("display","none");
+		j$("#desk_dblc1").css("display","none");
+		//j$("#desk_dblc2").css("display","none");
+		j$("#desk_dblc3").css("display","");
+		
+	})

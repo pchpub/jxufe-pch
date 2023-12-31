@@ -1,0 +1,147 @@
+
+
+
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+  	<title></title>
+	<meta http-equiv="Content-Language" content="zh-cn" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" type="text/css" media="screen" href="../../custom/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="../../custom/font-awesome/css/font-awesome.min.css"/>
+	
+    <script type="text/javascript" src="../../custom/js/jquery-1.12.3.min.js"></script>
+    <script type="text/javascript" src="../../custom/bootstrap/js/bootstrap.min.js"></script>
+	<style type="text/css">
+		
+		.div_wapper{
+			border: 0px solid blue; 
+			background-color: #FFFFFF;
+			width: 99%;
+			height: 100%;
+			margin: 0px auto;
+			text-align: center;
+		}		
+		
+		#serviceTab {
+			/** padding-left: 3px; */
+			margin-left: 3px;
+			margin-right: 3px;
+			margin-bottom: 0px;
+		}
+		
+		.tab-pane {
+			height: 90%;
+			border: 0px solid blue; 
+		}
+		
+		.nav>li{
+			/**background-color: #F6F7FB; */
+		}
+		
+		.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+		    color: #333;
+		    color: #368AE2;
+		    color: #FF0000;
+		    /**font-weight: bold;*/
+		    cursor: default;
+		    background-color: #FFF;
+		    border: 1px solid #DDD;
+		    border-bottom-color: transparent;
+		    /**
+		    border: 0px solid #ddd;
+		    border-bottom: 2px solid #FF0000;
+		    */
+		}  	
+		
+		.nav-tabs>li.firstli>a, .nav-tabs>li.firstli>a:focus, .nav-tabs>li.firstli>a:hover
+		{
+		    /**border-left: 1px solid #FFFFFF;*/
+		}
+		  	
+		.nav>li>a {
+		    position: relative;
+		    display: block;
+		    /**padding: 10px 15px;*/
+		    /**padding: 6px 10px;*/
+			height: 36px;
+			font-size: 14px;
+		 	color: #333;
+		}		
+		
+	</style>
+	<script type="text/javascript">
+	
+		jQuery(document).ready(function(){	
+			var winH = document.body.clientHeight;
+			jQuery(".tab-pane").height(winH - 40);
+			jQuery("#frmDesk",parent.window.document).attr("scrolling","no");
+			
+			// 第一个标签页功能加关注
+			var menucode = jQuery("#first_menucode").val();
+			var menuname = jQuery("#first_menuname").val();
+			parent.showBannerAttentionTips(menucode, menuname);
+		})
+	
+		function switchMenu(index,menucode,menuname){
+			// 功能切换
+			var urls=window.document.getElementById("urls").value.split(",");
+			_url = urls[parseInt(index)-1];
+            setTimeout(function () {
+					jQuery("#frame_"+index).hide();
+					jQuery("#frame_"+index).attr("src", _url);
+                    jQuery("#frame_"+index).show();
+                }, 100
+            )
+			// 当前点击的标签页功能加关注
+			//alert("switchMenu.menucode="+menucode+",menuname="+menuname);
+			parent.showBannerAttentionTips(menucode, menuname);
+		}
+		
+	</script>
+	
+  </head>
+  
+  <body  leftmargin="0" topmargin="0" rightmargin="0" bottommargin="0">
+
+	<div class="div_wapper">
+		<ul id="serviceTab" class="nav nav-tabs">
+			<li class='active firstli'>
+<a href='#content_1' data-toggle='tab' onclick="switchMenu('1','S20401','申请补考')">申请补考</a>
+</li>
+<li>
+<a href='#content_2' data-toggle='tab' onclick="switchMenu('2','S20402','申请缓考')">申请缓考</a>
+</li>
+<li>
+<a href='#content_3' data-toggle='tab' onclick="switchMenu('3','S20403','考试安排表')">考试安排表</a>
+</li>
+<li>
+<a href='#content_4' data-toggle='tab' onclick="switchMenu('4','S20404','考试通报信息')">考试通报信息</a>
+</li>
+						
+		</ul>
+		<div id="serviceContent" class="tab-content">
+			<div id='content_1' class='tab-pane fade in active content' > 
+<iframe id='frame_1' width='100%' height='99%' src='/student/ksap.sqbk.html?menucode=S20401' frameborder='0' scrolling=''></iframe>
+</div>
+<div id='content_2' class='tab-pane fade content' > 
+<iframe id='frame_2' width='100%' height='99%' src='' frameborder='0' scrolling=''></iframe>
+</div>
+<div id='content_3' class='tab-pane fade content' > 
+<iframe id='frame_3' width='100%' height='99%' src='' frameborder='0' scrolling=''></iframe>
+</div>
+<div id='content_4' class='tab-pane fade content' > 
+<iframe id='frame_4' width='100%' height='99%' src='' frameborder='0' scrolling=''></iframe>
+</div>
+						
+		</div>  				
+		<input type="hidden" id="urls" name="urls" value="/student/ksap.sqbk.html?menucode=S20401,/student/ksap.sqhk.html?menucode=S20402,/student/ksap.ksapb.html?menucode=S20403,/student/ksap.kstbxx.html?menucode=S20404" />
+		<input type="hidden" id="first_menucode" name="first_menucode" value="S20401" />
+		<input type="hidden" id="first_menuname" name="first_menuname" value="申请补考" />
+	</div>  
+				
+  </body>
+</html>

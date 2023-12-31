@@ -1,0 +1,16 @@
+.combBox_div {overflow-x:auto; overflow-y:auto;}
+
+.combBox_table {border:0; width:100%; height:100%;}
+
+.combBox_table td {padding: 3px 1px;}
+
+.combBox_hidden_td {display:none;}
+
+.combBox_show_td {border:0; font-size:12px; font-family: "����";}
+
+.comb_input_sel {
+	border:1px solid #B3B5B4;
+	text-align:left;
+	padding:1px;
+	background:#fff url(../common/CombBox/sel_arrow.gif) no-repeat right;
+}

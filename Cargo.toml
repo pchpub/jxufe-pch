@@ -1,0 +1,28 @@
+[package]
+name = "jxufe_pch"
+version = "0.2.0"
+edition = "2021"
+
+[dependencies]
+base64 = "0.21.5"
+reqwest = { version = "0.11.23", features = [
+    "socks",
+    "brotli",
+    "gzip",
+    "deflate",
+] }
+rand = "0.8.5"
+fancy-regex = "0.13.0"
+lazy_static = "1.4.0"
+chrono = "0.4.31"
+rust-crypto = "0.2.36"
+tokio = { version = "1.35.1", features = ["full"] }
+serde = { version = "1.0.152", features = ["derive"] }
+serde_json = "1.0.108"
+html_parser = "0.7.0"
+actix-web = "4.4.1"
+encoding_rs = "0.8.33"
+encoding_rs_io = "0.1.7"
+chardetng = "0.1.17"
+actix-files = "0.6.2"
+qstring = "0.7.2"

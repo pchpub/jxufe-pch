@@ -1,0 +1,108 @@
+/*基本样式*/
+*
+{
+	margin: 0px; 
+	font-size: 12px; 
+	font-family: "Microsoft YaHei", SimSun, "Open Sans", Arial, Helvetica, Sans-Serif;
+}
+
+body
+{  
+	background-colcor: #FEFEFF;
+	color: #333;	
+}
+
+#divTitle {
+    font-size: 14px;
+}
+
+#thePageArea{
+	height: 99%; 
+	margin: 0 auto; 
+	width: 99%; 
+	padding-top: 5px;
+}
+
+#theOptArea{
+	width:100%;
+}
+
+#theSearchArea,#theEditArea{
+	width:100%; 
+	border: 1px solid #E4E4E4;
+}
+
+#theRptArea {
+    height: 100%;
+    width: 100%;
+    margin: auto;
+    border: 1px dashed #B3B5B4;
+    overflow: hidden;
+}
+
+input[type="text"] {
+    padding: 1px 3px;
+    height: 24px;
+    min-height: 18px;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius : 3px;
+}
+
+.text_left {
+    border: 1px solid #B3B5B4;
+    text-align: left;
+    padding: 1px 3px;
+    height: 24px;
+    min-height: 24px;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius : 3px;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #368AE2;
+  box-shadow: 0 0 5px #368AE2;
+}
+
+select {
+    height: 24px;
+    min-height: 24px;
+    padding: 1px; 3px;
+    border: 1px solid #B3B5B4;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius : 3px;
+}
+
+input:disabled, select:disabled
+{ 
+	background-color: #dddddd;
+}
+
+#theOptArea tr, #theEditArea tr, #theSearchArea tr, .searchDiv tr{
+    height: 32px;
+    line-height: 32px;
+}
+
+div#theOptArea tr, div#theEditArea tr, div#theSearchArea tr, div.searchDiv tr{
+    height: 32px;
+    line-height: 32px;
+}
+
+label,td {
+	padding-left: 5px;
+}
+
+fieldset {
+    text-align: left;
+    border: 0px solid #E4E4E4;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+/* 学年选择 */
+#textgroupware {
+	margin-top: 3px;
+}

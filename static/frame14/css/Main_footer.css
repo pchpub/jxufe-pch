@@ -1,0 +1,195 @@
+*{
+	padding: 0 0;
+	margin: 0 0;
+	margin: 0 auto;
+	font-size: 12px;
+	font-family: Calibri!important;
+}
+		
+#div_footer{
+	width : 100%;
+	height: 113px;
+	color: white;
+	background-color: #3286C6;
+}
+
+.footer{
+	width: 22%;
+	height: 113px;
+	float: left;
+	border:0px solid red;
+}
+
+.todaynews td{
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+
+.lastestnews{
+  width: 24%;
+}
+.todaynews{
+  width: 24%;
+}
+.userinfo{
+  width: 20%;	
+}
+.support {
+  width: 24%;
+}
+
+#msg_content a {
+	display: block;
+	margin-bottom: 1px;
+	*margin-bottom: 7px;
+}
+#msg_content img {
+	margin-right: 5px;
+}
+
+.footer_kingo {
+	width: 13%;
+}			
+.footer_left {
+	width: 5%;
+	height: 113px;
+	float: left;
+}
+.footer_right {
+	width: 2%;
+	height: 113px;
+	float: right;
+}
+.footer .title{
+	color: #000;
+	font-size: 14px;
+	font-weight: bold;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	text-align: left;
+}
+
+.footer span {
+	float:left;
+	width:100%;
+	padding: 1px;
+}
+
+.footer table .td {
+	width:99%;
+	height:21px;
+	line-height:21px;
+	text-align: left;
+	color:white;
+}
+.footer table .td1 {
+	width:40px;
+	height:21px;
+	line-height:21px;
+	text-align: left;
+	color:white;
+}
+.footer table .td2 {
+	height:18px;
+	line-height:18px;
+	text-align: left;
+	color:white;
+}
+
+#div_copyright{
+	clear:both;
+	width: 100%;
+	height: 25px;
+	line-height: 25px;
+	vertical-align: middle;
+	margin-top: 1px;
+	color: white;
+	background-color: #3286C6;
+	border:0px solid red;
+}
+
+span a, a:link, a:visited {
+	text-decoration: none;
+	color:white;
+}
+
+.linkmethod {
+	text-align: left;
+	width:99%;
+	padding-left: 20px;
+	border-right: 2px solid red;
+	white-space:nowrap;
+}
+
+.top .qrcode {
+    background: url("../../images/qrcode.png") no-repeat scroll 0 0 transparent;
+    height: 68px;
+    position: absolute;
+    right: 5px;
+    top: 12px;
+    width: 68px;
+}
+.top #qrcode, .top #qrcode_hover {
+    background: url("../../images/qrcode.png") no-repeat scroll 0 0 transparent;
+    cursor: pointer;
+    height: 68px;
+    position: absolute;
+    right: 5px;
+    text-indent: -9999px;
+    top: 12px;
+    width: 68px;
+}
+.top #qrcode_img {
+    background: url("../../images/code.png") repeat scroll 0 0 transparent;
+    display: none;
+    height: 239px;
+    position: absolute;
+    right: 5px;
+    top: 83px;
+    width: 198px;
+    z-index: 1;
+}			
+
+#hideleft{
+	width: 25px;
+	padding-top: 3px; 
+	cursor: pointer; 
+	color: white; 
+	font-weight: bold; 
+	background-image: url('../img/actor_left.png'); 
+	background-repeat: no-repeat; 
+	background-position: center;
+}
+
+#expand {
+	width: 25px; 
+	padding-top: 3px; 
+	cursor: pointer; 
+	color: white; 
+	font-weight: bold; 
+	background-image: url('../img/actor_up.png');
+	background-repeat: no-repeat; 
+	background-position: center;
+}
+
+#copyright{
+	color: white; 
+	text-align: center; 
+	vertical-align: middle; 
+	padding-top: 3px;
+	padding-left: 310px;
+}
+
+#popmsg{
+	width: 80px;
+	text-align: right;
+}
+			
+#xnxqdesc{
+	text-align: right; 
+	width:310px;
+	padding-right: 15px;
+}						
+
+

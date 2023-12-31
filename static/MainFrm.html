@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<Title>KINGOSOFT高校教学综合管理服务平台</Title>
+
+<style media="print" type="text/css">
+	.Noprint{display:none;}
+	.PageNext{page-break-after: always;}
+</style> 	
+
+<script type="text/javascript" src="js/Themes.js"></script>
+<script type="text/javascript">
+
+	window.onbeforeunload = function() { 
+		var n = window.event.screenX - window.screenLeft; 
+		var b = n > document.documentElement.scrollWidth-20; 
+		if(b && window.event.clientY < 0 || window.event.altKey)  {
+			//return "你确定要退出吗？";
+	        var isclose=confirm("你确定要退出吗？");
+	        if(isclose){
+	            //alert("1:" + isclose);   // 点叉关闭时, 按[确定]
+	            window.location.href="/DoLogoutServlet";
+	        }else{
+	            //alert("2:" + isclose);   // 点叉关闭时, 按[取消]
+	            //return false; // 加上会弹出后续页面
+	        }
+        } else {
+        	//alert("刷新窗口!!!");    //刷新窗口 或 点击注销  或点窗口的【退出】时
+            //window.location.href="/KingoJW/DoLogoutServlet";
+            //return false;
+        }
+        
+	} 	
+	
+	// 获取应用系统的上下文
+	function getContextPath(){
+	    var frmbanner = document.getElementById("banner").contentWindow.document ;
+		var contextPath = frmbanner.getElementById("contextPath").value ;
+		return contextPath;
+	}
+	
+	// 获取主题样式的前缀标识
+	function getThemename(){
+	    var frmbanner = document.getElementById("banner").contentWindow.document ;
+		var themename = frmbanner.getElementById("themename").value ;
+		return themename;
+	}
+	
+</script>
+
+</head>
+
+<frameset id="mfrRows" name="mfrRows" noresize frameborder=0 framespacing=0 rows='59,*,25'>
+   <frame id="banner"  name="banner"  scrolling="no" frameborder=0 framspacing=0 noresize src="./frame14/Main_banner.jsp" MARGINHEIGHT=0 MARGINWIDTH=0 class="Noprint">
+   <frame id="frmbody" name="frmbody" scrolling="no" frameborder=0 framspacing=0 src="./frame14/Main_index.jsp" MARGINHEIGHT=0 MARGINWIDTH=0>   
+   <frame id="frmfoot" name="frmfoot" scrolling="no" frameborder=0 framspacing=0 noresize src="./frame/desk/showSystemInfoV14.action" MARGINHEIGHT=0 MARGINWIDTH=0 class="Noprint">   
+   <noframes>
+	   <body>
+	   <p>This page uses frames, but your browser doesn't support them.</p>
+	   </body>
+   </noframes>
+</frameset>
+
+</html>
+ 

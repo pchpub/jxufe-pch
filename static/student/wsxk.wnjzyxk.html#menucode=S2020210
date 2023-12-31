@@ -1,0 +1,486 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title></title>
+	<meta http-equiv="Content-Language" content="zh-cn" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires" content="0">
+	<link rel="stylesheet" href="../css/Form.css" type="text/css" />
+	<link rel="stylesheet" href="../css/FormPlus.css" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="../css/ctl_popwinc.css" />
+
+	<script type="text/javascript" src='../js/Form.js'></script>
+	<script type="text/javascript" src='../js/Common.js'></script>
+	<script type="text/javascript" src='../js/Validate.js'></script>
+	<script type="text/javascript" src='../js/Window.js'></script>
+	<script type="text/javascript" src='../js/AjaxBase.js'></script>
+	<script type="text/javascript" src='../js/Ref_DropList.js'></script>
+	<script type="text/javascript" src='../js/NumberSelector.js'></script>
+	<script type="text/javascript" src='js/loadClassPath.js'></script>
+	<script type="text/javascript" src="../custom/js/ymPrompt.js"></script> 
+	<script type="text/javascript" src="../custom/js/SetKingoEncypt.jsp" id="kingo_encypt"></script>
+	<script type="text/javascript" src="../custom/js/SetRootPath.jsp"></script>
+	<script type="text/javascript" src="../custom/js/jquery.js"></script>
+	<script type="text/javascript" src="../custom/js/jkingo.noprint.js"></script>
+	<script type="text/javascript" src="../custom/js/jwutil.js"></script>
+	
+	<script type="text/javascript">
+	
+		var pop = null; // 弹窗变量,用于关闭弹出窗口
+		var cKWindow2 = null;  // 注意事项 弹窗变量
+		var tableid="5929188";
+		function MyWinOnLoad(){
+			SetHtmlTitle("选课(外年级/专业)","2");
+			if(G_SCHOOL_CODE=="10718" || G_SCHOOL_CODE=="10755"){//陕西师范大学、新疆大学
+			    $("sp_kc").style.display="none";
+			}
+			if(G_SCHOOL_CODE=="10421" || G_SCHOOL_CODE=="104210"){//江西财经大学
+                tableid="5929078";
+			}
+			initWsxkTimeRange();
+			
+		}
+
+		// 初始化跨年级/专业选课申请学年、学期，时间区段
+		function initWsxkTimeRange() {
+			var url = _webRootPath + "jw/common/getWsxkTimeRange.action?xktype=88";
+			kutil.doAjax(url, "", myInitData);
+			function myInitData(response) {
+				var data = JSON.parse(response); 
+				var status = data.status ;
+				var myresult = data.result ;
+				var message = data.message ;
+				//kutil.showTip(message);		
+				var result = JSON.parse(myresult); 
+				
+				if (status == "200") { // 操作成功
+					var xh = result["xh"];
+				    var xn = result["xn"];
+				    var xqM = result["xqM"];
+				    var xqName = result["xqName"];
+				    var qssj = result["qssj"];
+				    var jssj = result["jssj"];
+				    var xnxqDesc = result["xnxqDesc"];
+				    var yxkxqxk = result["yxkxqxk"];
+				    $("zysx").value=result["zysx"];
+				    $("sfbd").value=result["sfbd"];
+					$("lcid").value=result["lcid"];
+					$("djs").value=result["djs"];
+					$("xxkckzfs").value=result["xxkckzfs"];
+                    $("yxkzyfxxk").value=result["yxkzyfxxk"];
+				    $("yxkxqxk").value=yxkxqxk;
+				    $("qy_ggrxcl").value=result["qyGgrxcl"];
+				    $("xfsx").value=result["xfsx"];
+				    $("mssx").value=result["mssx"];
+				    $("sfklbq").value=result["sfklbq"];
+				    $("xh").value = xh;
+				    $("xn").value = xn;
+				    $("xq").value = xqM;
+				    $("zxsjqd").innerHTML="学年学期：" + xnxqDesc + "&ensp;&ensp;"+ "时间区段：" + qssj + " → " + jssj;
+				    if(result["rxksjqs"]!=undefined &&　result["rxksjqs"]!="undefined" && result["rxksjjs"]!=undefined &&　result["rxksjjs"]!="undefined" && result["rxksjqs"]!="" && result["rxksjjs"]!=""){
+					   $("zxsjqd").innerHTML+="&ensp;&ensp;日选课时间区段："+result["rxksjqs"]+" → "+result["rxksjjs"];
+					}
+				    initXkScoreKcs();
+					// 初始化年级、专业信息
+					initStuGradeSpecialty();
+				} else { // 400-业务异常/ 5000-系统异常
+					$("divAlert").innerHTML=message;
+					// disable功能操作
+					j$("select").attr("disabled",true);
+					j$("#btnQry").attr("disabled",true);
+					j$(":input").attr("disabled","disabled");
+				}				
+			}
+		}
+		//控制注意事项的显示
+		function hdzysx2(){
+			var title = "注意事项";
+			var json = {"_title":title,"_width":"685px","_height":"240px","_top":"100px","_isStop":true,"_isMove":true};
+			var url = _webRootPath + "student/wsxk.zysx.jsp?xn="+$("xn").value+"&xq="+$("xq").value;
+			cKWindow2 = new CKWindow(json);
+			cKWindow2.setSrc(url,"100%","100%");
+			cKWindow2.openWindow();	
+		}	
+		function hdzysx(){
+			var width=window.document.body.offsetWidth;
+			var url = _webRootPath + "student/wsxk.zysx.jsp?xn="+$("xn").value+"&xq="+$("xq").value;
+			ymPrompt.win({message:url,width:685, height:540,title:"注意事项",handler:doHandler,maxBtn:false,minBtn:false,closeBtn:false,iframe:true});
+	        function doHandler(tp) {
+	       
+	        }
+		}
+		function CloseWin(){
+			ymPrompt.doHandler('close');
+		}		
+		// 初始化指定/已选学分、课程门数
+		function initXkScoreKcs() {
+			var url = _webRootPath + "jw/common/getSelectLessonScoreKcsInfo.action";
+			var params = "xn=" + j$("#xn").val() + "&xq_m=" + j$("#xq").val() + "&xh=" + j$("#xh").val();
+			kutil.doAjax(url, params, myXkScoreKcs);
+			function myXkScoreKcs(response) {
+				var data = JSON.parse(response); 
+				var myresult = data.result;
+				var result = JSON.parse(myresult) ;
+				var zdxf = result["zdxf"]; // 指定学分
+				var zdms = result["zdms"]; // 指定门数 
+				var yxxf = result["yxxf"]; // 已选学分
+				var yxms = result["yxms"]; // 已选门数 
+				j$("#zdxf").html(zdxf);
+				j$("#zdms").html(zdms);
+				j$("#yxxf").html(yxxf);
+				j$("#yxms").html(yxms);
+				/**
+				j$("#zxf").html(result["zxf"]);
+				j$("#zms").html(result["zms"]);
+				var feetotal = result["feetotal"]; // 费用总额说明
+				j$("#feetotal").html(feetotal);
+				*/
+			}
+			
+		}								
+		
+		// 初始化年级、专业信息
+		function initStuGradeSpecialty(){
+			var url = _webRootPath + "jw/common/getStuGradeSpeciatyInfo.action";
+			var params = "xh=" + j$("#xh").val();
+			if($("sfbd").value=="1"){
+			    hdzysx();
+			}
+			kutil.doAjax(url, params, myGradeSpecialty);
+			function myGradeSpecialty(response) {
+				var data = JSON.parse(response); 
+				var myresult = data.result;
+				var result = JSON.parse(myresult) ;
+				var nj = result["nj"]; // 年级 
+				var pycc = result["pycc"]; // 培养层次 
+				var dwh  = result["dwh"];  // 院(系)/部
+				var zydm = result["zydm"]; // 专业代码
+				var zymc = result["zymc"]; // 专业名称
+				var fxnj = result["fxnj"]; //辅修年级	
+				var fxzy = result["fxzy"]; //辅修专业
+				j$("#xsnj").val(nj);
+				j$("#nj").val(nj);
+				j$("#xspycc").val(pycc);
+				j$("#xsyxb").val(dwh);
+				j$("#xszydm").val(zydm);
+				j$("#zydm").val(zydm);
+				j$("#xsfxnj").val(fxnj);
+				j$("#xsfxzy").val(fxzy);
+				// 初始化课程范围信息
+				initCourseRangeInfo();
+			}
+			
+		}
+		
+		// 初始化学生的年级、专业后初始化各课程范围对应的下拉列表记录
+		function initCourseRangeInfo(){
+			var xn = j$("#xn").val();
+			var xq_m = j$("#xq").val();
+			var nj = j$("#xsnj").val();  	   // 当前登录账号(学生)所在年级
+			var pycc = j$("#xspycc").val();   // 当前登录账号(学生)所在培养层次
+			var dwh  = j$("#xsyxb").val();    // 当前登录账号(学生)所在院(系)/部
+			var zydm = j$("#xszydm").val();   // 当前登录账号(学生)所在专业
+			
+			// 开课单位
+			//kutil.loadDropList4Single({"selId":"sel_cddwdm","cbName":"MsCourseDepartment","initValue":dwh});
+			kutil.loadDropList4Single({"selId":"sel_cddwdm","cbName":"MsCourseDepartment"});
+			// 初始查询  					
+			initQry();
+			j$("#initQry").val("0");
+		}
+		
+		// 初始化检索
+		function initQry() {
+		    $("ActionForm").action= "../taglib/DataTable.jsp?tableId="+tableid;
+   			$("ActionForm").target= "frmReport";
+   			$("ActionForm").submit();
+		}
+
+		// 在校年级下拉列表改变时,重新加载年级对应专业
+		function doChangeSelzy(){
+			var nj   = j$("#nj").val();
+			var pycc = j$("#pycc").val();
+			var dwh  = j$("#yxb").val();
+			var zydm = j$("#zydm").val();
+			document.all.sel_cddwdm.value=dwh;
+			kutil.loadDropList4Single({"selId":"zydm","cbName":"MsGrade_PYCC_Specialty", "paramValue":"nj="+nj+"&pycc="+pycc+"&dwh="+dwh, "initValue":zydm});
+			// 同步(限本院系开设课程后缀)
+			var yxmc = j$("#yxb option:selected").text();
+			if (!kutil.isNull(yxmc)){
+				j$("#lbl_xbyx").html("限<font style='font-weight:bold;color:blue;'>"+yxmc+"</font>开设课程");
+			}
+		}		
+		
+		function doQuery(){		
+			if($("sel_kc").value=="" && G_SCHOOL_CODE!="10718" && G_SCHOOL_CODE!="10755"){//陕西师范大学、新疆大学
+		       alert("须录入课程！");
+		       $("sel_kc").focus();
+		    }else{
+				
+			   if ($("sel_kc").value=="%" || $("sel_kc").value=="--")
+			   {
+					return ;
+			   }
+
+			   $("btnQry").disabled=true;
+			   kutil.preloading("frmReport");  // 显示正在检索信息
+			   // 执行检索			
+			   $("ActionForm").action= "../taglib/DataTable.jsp?tableId="+tableid;
+   			   $("ActionForm").target= "frmReport";
+   			   $("ActionForm").submit();   
+			}
+		}
+		function showTotalRecord(tableId, totalRecord){
+		    $("btnQry").disabled=false;
+		}
+		function doApplication(kcdm, skbzdm, kc, skbjdm, kclb1, kclb2, kclb3,khfs,xf,iszgkc,j,outnumber){
+			var xn = $id("xn").val();
+			var xq_m = $id("xq").val();			
+			j$("#skbjdm").val(skbjdm);
+			j$("#skbzdm").val(skbzdm);
+			j$("#kcdm").val(kcdm);
+			j$("#kclb1").val(kclb1);
+			j$("#kclb2").val(kclb2);
+			j$("#kclb3").val(kclb3);
+			j$("#khfs").val(khfs);
+			j$("#xf").val(xf);
+			j$("#outnumber").val(outnumber);
+			//j$("#lcid").val(xn+xq_m+"88");
+			if(iszgkc=="1"){
+			    j$("#is_buy_book").val("1");
+			}else{
+			    if(window.frames["frmReport"].document.getElementById("is_buy_book"+j).checked){
+			        j$("#is_buy_book").val("1");
+			    }else if(window.frames["frmReport"].document.getElementById("no_buy_book"+j).checked){
+			        j$("#is_buy_book").val("0");
+			    }
+			    else{
+			       alert("需选定是否购买教材!");
+			       return;
+			    }
+			}
+
+		    if (!confirm("确定选择当前课程？")) {
+		    	return;
+		    }
+
+			//==方式3:所有参数进行DES加密,并结合md5验证；后台解密并解析参数封装到Bean做业务处理==//
+			var url = _webRootPath + "jw/common/saveElectiveCourse.action" ;
+			var params = j$("#ActionForm").serialize();
+			// 由于Struts2中FormBean封装页面参数值的需要,input name前增加了formBean的名称，此处去掉
+			params = new String(params).replaceAll("electiveCourseForm.", ""); 
+			// 转化为经加密处理的参数值对
+			var _params = getEncParams(params); 
+			//=======================================================================//
+			kutil.doAjax(url, _params, doPostSave);
+			
+			function doPostSave(response) {
+			    var data = JSON.parse(response);
+				var status = data.status; 
+				var result = data.result;
+				var message = data.message;
+				if ("200" == status) {
+					kutil.showTip(data.message);
+					doQuery();
+					initXkScoreKcs();
+				} else {
+					alert(message);
+				}
+				reloadScript("kingo_encypt","../custom/js/SetKingoEncypt.jsp");	
+		    }
+	  	}
+        function cancelElectiveCourse(kcdm,skbjdm,skbzdm){
+            if (confirm("确定要取消已选课程？")) {
+                var xn = $("xn").value ; // 学年
+				var xq = $("xq").value ; // 学期
+				var xh = $("xh").value ; // 学号
+				var lcid = $("lcid").value;//xn+xq+"88" ;
+				
+				var url = _webRootPath + "jw/common/cancelElectiveCourse.action";
+				var params = "electiveCourseForm.xn=" + xn 
+						   + "&electiveCourseForm.xq=" + xq 
+						   + "&electiveCourseForm.xh=" + xh 
+						   + "&electiveCourseForm.kcdm=" + kcdm 
+						   + "&electiveCourseForm.skbjdm=" + skbjdm 
+						   + "&electiveCourseForm.skbzdm=" + skbzdm 
+						   + "&electiveCourseForm.lcid=" + lcid
+						   + "&electiveCourseForm.xktype=88"; // 5表示退选
+		   
+				// 由于Struts2中FormBean封装页面参数值的需要,input name前增加了formBean的名称，此处去掉
+				params = new String(params).replaceAll("electiveCourseForm.", ""); 
+				// 转化为经加密处理的参数值对
+				params = getEncParams(params); 
+				
+				kutil.showTip("正在进行业务处理......");						   
+				kutil.doAjax(url, params, myCancelElective);
+				
+				function myCancelElective(response) {
+		   			
+		   			reloadScript("kingo_encypt","../custom/js/SetKingoEncypt.jsp");	
+					var data = JSON.parse(response);
+					var status = data.status; 
+					var result = data.result;
+					var message = data.message;
+					//kutil.showTip(message)
+					alert(message);
+					if ("200" == status) {
+						doQuery();
+						initXkScoreKcs();
+					}	
+				} 	
+            }
+        }
+	  	
+	  	function closePop(){
+			pop.closeWindow();
+		}
+		
+	  	function closeFunc(){
+	  		jq("#initQry").val("0");
+			doQuery();
+		}
+		
+		// 显示课程明细				
+		function showCourseInfo(kcdm){
+			var title = "课程信息";
+			var width=window.document.body.offsetWidth;
+			var json = {"_title":title,"_width":"80%","_height":"550px","_left":(width*0.2)/2,"_isStop":true,"_isMove":true};
+			//var url = _webRootPath + "student/report/pyfa.llkc_info.html?kcdm="+kcdm;
+			var xh = $id("xh").val();
+			var url = _webRootPath + "student/report/wsxk.courseinfo.jsp?kcdm="+kcdm+"&xh="+xh;
+			cKWindow = new CKWindow(json);
+			cKWindow.setSrc(url,"100%","100%");
+			cKWindow.openWindow();
+		}
+				
+		
+	  	
+		function goToFrame(e,obj){
+			var e = window.event ? window.event : e;
+			var x=e.keyCode;
+			if(x != 13) return false;	
+			if(x < 48 || x > 57) e.returnValue=false;
+			doQuery();
+		}	  	
+	</script>	
+  </head>
+  
+ <body onload="KAF_WinOnLoad(this)">
+ 	<div id="thePageArea">
+	 	<table width="100%" height="100%" align="center">
+			<tbody>
+				<tr>
+					<td height='26px' align="center" valign="top">
+						<form method="post" id="ActionForm" target="frmReport">
+							<div id="theOptArea" style="padding:0px;margin:0px;">
+								<div id="divTitle"></div>
+								<div id="divTip"></div>
+								<div id="divButton">
+									<input type="hidden" id="initQry" name="initQry" value="1"/>
+									<input type="hidden" id="isFormatSQL" name="isFormatSQL" value="0"/>
+									<input id="xn" name="xn" type="hidden"/>
+									<input id="xn1" name="xn1" type="hidden"/>
+									<input id="_xq" name="_xq" type="hidden"/>
+									<input id="xq" name="xq" type="hidden"/>
+									<input id="xh" name="xh" type="hidden"/>
+									<input type="hidden" id="zysx" name="zysx" />
+									<input type="hidden" id="sfbd" name="sfbd" />
+									<input type="hidden" id="djs" name="djs" />
+									<input id="xsnj" name="xsnj" type="hidden"/>
+									<input id="xszydm" name="xszydm" type="hidden"/>
+									<input id="xsfxnj" name="xsfxnj" type="hidden"/>
+									<input id="xsfxzy" name="xsfxzy" type="hidden"/>
+									<input id="xspycc" name="xspycc" type="hidden"/>
+									<input id="xsyxb" name="xsyxb" type="hidden"/>
+									<input id="qcyxkc" name="qcyxkc" type="hidden" value="0"/>
+									<input id="yxkxqxk" name="yxkxqxk" type="hidden" value="0" />
+									<input id="sfklbq" name="sfklbq" type="hidden" value="0" />
+									<input type="hidden" name="kgmc" id="kgmc" value="wsxk_wnjzyxksj"/>
+									<select style="display:none" name="sel_bj" id="sel_bj"></select>
+									<input type="hidden" id="qy_ggrxcl" name="qy_ggrxcl" />
+									<input type="hidden" id="xfsx" name="xfsx" />
+									<input type="hidden" id="mssx" name="mssx" />
+									
+									<input type="hidden" id="xktype" name="electiveCourseForm.xktype" value="88"/>
+									
+									<input type="hidden" name="electiveCourseForm.outnumber" id="outnumber" value="0"/>
+									<input type="hidden" id="lcid" name="lcid" />
+						            <input type="hidden" id="xxkckzfs" name="xxkckzfs" value="0"/>
+									<input type="hidden" id="yxkzyfxxk" name="yxkzyfxxk" value="0"/>
+									<input type="hidden" id="nj" name="electiveCourseForm.nj" />
+									<input type="hidden" id="zydm" name="electiveCourseForm.zydm" />
+									<input type="hidden" id="kcdm" name="electiveCourseForm.kcdm" />
+									<input type="hidden" id="kclb1" name="electiveCourseForm.kclb1" />
+									<input type="hidden" id="kclb2" name="electiveCourseForm.kclb2" />
+									<input type="hidden" id="kclb3" name="electiveCourseForm.kclb3" />
+									<input type="hidden" id="khfs" name="electiveCourseForm.khfs" />
+									<input type="hidden" id="xf" name="electiveCourseForm.xf" />
+									<input type="hidden" id="skbjdm" name="electiveCourseForm.skbjdm" />
+									<input type="hidden" id="skbzdm" name="electiveCourseForm.skbzdm" />
+									<input type="hidden" name="electiveCourseForm.is_buy_book" id="is_buy_book" value="0"/>
+									<input type="hidden" name="electiveCourseForm.is_cx" id="is_cx" value="0"/>
+									<input type="hidden" name="electiveCourseForm.is_yxtj" id="is_yxtj" value="0"/>
+									<input type="hidden" name="electiveCourseForm.is_checkTime" id="is_checkTime" value="1"/>
+									<input type="button" id="zysx_h" value="注意事项" class="button"  onclick="hdzysx()" >
+									<input type="button" name="btnQry" id="btnQry" value="检索" class="button" onclick="doQuery();" />
+								</div>
+								<div id="divLine"></div>
+								<fieldset id="theSearchArea">
+									<table>
+										<tr style="width:100%">
+											<td style="width:100%">
+												<table style="width:100%;">																								
+													<tr>
+														<td align="left">
+															承担单位
+																<select style="width:240px;" name = "sel_cddwdm" id = "sel_cddwdm" >
+																</select>
+															&ensp;课程<span id="sp_kc" style="color:#FF0000;">*</span>
+															<input type="text" name="sel_kc" id="sel_kc" class="input text_left" style="width:188px;" maxlength="30" onkeypress='goToFrame(event,this)'>
+															&ensp;任课教师
+															<input type="text" name="sel_rkjs" id="sel_rkjs" class="input text_left" style="width:145px;" maxlength="30" onkeypress='goToFrame(event,this)'>
+														    &ensp;星期
+														    <select name="sel_xinqi" id="sel_xinqi" style="width:55px" >
+															   <option value=""></option>
+															   <option value="1">一</option>
+															   <option value="2">二</option>
+															   <option value="3">三</option>
+															   <option value="4">四</option>
+															   <option value="5">五</option>
+															   <option value="6">六</option>
+															   <option value="7">日</option>
+														    </select>
+														    &ensp;<input type="checkbox" name="chk_xsy" id="chk_xsy" value="1" /><label for="chk_xsy">显示已选中课程的其它上课班级</label>
+														</td>
+													</tr>
+												</table>
+											</td>
+										</tr>										
+									</table>		
+								</fieldset>
+							</div>
+						</form>
+					</td>
+				</tr>
+				<tr>
+					<td height="100%" style="height:18px; width: 100%;" >
+						<div style="float: left; padding-left: 5px; ">
+							<span id="zxsjqd"></span> &nbsp;&nbsp;<span id="divAlert" style="color: red;"></span>
+						</div>
+						<div style="float: right; padding-right: 5px; ">指定：<span id="zdms">0</span>门、<span id="zdxf">0</span>学分；已选：<span id="yxms">0</span>门、<span id="yxxf">0</span>学分；</div>
+						<div style="float: right; padding-right: 5px; display: none; ">已选：<span id="zms">0</span>门、<span id="zxf">0</span>学分；<span id="feetotal"></span></div>
+					</td>
+				</tr>
+				<tr>
+					<td id="theRptArea" align="center" style="padding:0px;margin:0px;" valign="top">
+						<iframe style="width:100%;height:100%;overflow-x:hidden;" id="frmReport" name="frmReport" src="" frameborder="0" scrolling="no"></iframe>
+						<iframe id="hidFrm" name="hidFrm" style="display:none;"></iframe>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+ </body>
+</html>

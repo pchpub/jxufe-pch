@@ -1,0 +1,55 @@
+.menu {
+	border:1px solid #BCC2BF; /** #ACA899; */
+	border:1px solid #F9F9F9;
+	font-size:12px;
+	font-weight: normal;
+	color:#000000;
+	background: #E6F0EA; /** #FFFFFF; */
+	background: #27A5F9;
+	
+	cursor:default;
+	position:absolute;
+	top:-1000px;
+	left:0px;
+	
+	z-index: 99999;
+
+}
+.menu ul {
+	list-style:none;
+	margin:0;
+	padding:0;
+	/** border-bottom:1px solid #ACA899; */
+}
+.menu ul.last {
+	border-bottom:none;
+}
+.menu ul li {
+	margin : 1px;
+	padding: 6px;
+	height : 20px;
+	height : 24px\9;
+	*height: 24px;
+	/**background: #DEE7E9;*/
+	background: #FFFFFF;
+	/**filter : progid:DXImageTransform.Microsoft.gradient(startColorStr=#CEE2F4,endColorStr=#90B7DE,GradientType:1); 
+	filter : progid:DXImageTransform.Microsoft.gradient(startColorStr=#CEE2F4,endColorStr=#ABCADE,GradientType:1); 
+	*/
+}
+.over {
+	/**background: #89BFA7; */ 
+	color:#E87538; /** #ffffff; */
+	font-weight: bold;
+}
+.out {
+	/**background: #ABCADE; */ 
+	color:#000000;
+}
+.menu .mark {
+	display:inline-block;
+	font-size:10px;
+}
+.menu .prevMark {
+	display:inline-block;
+	width:87%;
+}

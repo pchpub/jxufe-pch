@@ -1,0 +1,628 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+	<head>
+		<title></title>
+		<meta http-equiv="Content-Language" content="zh-cn" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel="stylesheet" href="../css/Form.css" type="text/css" />
+		<link rel="stylesheet" href="../css/FormPlus.css" type="text/css" />
+		<link rel="stylesheet" href="../css/CombBox.css" type="text/css" />
+		<script language="JavaScript" type="text/javascript" src='../js/Form.js'></script>
+		<script language="JavaScript" type="text/javascript" src='../js/Ref_DropList.js'></script>
+		<script type="text/javascript" src='../js/Common.js'></script>
+		<script type="text/javascript" src='../js/Validate.js'></script>
+		<script type="text/javascript" src="../js/CombBox.js"></script>
+        <script type="text/javascript" src='../js/Window.js'></script>
+		<script type="text/javascript" src="../custom/js/SetRootPath.jsp"></script>
+		<script type="text/javascript" src="../custom/js/jquery.js"></script>
+		<script type="text/javascript" src="../custom/js/jkingo.js"></script>
+		<script type="text/javascript" src="../custom/js/jwutil.js"></script>
+		<object id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0 style="display: none;">
+			<embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0></embed>
+		</object>
+		
+		<script type="text/javascript">
+			var courseComb=null;
+			var isLoadingCourseComb=false;
+			var menucode=request("menucode");
+			if(menucode==null || menucode==""){
+			   menucode="T";
+		    }
+            var isbfy="1";//为0时默认勾选不分页，为1时不勾选
+			function MyWinOnLoad(){
+				SetHtmlTitle("课程课表","2");
+				
+				 if(menucode!=""){
+			        menucode=menucode.substring(0,1);
+			        if(menucode=="S" || menucode=="T"){
+						//$("chkSXKB").disabled=true;
+						$("sxkbspan").style.display="none";
+						$("lbl_xnxq").style.display="";
+						kutil.loadDropList4Single({selId:"xnxq",cbName:"Ms_KBBP_FBXQLLJXAP",selNull:false, callback:initMessage});  // 发布课表的学年学期
+			        }
+			        else{
+			           // 设置(隐含的)学年学期,并初始化页面查询
+				        jwutil.setYearTerm("xn|xn1|xq_m|_xq",initPage);
+			        }
+			     }
+			     else{
+			         // 设置(隐含的)学年学期,并初始化页面查询
+				     jwutil.setYearTerm("xn|xn1|xq_m|_xq",initPage);
+			     }
+                if(G_SCHOOL_CODE=="10472"){//新乡医学院
+                    isbfy="0";
+                    $("chkBfy").checked=true;
+                    $("chkBfy").onclick();
+                }
+				$("userType").value=G_USER_TYPE;
+				jwutil.init({
+					dropLists: 
+						[
+							{selId:"skfs", paramValue:"DM-SKFS"}  //授课方式 
+						]
+				});
+				if("12789" == G_SCHOOL_CODE){	//浙江工商职业技术学院
+					$("bhggrxkspan").style.display="";
+				}
+                if("12922" == G_SCHOOL_CODE){	//钟山职业技术学院
+                    $("btnMultiSel").style.display="";
+                }
+                
+			}
+			//学年回调
+			function initPage(){
+				/**
+				var ary=new Array();
+				ary[0]='selKC';
+				var ck_kbbp_kc=new CKDList();
+				ck_kbbp_kc.IKInitDropList(ary,'kbbp_kcdm');
+				*/
+				var params = "xn=" + j$("#xn").val() + "&xq_m=" + j$("#xq_m").val();
+                if(G_SCHOOL_CODE=="10472"){//新乡医学院
+                    $("chkSXKB").checked=true;
+                }
+				//kutil.loadDropList4Single({selId: "selKC", cbName:"MsKKBP_KCKB_COURSES", paramValue: params});
+				setTimeout(loadingCourse, 600);
+			}
+			function initMessage(){
+				// 如果发布课表的学年学期记录数=0，给出提示
+				var jls = j$("#xnxq option").size();
+				if (jls == 0){
+					j$("#divTip").html("**目前还没有已发布的课表信息**");
+					// disable功能操作
+					j$("#xnxq").attr("disabled",true);
+					j$("#btnQry").attr("disabled",true);
+					j$("#btnPrint").attr("disabled",true);
+					j$("#btnExport").attr("disabled",true);
+					//j$("input[name^=btn]").attr("disabled",true);
+				} else {
+					initXnxq();
+					j$("#xnxq").attr("disabled",false);
+					j$("#btnQry").attr("disabled",false);
+					j$("#btnPrint").attr("disabled",false);
+					j$("#btnExport").attr("disabled",false);
+					//j$("input[name^=btn]").attr("disabled",false);
+					j$("#xnxq").focus();
+				}
+			}
+			function initXnxq(){
+				var xnxq = j$("#xnxq").val();
+				var a_xnxq = new String(xnxq).split(","); 
+				var xn = a_xnxq[0];
+				var xq_m = a_xnxq[1];
+				$("xn").value = xn;
+				$("xq_m").value = xq_m;
+				// isLoadingRkjs=false;
+				var params = "xn=" + $("xn").value+"&xq_m="+$("xq_m").value;
+				$("hidKCDM").value="";
+				$("kcmc").value="";
+				isLoadingCourseComb=false;
+				loadingCourse();
+			}
+            function showTotalRecord(){
+            
+            }
+			//课程模糊检索
+			function loadingCourse(){
+				if(!isLoadingCourseComb){
+					var courseComb_json = {
+					    "_name": "courseComb",
+					    "_divId": "courseCombDiv1", // combBox容器的id, 必须。
+					    "_num": 10,  // 显示的记录个数
+						"_filtrate_style":"1",
+					    "_valueId": "hidKCDM",     // 页面接收value的对象id, 必须。
+					    "_parentId": "kcmc", // 页面接收name的对象id, 必须。
+					    "_className": "jw_comb_coursename" // 配置文件节点名称, 必须。
+					};
+					
+					courseComb = new CKCombBox(courseComb_json);
+					isLoadingCourseComb = true;
+				}
+			}
+			//参数
+			function setCombBoxOtherParameter(combObjectName){
+				return "&xn="+$("xn").value+"&xq_m="+$("xq_m").value;
+			}
+			//提交函数
+			function DoSubmit(theobj){ 
+				var theid=theobj.id;
+				setIsXSYM($("chkXSYM"));
+				getChkState();
+				switch(theid){
+                    case "btnMultiSel":
+                        multiSelCourse();
+                        break;
+		    		case "btnQry" :
+		    			clickOK();
+		    			break;
+		    		case "btnPrint":
+		    			doPrint();
+		    			break;
+		    		case "btnExport":
+		    			doExport();
+		    			break;
+                    case "btnPDF":
+                        doPdf();
+                        break;
+		    	}
+		    	return false;
+			}
+            var cKWindow=null;
+			function multiSelCourse(){
+                var json = {"_title":"课程多选","_width":"760px","_height":"520px","_isStop":true,"_isMove":true,"_imgsrc":"../images/"};
+                cKWindow = new CKWindow(json);
+                cKWindow.setSrc("./dykb.kckb_sel.jsp","100%","100%");
+                cKWindow.openWindow();
+            }
+            function doSelectKc(obj){
+                $("selectkc").value=obj;
+                var num=0;
+                if(obj!=""){
+                   num =obj.split(",").length;
+                }
+                $("selectkcnum").innerHTML="";
+                if(num>0) {
+                    $("selectkcnum").style.color = "red";
+                    $("selectkcnum").innerHTML = "已选中课程" + num + "个";
+                    $("hidKCDM").disabled=true;
+                    $("kcmc").disabled=true;
+                }else{
+                    $("hidKCDM").disabled=false;
+                    $("kcmc").disabled=false;
+                }
+                cKWindow.closeWindow();
+               
+            }
+            
+			//导出函数
+			function doExport(){
+				if($("xn").value=="" && (menucode=="S" || menucode=="T")){
+			        alert("需选定学年学期！");
+			        return;
+			    } 
+				else if($("skfs").value=="" && $("hidKCDM").value=="" && $("selectkc").value==""){
+					alert("请选择课程！");
+					return ;
+				}else{
+					if($("selGS").value=="2"){
+						var url = _webRootPath + "jw/output/excel.action?exptype=kbbpkckb";
+						$("ActionForm").action= url;
+						$("ActionForm").target= "frmReport";
+						$("ActionForm").submit();
+					}
+					else if($("selGS").value=="1"){
+						$("ActionForm").action = "dykb.GS1_exp.jsp?kblx=kckb";
+						$("ActionForm").target ="frmReport";
+						$("ActionForm").submit();
+					}
+				}
+			}
+			//打印函数
+			function doPrint(){
+				var strURL="";
+				var intOrient=2;
+				var isShowPage = true ;
+				if($("xn").value=="" && (menucode=="S" || menucode=="T")){
+			        alert("需选定学年学期！");
+			        return;
+			     } 
+			     else if($("selGS").value=="2"){
+					if($("skfs").value=="" && $("hidKCDM").value==""  && $("selectkc").value==""){
+						alert("请选择课程！");
+						return ;
+					}else{
+						strURL=getRequestParams("dykb.kckb_data.jsp");
+					}
+				}else if($("selGS").value=="1"){
+					if($("skfs").value=="" && $("hidKCDM").value==""  && $("selectkc").value==""){
+						alert("请选择课程！");
+						return ;
+					}else{
+						strURL=getRequestParams("dykb.GS1.jsp");
+						isShowPage = j$("#chkXSYM").attr("checked");
+					}
+				}
+				
+				var strTaskName="课程课表";
+				var strPageName="A4";
+				kutil.preview("frm:frmReport",strTaskName,intOrient,strPageName, isShowPage);		
+			}
+			function getRequestParams(pageURL){
+				var tempURL="?"+j$("#ActionForm").serialize();
+				var strURL=pageURL+tempURL;
+				if($("selGS").value=="1"){
+					strURL=strURL+"&kblx=kckb";
+				}
+				return strURL;
+			}
+			//自定义查询方法
+			function qrySubmit(frmaction,frmtarget){
+				$("ActionForm").action = frmaction;
+				$("ActionForm").target = frmtarget;
+				$("ActionForm").submit();
+			}
+			
+			function setKCDM(obj){
+				$("hidKCDM").value = obj.value;
+			}
+			
+			//点击“确定”
+			function clickOK(){
+				if($("xn").value=="" && (menucode=="S" || menucode=="T")){
+			        alert("需选定学年学期！");
+			        return;
+			     } 
+			     else if($("selGS").value=="2"){
+					if($("skfs").value=="" && $("hidKCDM").value=="" && $("selectkc").value==""){
+						alert("请选择课程！");
+						return ;
+					}else{
+						qrySubmit("dykb.kckb_data.jsp","frmReport");
+					}
+				}else if($("selGS").value=="1"){
+					if($("skfs").value=="" && $("hidKCDM").value=="" && $("selectkc").value==""){
+						alert("请选择课程！");
+						return;
+					}else{
+						if($("chkSXKB").checked&&$("hidKCDM").value!=""){
+							var url="../KBBP_RefurbishSchedualAction.do";
+							var params={"xn":$("xn").value,"xq_m":$("xq_m").value,"kcdm":$("hidKCDM").value,"hidOption":"ckkckb", "chk_ggbxsbj":"on", "chk_bjbhgg":"", "chk_xwsx":"" };
+							kutil.doAjax(url,params,function(response){
+								qrySubmit("dykb.GS1.jsp?kblx=kckb","frmReport");
+							});
+						}else{
+							qrySubmit("dykb.GS1.jsp?kblx=kckb","frmReport");
+						}
+					}
+					$("chkXSDYRQ").disabled = false;
+					$("chkXSDYSJ").disabled = false;
+				}
+
+                if($("chkBfy").checked==false){
+                    $("chkXSYM").disabled=false;
+                    $("btnPrint").disabled=false;
+                    $("hidBfy").value="0";
+                }else{
+                    $("chkXSYM").disabled=true;
+                    $("btnPrint").disabled=true;
+                    $("hidBfy").value="1";
+                }
+			}
+            function doPdf(){
+                var strURL="";
+                var strTaskName="课程课表";
+                var orientation="L";
+                var strPageName="A4";
+                var top="0",bottom="20",left="10", right="10";
+                var printParams="",flag="0";
+                var xnxq = j$("#xn").val()+"-"+j$("#xn1").val()+"学年"+$("_xq").value;
+                if((menucode=="S" || menucode=="T")){
+                    xnxq=j$("#xnxq").find("option:selected").text();
+                }
+                var title = xnxq+strTaskName;
+
+                if($("xn").value=="" && (menucode=="S" || menucode=="T")){
+                    alert("需选定学年学期！");
+                    return;
+                }
+                else if($("selGS").value=="2"){
+                    if($("skfs").value=="" && $("hidKCDM").value=="" && $("selectkc").value==""){
+                        alert("请选择课程！");
+                        return ;
+                    }else{
+                        strURL = getRequestParams("/kbbp/dykb.kckb_data.jsp");
+                        left="15";
+                        right="15";
+                    }
+                }else if($("selGS").value=="1"){
+                    if($("skfs").value=="" && $("hidKCDM").value=="" && $("selectkc").value==""){
+                        alert("请选择课程！");
+                        return;
+                    }else{
+                        if($("chkSXKB").checked&&$("hidKCDM").value!=""){
+                            var url="../KBBP_RefurbishSchedualAction.do";
+                            var params={"xn":$("xn").value,"xq_m":$("xq_m").value,"kcdm":$("hidKCDM").value,"hidOption":"ckkckb", "chk_ggbxsbj":"on", "chk_bjbhgg":"", "chk_xwsx":"" };
+                            kutil.doAjax(url,params,function(response){
+                                strURL=getRequestParams("/kbbp/dykb.GS1.jsp");
+                                top = "0";
+                                bottom = "15";
+                                left = "5";
+                                right = "5";
+                                flag="1";
+                                printParams = "pageSize="+strPageName+"&orientation="+orientation+"&top="+top+"&bottom="+bottom+"&left="+left+"&right="+right;
+                                kutil.buildPdf(title, strURL, printParams);
+                            });
+                        }else{
+                            strURL=getRequestParams("/kbbp/dykb.GS1.jsp");
+                            top = "0";
+                            bottom = "15";
+                            left = "5";
+                            right = "5";
+                        }
+                    }
+                }
+
+
+                if(flag=="0" && strURL!=""){
+                    printParams = "pageSize="+strPageName+"&orientation="+orientation+"&top="+top+"&bottom="+bottom+"&left="+left+"&right="+right;
+                    kutil.buildPdf(title, strURL, printParams);
+                }
+            }
+			//捕捉“回车”事件
+			function onSearch(e , obj){
+				var e = window.event?window.event:e;
+				var x=e.keyCode;
+				if(x!=13) return false;
+				if(x<48||x>57) e.returnValue=false;
+				var objid = obj.id;
+				//window.frmReport.location.href = "../taglib/DataTable.jsp?tableId=2367&yhdm="+$("txtKCBH").value+
+					//"&kcmc="+$("txtKCMC").value;
+				qrySubmit("../taglib/DataTable.jsp?tableId=2367","frmReport");
+			}
+			//清空控件
+			function txtClear(obj){
+				obj.value="";
+			}
+			
+			//是否显示日期和时间，页面
+			function setSysTime(obj){
+				var theid=obj.id;
+				switch(theid){
+		    		case "chkXSDYRQ" :
+		    			if(obj.checked && $("chkXSDYSJ").checked)
+		    				setMonthAndDay(sysDate("default-three"));
+		    			if(obj.checked && $("chkXSDYSJ").checked==false)
+		    				setMonthAndDay(sysDate("default-one"));
+		    			if(obj.checked==false && $("chkXSDYSJ").checked)
+		    				setMonthAndDay(sysDate("default-two"));
+		    			if(obj.checked==false && $("chkXSDYSJ").checked==false)
+		    				setMonthAndDay("");
+		    			break;
+		    		case "chkXSDYSJ" :
+		    			if(obj.checked && $("chkXSDYRQ").checked)
+		    				setMonthAndDay(sysDate("default-three"));
+		    			if(obj.checked && $("chkXSDYRQ").checked==false)
+		    				setMonthAndDay(sysDate("default-two"));
+		    			if(obj.checked==false && $("chkXSDYRQ").checked)
+		    			
+		    				setMonthAndDay(sysDate("default-one"));
+		    			if(obj.checked==false && $("chkXSDYRQ").checked==false)
+		    				setMonthAndDay("");
+		    			$("xssj").value="xssj";
+		    			break;
+		    		case "chkXSYM":
+		    			setIsXSYM($("chkXSYM"));
+		    			clickOK();
+		    			break;
+		    		case "chkXSJSZC":
+		    			if(obj.checked){
+		    				$("xsjszc").value="1";
+		    			}else{
+		    				$("xsjszc").value="0";
+		    			}
+		    			break;
+                    case "chkBfy":
+                        if(obj.checked && $("selGS").value=="1"){
+                            $("chkXSYM").disabled=true;
+                            $("btnPrint").disabled=true;
+                            $("hidBfy").value="1";
+                        }else{
+                            $("chkXSYM").disabled=false;
+                            $("btnPrint").disabled=false;
+                            $("hidBfy").value="0";
+                        }
+                        //clickOK();
+                        break;
+		    	}
+		    	return false;
+			}
+			function getChkState(){
+				if($("chkXSDYRQ").checked){
+					$("xsrq").value="xsrq";
+				}else{
+					$("xsrq").value="";
+				}
+				if($("chkXSDYSJ").checked){
+					$("xssj").value="xssj";
+				}else{
+					$("xssj").value="";
+				}
+			}
+			function setMonthAndDay(kkk){
+				var objs = window.frmReport.document.getElementsByTagName("div");
+				var len = objs.length;
+				for(i=0;i<len;i++){
+					if(objs[i].getAttribute("kind")!=null && objs[i].getAttribute("kind")=="sysdate"){
+						objs[i].innerHTML = kkk;
+					}
+				}
+			}
+			// 获得当前系统时间
+			// farmatStyle default为YYYY-MM-DD的时间格式
+			//			   default-time为YYYY-MM-DD hh:mi的时间格式
+			function sysDate(farmatStyle){
+				var time = new Date();
+				var sysDateStr = "";
+				var month = getLWNum(time.getMonth() + 1);
+				
+				var day = getLWNum(time.getDate());
+				var hour = getLWNum(time.getHours());
+				var mimutes = getLWNum(time.getMinutes());
+				var seconds = getLWNum(time.getSeconds());
+				if (farmatStyle == "default-one"){//只有日期
+					sysDateStr = time.getFullYear()+"-"+month+"-"+day+"&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;";
+				}else if (farmatStyle == "default-two")//只有时间
+					sysDateStr = hour+":"+mimutes;
+				else if (farmatStyle == "default-three")//日期时间都有
+					sysDateStr = time.getFullYear()+"-"+month+"-"+day+"&ensp;"+hour+":"+mimutes;
+					
+				return sysDateStr;
+			}
+			
+			function getLWNum(num) {
+				return num < 10 ? "0"+num : num;
+			}
+			
+			function setIsXSYM(obj){
+				if(obj.checked){
+					//window.frames["frmReport"].isXSYM("true");
+					$("sfxsym").value="xsym";
+				}else{
+				//	window.frames["frmReport"].isXSYM("false");
+					$("sfxsym").value="";
+				}
+				//clickOK();
+			}
+			//格式转换事件
+			function changeCk(obj){
+				if(obj.value=="2"){
+					//$("btnExport").disabled=false;
+					j$("#chkXSDYRQ").attr("disabled","disabled");
+					j$("#chkXSDYSJ").attr("disabled","disabled");
+					j$("#chkXSJSZC").removeAttr("disabled");
+					$("chkSXKB").disabled=true;
+					$("chkbhggrxk").disabled=false;
+                    $("chkBfy").checked=false;
+                    $("chkBfy").disabled=true;
+                    $("chkXSYM").checked=true;
+                    $("chkXSYM").disabled=false;
+                    $("btnPrint").disabled=false;
+                    $("hidBfy").value="0";
+				}else{
+					//$("btnExport").disabled=true;
+                    $("chkSXKB").disabled=false;
+					j$("#chkXSJSZC").attr("disabled","disabled");
+					j$("#chkXSDYSJ").removeAttr("disabled");
+					j$("#chkXSDYRQ").removeAttr("disabled");
+					$("chkbhggrxk").disabled=true;
+                    $("chkBfy").disabled=false;
+                    $("chkBfy").checked=false;
+                    $("hidBfy").value="0";
+                    if(isbfy=="0"){
+                        $("chkBfy").checked=true;
+                        $("chkXSYM").disabled=true;
+                        $("chkXSYM").checked=false;
+                        $("btnPrint").disabled=true;
+                        $("hidBfy").value="1";
+                    }else{
+                        $("chkBfy").checked=false;
+                        $("chkXSYM").checked=true;
+                        $("chkXSYM").disabled=false;
+                        $("btnPrint").disabled=false;
+                        $("hidBfy").value="0";
+                    }
+				}
+			}
+		</script>
+	</head>
+	<body onload="KAF_WinOnLoad(this)">
+		<table id="thePageArea" border=0 width="100%" height="100%" align="center">
+			<tbody>
+				<tr>
+					<td height='26px' align="center" valign="top">
+						<form method="post" id="ActionForm" action="Action.do"
+							target="frmReport">
+							<div id="theOptArea">
+								<div id="divTitle"></div>
+								<div id="divTip"></div>
+								<div id="divButton">
+								    <label id="lbl_xnxq" style="display:none">学年学期
+									<select name="xnxq" id="xnxq" onchange="initXnxq()" style="width:180px;"></select>
+									</label>
+                                    <label style=" text-indent:10px; text-align:center; color:red; margin:8px 0px 0px 0px;" id="selectkcnum"></label>
+                                    <input type="button" name="btnSubmit" id="btnMultiSel" value="多选课程" style="display: none" class="button" onclick="return DoSubmit(this);" />
+									<input type="button" name="btnSubmit" id="btnQry" value="检索" class="button" onclick="return DoSubmit(this);" />
+									<input type="button" name="btnSubmit" id="btnExport" value="导出Excel" class="button" onclick="return DoSubmit(this);" />
+									<input type="button" name="btnSubmit" id="btnPDF" value="导出PDF" class="button" onclick="return DoSubmit(this);" />
+									<input type="button" name="btnSubmit" id="btnPrint" value="打印" class="button" onclick="return DoSubmit(this);" />
+                                    <input type="hidden" id="selectkc" name="selectkc" value=""/>
+                                    <input type="hidden" id="xssj" name="xssj"/>
+									<input type="hidden" id="xsrq" name="xsrq"/>
+									<input type="hidden" id="userType" name="userType" />
+									<input type="hidden" id="sfxsym" name="sfxsym"/>
+									<input type="hidden" id="xsjszc" name="xsjszc" value="0"/>
+									<input type="hidden" id="hidBfy" name="hidBfy" value="0" />
+								</div>
+								<div style="display:none;">
+									学年
+									<input id="xn" name="xn" class="input readonly" style="width:35px;text-align:center;" readonly="readonly" />
+									-
+									<input id="xn1" name="xn1" class="input readonly" style="width:35px;text-align:center;" readonly="readonly" />
+									学期
+									<input id="_xq" name="_xq" class="input readonly" style="width:60px;" readonly="readonly" />
+									<input type="hidden" id="xq_m" name="xq_m" readonly />	
+								</div>
+								<div id="divLine"></div>
+								<div id="theSearchArea">
+									<table align="left">
+										<tr>
+											<td>
+												<select style='width:100px' id="selGS" name="selGS" onchange="changeCk(this)">
+													<option value='1'>
+														格式一
+													</option>
+													<option value='2'>
+														格式二
+													</option>
+												</select>
+												<!-- 
+												课程编号
+												<input class="input" type='text' style="width:60px;" id="txtKCBH" name="txtKCBH" 
+													onblur="txtClear(this)" onkeydown="onSearch(event,this)"/>
+												课程名称
+												<input class="input" type='text' style="width:100px;" id="txtKCMC" name="txtKCMC" 
+													onblur="txtClear(this)" onkeydown="onSearch(event,this)"/>
+												-->	
+												&ensp;课程
+												<input type="hidden" id="hidKCDM" name="hidKCDM">	<input type="text" id="kcmc" name="kcmc" class="input" style="width: 190px" onfocus="loadingCourse()">	
+												<span style="display: none;">
+													授课方式&ensp;<select name="skfs" id="skfs" style="width:60px;" class="select"></select>
+													<select style="width:210px;display: none" id="selKC" name="selKC" onchange="setKCDM(this)"></select>										
+												</span>
+												<input class="checkbox" type='checkbox' id="chkXSJSZC" name="chkXSJSZC" disabled onclick="setSysTime(this)"/><label for="chkXSJSZC">显示教师职称</label>
+												<input class="checkbox" type='checkbox' id="chkXSDYRQ" name="chkXSDYRQ" disabled checked onclick="setSysTime(this)"/><label for="chkXSDYRQ">显示打印日期</label>
+												<input class="checkbox" type='checkbox' id="chkXSDYSJ" name="chkXSDYSJ" disabled checked onclick="setSysTime(this)"/><label for="chkXSDYSJ">显示打印时间</label>
+												<input class="checkbox" type='checkbox' id="chkXSYM" name="chkXSYM" disabled checked onclick="setSysTime(this)"/><label for="chkXSYM">显示页码</label>
+												<span id="bhggrxkspan" style="display: none;"><input class="checkbox" type='checkbox' id="chkbhggrxk" name="chkbhggrxk" value="1" disabled/><label for="chkbhggrxk">不含公共任选课</label></span>
+												<input class="checkbox" type='checkbox' id="chkBfy" name="chkBfy"  onclick="setSysTime(this)"/><label for="chkBfy">不分页</label>
+												<span id="sxkbspan"><input class="checkbox" type='checkbox' id="chkSXKB" name="chkSXKB"/><label for="chkSXKB">刷新课表</label></span>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</form>
+					</td>
+				</tr>
+				<tr>
+					<td align="center"
+						style='padding-bottom:6px;width:100%;height:100%;'>
+						<div id="theRptArea" style="width: 100%">
+							<iframe id="frmReport" name="frmReport" frameborder="0" style="width: 100%"></iframe>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>

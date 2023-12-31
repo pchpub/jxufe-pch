@@ -1,0 +1,240 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+  
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">    
+
+	<script type="text/javascript">
+		// 定义JS的全局变量
+		_webRootPath = "/";  // value: /KingoJW/
+		_contentPath = "/";  // 冗余定义,同_webRootPath
+		_jsPath = "/js/";
+		_imagesPath = "/images/";
+		_stylePathPrefix = "blue"; // 样式路径表标识，依据用户选择而定 blue, green, purple
+	</script>
+
+	<!-- 解决弹出"无法打开站点，已终止操作？"消息框问题：<base>设置放在日期控件后面 -->
+	<script type="text/javascript" src="/custom/My97DatePicker/WdatePicker.js"></script>
+    <base href="/">
+    
+	<link rel="stylesheet" href="/css/Form.css" />
+	<link rel="stylesheet" href="/css/FormPlus.css" />
+	<link rel="stylesheet" href="/custom/css/FilePop.css" />
+	<link rel="stylesheet" href="/themes/classical/css/blue/blue_DataTable.css" type="text/css"></link>
+ 	<link rel="stylesheet" href="/custom/skin/blue/ymPrompt.css" type="text/css"></link>
+	<link rel="stylesheet" href="/custom/css/blue/KingoCommon.css" />
+
+	<script type="text/javascript" src="/custom/js/jquery.js"></script>		
+	<script type="text/javascript" src="/custom/js/ymPrompt.js"></script>
+	<script type="text/javascript" src="/custom/js/KingoCommon.js"></script>
+	
+	<script type="text/javascript" src="/js/Window.js"></script>
+
+  </head>
+  
+  <body>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+	<head>
+		<title>版权声明</title>
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Expires" content="0">		
+		<link href="/frame14/css/Main_footer.css?t=202210191709" type="text/css" rel="stylesheet" />
+		<link href="/custom/css/blue/KingoCommon.css?v=33678170399019813776100" type="text/css" rel="stylesheet" />
+		<script type="text/javascript">
+ 		    var _contextPath = "";
+			var imViewUrl="/online/message?hidOption=getDetailedMessage";
+			var isinit="1";
+			var schoolcode="10421";
+			var usertype="STU";
+		</script>
+		<script type="text/javascript" src="/js/Window.js?t=201911081709"></script>		
+		<script type="text/javascript" src="/common/popmsg/Ref_PopMessage.js?t=201911081709"></script>
+		<script type="text/javascript" src="/frame14/js/Main_footer.js?t=202211211151"></script>
+		<script type="text/javascript" src="/js/AjaxBase.js"></script>
+		<script type="text/javascript" src="/custom/js/jkingo.noprint.js"></script>
+	    <script type="text/javascript" src="/custom/js/jwutil.js"></script>	
+		<script type="text/javascript">
+    jwutil.setYearTerm("xn|xn1|xq_m|_xq");
+    function chkLoginRole(obj){
+        if(obj.value!=""){
+            if("STU000"!=obj.value){
+                var url = "/jw/common/setYearTerm.action" ; 
+				var params = { 
+								"xn" : document.getElementById("xn").value,
+								"xqM" : document.getElementById("xq_m").value,
+								"istop":"1",
+								"groupcode" : obj.value,
+								"flag":"1"
+							  };
+				kutil.doAjax(url,params,_callBack);
+            }
+        }
+    }
+    // 业务操作后的回调操作
+	function _callBack(response) {
+		var data = JSON.parse(response); // 响应消息转化为JSON, 由json2.js提供此方法
+		var status = data.status ;
+		var message = data.message ;
+		if (status == "200") {
+			var url = "/frame/desk/changeUserGroupcode.action" ; 
+			top.window.location.href=url;
+		} 
+	}
+    </script>
+	</head>
+	<body oncontextmenu=window.event.returnValue=false onselectstart=window.event.returnValue=false ondragstart=window.event.returnValue=false onsource=window.event.returnValue=false topmargin="0" leftmargin="0">
+		<div id="div_footer" style="display: none;">
+			<input type="hidden" name="xn" id="xn"/>
+	                    <input type="hidden" name="xn1" id="xn1"/>
+	                    <input type="hidden" name="xq_m" id="xq_m"/>
+	                    <input type="hidden" name="_xq" id="_xq"/>
+			<div class="footer_left">
+			</div>
+			
+			<div class="footer todaynews" style="display: none">
+				<span class="title">关注青果</span>
+				<table style="width: 100%; table-layout: fixed;">
+					<tr>
+						<td class="td">
+							<img src="/images/news-nav.gif"></img>
+							<a href="http://www.xiqueer.com/" target="_blank">喜鹊儿--随时随地校园尽在掌上</a>
+						</td>
+					</tr>
+					<tr>
+						<td class="td">
+							<img src="/images/news-nav.gif"></img>
+							<a href="http://www.jucai360.com/" target="_blank">聚才网</a>
+						</td>
+					</tr>
+					<tr>
+						<td class="td">
+							<img src="/images/news-nav.gif"></img>
+							<a href="http://www.kewai365.com/" target="_blank">课外网</a>
+						</td>
+					</tr>
+				</table>					
+			</div>			
+			
+			<div class="footer userinfo">
+				<span class="title">个人信息</span>
+				<table style="width: 100%">
+					<tr style="display: none;">
+						<td class="td">
+							<img src="/frame14/img/user_photo.png" width="49px" height="47px"></img>
+						</td>
+					</tr>
+					<tr>
+						<td class="td" style="white-space:nowrap; overflow: hidden;">
+							<a href="javascript:void(0);" onclick="showUseInfo();"><a href='javascript:void(0);' onclick='showUseInfo();' id='myinfo'>陈佳洛[2202203953]</a></a>
+						</td>
+					</tr>
+					<tr>
+						<td class="td">
+							<a href="javascript:void(0);" onclick="doModifyPassword();">修改密码</a>
+						</td>
+					</tr>
+					<tr>
+						<td class="td">
+							<a href="javascript:void(0);" onclick="showUseInfo();">个人信息</a>
+						</td>
+					</tr>
+				</table>				
+			</div>
+			
+			<div class="footer support">
+				<span class="title">技术支持</span>
+				<table style="width: 100%">
+					<tr>
+						<td class="td1">邮箱：</td>
+						<td class="td2">
+							<a href="mailto:yfzx@kingosoft.com">yfzx@kingosoft.com</a>
+						</td>
+					</tr>
+					<tr>
+						<td class="td1">电话：</td>
+						<td class="td2">0731-82568408 0731-82568468</td>
+					</tr>
+					<tr>
+						<td class="td1">地址：</td>
+						<td class="td2">湖南省长沙市三一大道526号旺德府恺悦国际大厦16层</td>
+					</tr>
+				</table>
+			</div>
+			
+			<div class="footer lastestnews">				
+				<span class="title" style="padding-left: 5px;">最新消息</span>
+				<table style="width: 100%">
+					<tr>
+						<td class="td" style="width: 100%;height: 69px; vertical-align: top; ">
+							<input type="hidden" id="msgid" name="msgid"/><span id="msg_content">&ensp;</span>
+						</td>
+					</tr>
+				</table>				
+			</div>
+			
+			<div class="footer footer_kingo1" style="display: none;">
+				<span class="title" style="padding-left: 5px; display: none;">关注青果</span>
+				<table style="width: 100%">
+					<tr>
+						<td class="td">
+							<a href="http://www.kingosoft.com/" target="_blank" style="color: white;display: none;">
+							<img src="/frame14/img/qrcode.png" width="68px" height="68px" ></img>
+							</a>
+						</td>
+					</tr>
+				</table>
+			</div>
+				
+			<div class="footer_right">
+			</div>
+			
+		</div>
+		
+		<div style="clear: both;"></div>
+		
+		<div id="div_copyright">
+				<table style="width: 100%">
+					<tr>
+						<td id="hideleft"></td>
+						<td id="expand"></td>
+						<td id="copyright">
+				  			<script language=javascript src="/js/foot.js"></script>
+						</td>
+						<td id="popmsg">&ensp;</td>
+						<td id="role" style="color:white;text-align:right">
+						
+						</td>
+						<td id="xnxqdesc">
+							<a href="javascript:void(0);" onclick="doModifyPassword();">修改密码</a>&ensp;&ensp;&ensp;
+							2023-2024学年第一学期
+						</td>
+					</tr>
+				</table>					
+		</div>
+		
+	</body>
+</html>

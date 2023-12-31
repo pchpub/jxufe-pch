@@ -1,0 +1,404 @@
+var jq = jq$ = j$ = jQuery.noConflict();
+function $id(id){
+    return j$("#" + id);
+}
+var kingoDialog = function (settings) {
+    var mine = this,
+        opts = {},
+        defaults = {
+            container: '.dialog-container',//对话框容器选择器
+            dialogZIndex: 1200,
+        },
+        container = null,
+        current = null,
+        opening = false,
+        dialogId = 'kingoDialog',
+        dialogDefaults = {
+            title: "",
+            upFrameId: "", // 发起调用事件工作区FrameID
+            parentFrameId: "", // 发起调用事件工作区FrameID
+            ico: 'fa fa-windows-banner',
+            position: 'right',//打开位置
+            size: 'medium',// small[40%,280]/medium[55%,340]/large[70%,400]
+            isSize: true,
+            width: 500,
+            height: 320,
+            isMinified: false,	//是否最小化
+            aboveMask: false,	//是否有遮盖
+            ableDrag: true,//能否拖动
+            ableRefresh:true,//显示刷新图标2023-04-23
+            ableMini: true,//能否最小化
+            ableFull: true, //能否最大化
+            ableClose: true, //显示关闭图标 2021-12-24
+            target: 'window',//定位对象
+            closeMode: ["esc", "btn", "blur"]
+        };
+
+    //初始化参数
+    var init = function (settings) {
+
+        opts = j$.extend({}, defaults, settings);
+        container = j$(opts.container);
+        //创建对话框容器
+        setMaskHeight();
+        genarateDialogContainer();
+    };
+
+    var setMaskHeight = function () {
+        j$('.kingo-mask').css('height', j$(window).height());
+    };
+    var genarateDialogContainer = function () {
+        var dialogContainer;
+        //创建窗口
+
+        dialogContainer = j$('<div class="kingo-dialog"><div class="dialog-header"><div class="dialog-title"><i></i><span></span></div><div class="dialog-bar"></div></div><div class="dialog-body"><iframe src="about:blank" class="dialog-frame" id="dialog-frame"></iframe></div></div>').attr('id', dialogId);
+
+        var barContainer = dialogContainer.find('div.dialog-bar');
+        var loadBar = j$('<a class="dialog-loader" href="javascript:void(0);"><i class="fa fa-spinner fa-spin"></i></a>');
+
+        barContainer.append(loadBar);
+
+        var refreshBar = j$('<a class="dialog-refresh" href="javascript:void(0);"><i class="fa fa-refresh"></i></a>');
+        refreshBar.on('click', function () {
+            var id = j$(this).parents('div.kingo-dialog').attr('id');
+            window.dialogManagement.refreshDialog(id);
+        });//.tooltip({title:opts.message.refreshBar});
+        barContainer.append(refreshBar);
+
+        // 增加最小化弹窗图标
+        var miniBar = j$('<a class="dialog-mini" href="javascript:void(0);"><i class="fa fa-minus"></i></a>');
+        miniBar.on('click', function () {
+            var id = j$(this).parents('div.kingo-dialog').attr('id');
+            window.dialogManagement.closeDialog(id);
+        });
+        barContainer.append(miniBar);
+
+        var fullBar = j$('<a class="dialog-fullscreen" href="javascript:void(0);"><i class="fa fa-expand"></i></a>');
+        fullBar.on('click', function () {
+            var id = j$(this).parents('div.kingo-dialog').attr('id');
+            window.dialogManagement.fullscreen(id);
+            window.dialogManagement.refreshDialog(id);
+        });//.tooltip({title:opts.message.fullscreenBar});
+        barContainer.append(fullBar);
+
+        var closeBar = j$('<a class="dialog-close" href="javascript:void(0);"><i class="fa fa-times"></i></a>');
+        closeBar.on('click', function () {
+            var id = j$(this).parents('div.kingo-dialog').attr('id');
+            window.dialogManagement.closeDialog(id);
+        });//.tooltip({title:opts.message.closeBar});
+        barContainer.append(closeBar);
+
+        container.append(dialogContainer);
+    }
+    //api:窗口变动影响
+    this.resize = function () {
+        setMaskHeight();
+    }
+
+    //api:获取当前窗口ID return dialogId
+    this.getCurrent = function () {
+        return current;
+    }
+
+    var genarateHeader = function (dialog, options) {
+        //alert(JSON.stringify(opts))
+        //定义表头
+        dialog.find('.dialog-title>i').addClass(options.ico);
+        dialog.find('.dialog-title>span').text(options.title);
+
+        if(options.ableRefresh){
+            dialog.find('a.dialog-refresh').show();
+        }
+        else{
+            dialog.find('a.dialog-refresh').hide();
+        }
+        if (options.ableMini) {
+            dialog.find('a.dialog-mini').show();
+        } else {
+            dialog.find('a.dialog-mini').hide();
+        }
+        if (options.ableFull) {
+            dialog.find('a.dialog-fullscreen').show();
+        } else {
+            dialog.find('a.dialog-fullscreen').hide();
+        }
+        if (options.ableClose) {
+            dialog.find('a.dialog-close').show();
+        } else {
+            dialog.find('a.dialog-close').hide();
+        }
+
+        if (options.ableDrag) {
+            dialog.draggable();
+            dialog.find('div.dialog-header').mousedown(function (evt) {
+                var j$this = j$(this);
+                if (j$('div.dialog-bar', j$this).has(evt.target).length === 0) {
+                    var div = j$('<div class="drag-mask" style="width:100%;position:absolute;top:-100px;"></div>').css({height: (dialog.height() + 100) + 'px'});
+                    j$this.append(div);
+                }
+            }).mouseup(function () {
+                var j$this = j$(this);
+                j$('div.drag-mask').remove();
+            });
+        }
+    }
+    var closeKingoDialog = function () {
+        var dialog = j$('#' + dialogId);
+        var options = dialog.data('option');
+        if (options != null && options.hasOwnProperty("aboveMask")) {
+            if (options.aboveMask) {
+                j$('.kingo-mask').removeClass('masked');
+                dialog.removeClass('dialog-modal');
+            }
+        }
+        j$(".dialog-frame").attr("src","about:blank");
+        dialog.data('option', null).hide();
+    }
+    var openKingoDialog = function (options) {
+        //必须先完成模态窗口动作
+        if (j$('.kingo-mask').hasClass('masked')) {
+            alert(opts.message.modalLimit);
+            return;
+        }
+        if (options.target === false) {
+            alert(opts.message.noDialog);
+            return;
+        }
+
+        loading(true);
+
+        var dialog = j$('#' + dialogId);
+        //定义弹窗大小
+
+        if (options.isSize) {
+            dialog.addClass('dialog-' + options.size);
+        } else {
+            dialog.width(options.width);
+            dialog.height(options.height);
+        }
+        //如果是模态窗口
+        if (options.aboveMask) {
+            j$('.kingo-mask').addClass('masked');
+            dialog.addClass('dialog-modal');
+        }
+
+        // dialog.position({my:'center',at:'center',of:options.target}).show();
+        //定义弹窗位置
+        //alert(options.target+"/options.position="+options.position);
+        if (options.target == 'window') {
+            var position = {
+                //top: 50,
+                top: (j$(window).height()-dialog.height())/2,
+                left: (j$(window).width() - dialog.width()) / 2,
+            };
+            // 智能客服弹窗为专设 2022-12-02
+            //alert("options.upFrameId="+options.upFrameId);
+            if (options.upFrameId == "ROBOT") {
+                position = {
+                    bottom: 100,
+                    right: 50
+                };
+            }
+            dialog.css(position);
+        } else {
+            var position;
+            switch (options.position) {
+                case 'top':
+                    position = {my: 'left bottom', at: 'left top', of: '#' + options.target};
+                    break;
+                case 'left':
+                    position = {my: 'right top', at: 'left top', of: '#' + options.target};
+                    break;
+                case 'bottom':
+                    position = {my: 'left top', at: 'left bottom', of: '#' + options.target};
+                    break;
+                case 'right':
+                    position = {my: 'left top', at: 'right top', of: '#' + options.target};
+                    break;
+            }
+            dialog.position(position);
+        }
+
+        genarateHeader(dialog, options);
+
+        if(options.upFrameId) {
+            j$("#frame_current").val(options.upFrameId);
+        } else {
+            j$("#frame_current").val("");
+        }
+
+        if(options.parentFrameId) {
+            j$("#frame_current_parent").val(options.parentFrameId);
+        } else {
+            j$("#frame_current_parent").val("");
+        }
+
+        //填充弹窗数据
+        dialog.find('iframe').css('min-height', dialog.height() - dialog.find('.dialog-header').height() - 6).attr('src', options.url);
+        dialog.data('option', options).show();
+        dialog.find('iframe').load(function () {
+            loading(false);
+        });
+        return dialogId;
+    }
+    var isRightArgument = function (type, value) {
+
+        switch (type) {
+            case 'url':
+            case 'title':
+            case 'ico':
+                return (typeof value == 'string');
+            case 'target':
+                return (value == 'window' || new RegExp("^kingoDialog").test(value) || value === false);
+            case 'size':
+                return (j$.inArray(value, ['small', 'medium', 'large']) >= 0);
+            case 'width':
+            case 'height':
+                return (typeof value == 'number');
+            case 'position':
+                return (j$.inArray(value, ['top', 'left', 'bottom', 'right']) >= 0);
+        }
+    }
+
+    var loading = function (isBegin) {
+        if (isBegin) {
+            j$('#' + current).find('.dialog-bar>a.dialog-loader').show();
+        } else {
+            j$('#' + current).find('.dialog-bar>a.dialog-loader').hide();
+        }
+
+    }
+    this.fullscreen = function () {
+        var dialog = j$('#' + dialogId);
+        var options = dialog.data('option');
+        if (options.isFullscreen) {
+            //reset
+            var origin = {
+                top: options.origin.top,
+                left: options.origin.left,
+                width: options.origin.width,
+                height: options.origin.height,
+                frame: options.origin.frame
+            };
+            options.origin = null;
+            options.isFullscreen = false;
+            dialog.find('iframe').css('min-height', origin.frame);
+            if (!options.aboveMask) {
+                dialog.draggable("enable");
+            }
+            dialog.data('option', options)
+                .css({top: origin.top, left: origin.left, width: origin.width, height: origin.height})
+                .find('.dialog-bar>a.dialog-fullscreen>i').removeClass('fa-compress').addClass('fa-expand');
+
+        } else {
+            //fullscreen
+            var originPos = {
+                origin: {
+                    top: dialog.offset().top,
+                    left: dialog.offset().left,
+                    width: dialog.width(),
+                    height: dialog.height(),
+                    frame: dialog.find('iframe').css('min-height')
+                },
+                isFullscreen: true
+            };
+            dialog.find('iframe').css('min-height', j$(window).height() - dialog.find('.dialog-header').height() - 6);
+            if (!options.aboveMask) {
+                dialog.draggable("disable");
+            }
+            dialog.data('option', j$.extend(options, originPos))
+                .css({top: 0, left: 0, width: '100%', height: j$(window).height()})
+                .find('.dialog-bar>a.dialog-fullscreen>i').removeClass('fa-expand').addClass('fa-compress');
+        }
+
+    }
+
+    this.refreshDialog = function () {
+        loading(true);
+        j$('#' + dialogId).find('iframe')[0].contentWindow.location.reload();
+        j$('#' + dialogId).find('iframe').load = function () {
+            loading(false);
+        }
+
+    }
+    this.closeDialog = function () {
+        closeKingoDialog();
+    }
+    this.openDialog = function (settings) {
+
+        if (settings.width != null || settings.height != null) {
+            settings.isSize = false;
+        }
+        var options = j$.extend({}, dialogDefaults, settings);
+        return openKingoDialog(options);
+    }
+    this.openModalDialog = function (settings) {
+
+        var options = {
+            aboveMask: true,
+            ableDrag: true,
+            ableMini: false,
+            closeMode: ["btn"]
+        };
+
+        if (settings.width != null || settings.height != null) {
+            settings.isSize = false;
+        }
+        options = j$.extend({}, dialogDefaults, options, settings);
+        return openKingoDialog(options);
+    }
+
+    this.active = function (iframeDoc) {
+        for (var i = 0; i < opened.length; i++) {
+            if (j$('#' + opened[i]).find('iframe').get(0).contentWindow.document === iframeDoc) {
+                activeDialog(opened[i]);
+                return;
+            }
+        }
+    }
+    this.findParentDialog = function (iframeDoc) {
+        for (var i = 0; i < opened.length; i++) {
+            if (j$('#' + opened[i]).find('iframe').get(0).contentWindow.document === iframeDoc) {
+                return opened[i];
+            }
+        }
+        return false;
+    }
+    this.getOpened = function () {
+        return opened;
+    }
+    this.getUpFrameId = function() {
+        return j$("#frame_current").val() ;
+    }
+    this.getParentUpFrameId = function() {
+        return j$("#frame_current_parent").val() ;
+    }
+
+    this.getUpFrame = function() {
+        var topFrame = top.window.document.getElementById("frmDesk").contentWindow;
+        var upFrameId = j$("#frame_current").val() ;
+        var parentFrameId = j$("#frame_current_parent").val() ;
+        //alert("parentFrameId="+parentFrameId+"/upFrameId="+upFrameId);
+        if (upFrameId != "") {
+            if (upFrameId == "frmDesk") {
+                return topFrame;
+            } else {
+            	if (parentFrameId && parentFrameId!=""){
+            		// 如果传入了中间层(标签也导航)的FrameId值(三层Frame)： frmDesk / frame_1 /  frmReport
+                    if (parentFrameId == "frmDesk") {
+                        return topFrame.document.getElementById(upFrameId).contentWindow;
+                    } else {
+                	    return topFrame.document.getElementById(parentFrameId).contentWindow.document.getElementById(upFrameId).contentWindow;
+                    }
+                } else {
+                    // 如果未传入了中间层的FrameId值(二层Frame)： frmDesk / frmReport
+                    return topFrame.document.getElementById(upFrameId).contentWindow;
+				}
+            }
+        } else {
+            return null;
+        }
+    }
+    init(settings);
+}
+window.dialogManagement = new kingoDialog();

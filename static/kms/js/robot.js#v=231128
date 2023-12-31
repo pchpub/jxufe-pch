@@ -1,0 +1,94 @@
+jQuery(document).ready(function () {
+
+    // 双击弹出智能客服弹窗
+    jQuery(".hellokingo").on("dblclick",function(){
+        askquestion();
+    });
+
+    // 鼠标事件：显示智能客服提示信息
+    jQuery("[data-toggle='popover']").popover({
+        html : true,
+        title: title(),
+        placement: 'left',
+        delay:{show:500, hide:3000},
+        content: function() {
+            var opacity = jQuery("a.bind_hover_card, .hellokingo").css("opacity");
+            var hideshow = "隐藏小青";
+            if (parseFloat(opacity)>0.5) {
+                hideshow = "隐藏小青";
+            } else {
+                hideshow = "显示小青";
+            }
+            return content(hideshow);
+        }
+    });
+
+})
+
+//模拟动态加载标题(真实情况可能会跟后台进行ajax交互)
+function title() {
+    return 'Hi，我是客服小青！';
+}
+
+//模拟动态加载内容(真实情况可能会跟后台进行ajax交互)
+function content(hideshow) {
+    var data = "<p style='margin: 20px 10px; font-size: 12px;'>有什么可以帮助您的？<br/>双击我可以直接提问的哦。</p>"+
+        "<div style='margin: 20px 10px;'>" +
+        //"  <input id='btnfeedback' type='button' class='btn btn-primary' value='我要反馈' onclick='feedback()'/>&ensp;&ensp;"+
+        //"  <input id='btnask' type='button' class='btn btn-primary' style='padding: 6px 50px' value='我要提问' onclick='askquestion()'/>"+
+        "  <input id='btnask' type='button' class='btn btn-primary' style='padding: 5px 10px' value='我要提问' onclick='askquestion()'/>"+
+        "  <input id='btnhello' type='button' class='btn btn-primary' style='padding: 5px 10px' value='"+hideshow+"' onclick='hellekingo(this)'/>"+
+        "</div>";
+
+    return data;
+}
+
+// 显示或隐藏hello
+function hellekingo(obj) {
+    var opacity = jQuery("a.bind_hover_card, .hellokingo").css("opacity");
+    if (parseFloat(opacity)>0.5) {
+        jQuery("a.bind_hover_card, .hellokingo").css("opacity", "0.35");
+        jQuery(obj).attr("value","显示小青");
+    } else {
+        jQuery("a.bind_hover_card, .hellokingo").css("opacity", "0.95");
+        jQuery(obj).attr("value","隐藏小青");
+    }
+}
+
+//模拟悬浮框里面的按钮点击操作
+var cKWindowAsk ;
+function askquestion() {
+	var bgcolor = jQuery(".navbar-default").css("background-color");
+    var title = "智能客服";
+    var url = _webRootPath + "kms/autohelp.jsp?bgcolor="+bgcolor;
+    var kingoDialog = getKingoDialog();
+    if (!kingoDialog) {
+        var json = {"_title":title,"_width":"720px","_height":"600px","_isStop":true,"_isMove":true,"_imgsrc":"../images/"};
+        cKWindowAsk = new CKWindow(json);
+        cKWindowAsk.setSrc(url,"100%","100%");
+        cKWindowAsk.openWindow();
+    } else {
+        //var _width = 720;
+        //var _height = 600;
+        var _width = 840;
+        var _height = 640;
+        //var _upFrameId = window.frameElement && window.frameElement.id || 'ROBOT';
+        var _upFrameId = 'ROBOT'; // 固定为ROBOT-机器人客服
+        var isMinified = true,	//是否最小化
+            aboveMask = false,	//是否有遮盖
+            ableDrag = true,  //能否拖动
+            ableMini = true,  //能否最小化
+            ableFull = false, //能否最大化
+            ableClose= false; //显示关闭图标
+
+        kingoDialog.openModalDialog({"url":url,"title":title,"width":_width,"height":_height,
+            "isMinified": isMinified, "aboveMask": aboveMask, "ableDrag": ableDrag, "ableMini": ableMini, "ableFull": ableFull, "ableClose": ableClose,
+            "position": "right",
+            "upFrameId":_upFrameId});
+    }
+}
+
+//模拟悬浮框里面的按钮点击操作
+function feedback() {
+    alert('我要反馈');
+}

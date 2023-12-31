@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<base href="">
+	<title>KINGOSOFT高校教学综合管理服务平台</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">    
+	<meta http-equiv="keywords" content="青果软件,智慧校园,教学管理,教务系统">
+	<meta http-equiv="description" content="教学管理服务平台">
+    <!--<link rel="stylesheet" type="text/css" href="../themes/default/MenuTree.css">-->
+
+	<link rel="stylesheet" type="text/css" media="screen" href="../custom/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="../custom/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="../frame/home/css/common.css">
+      <link rel="stylesheet" type="text/css" media="screen" href="../frame/home/css/main.css">
+
+    <style type="text/css">
+        *{margin:0px; padding:0px; font-size:12px; font-family: "宋体";}
+        .index-left-panel {
+		    background-color: #FFFFFF!important;
+		}  
+		
+		.index-left-panel .panel {
+		    font-size: 14px;
+	        background-color: #FFFFFF!important;
+		    color: #333333!important;
+		}		
+
+		/**
+		.left-menu li:nth-child(odd) {
+		  background-color: #FFFFFF!important;
+		}
+		*/
+		  
+		.panel-default{
+		  border-color: #FFFFFF!important;
+		}
+		  
+		.nav>li>a {
+		    position: relative;
+		    display: block;
+		    padding: 20px 15px 10px 5px;
+		}	
+		
+		@media screen and (max-width: 1366px){
+			.nav>li>a {
+			    position: relative;
+			    display: block;
+			    padding: 20px 12px 10px 2px;
+			}	
+		}			
+		
+		.nav>li>a>img {
+		    max-width: none;
+		    width:12px;
+		    height:12px;
+		    margin-left: 10px;
+		    margin-right: 5px;
+		}		
+		
+		/* 定义滚动条样式 */
+		::-webkit-scrollbar {
+		  width: 6px;
+		  height: 6px;
+		  background-color: rgba(240, 240, 240, 1);
+		}
+		 
+		/*定义滚动条轨道 内阴影+圆角*/
+		::-webkit-scrollbar-track {
+		  box-shadow: inset 0 0 0px rgba(240, 240, 240, .5);
+		  border-radius: 10px;
+		  background-color: rgba(240, 240, 240, .5);
+		}
+		 
+		/*定义滑块 内阴影+圆角*/
+		::-webkit-scrollbar-thumb {
+		  border-radius: 10px;
+		  box-shadow: inset 0 0 0px rgba(240, 240, 240, .5);
+		  background-color: rgba(240, 240, 240, .5);
+		  background-color: #C1C1C1;
+		}		  
+		.header-btn li{
+			height:60px;
+		}
+
+		.leftmenu_content ul{
+			justify-content: center;
+		}
+
+        .leftmenu_content ul li{
+            list-style-type: none;
+            height:27px;
+            line-height:27px;
+            width: 100%;
+            background-color:#F9F9F9;
+            padding:3px;
+            margin-bottom: 2px;
+            padding-left:10px;
+            float:left;
+            cursor: pointer;
+            /* 不换行，超出部分...表示
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;*/
+        }
+        a{
+            color: black;
+            text-decoration: none;
+        }
+        a:hover{
+            color:#FF0000;
+            text-decoration: none;
+        }
+        .ctltable{
+            border-collapse: collapse;
+            table-layout:fixed
+        }
+        .ctltable td#menuArea2 {
+            text-overflow:ellipsis;
+            overflow:hidden;
+            white-space: nowrap;
+        }
+        #userDefined{
+            max-height: 40px;
+            border: 0px solid red;
+        }
+
+		a.bind_hover_card, .hellokingo {
+			position: fixed;
+			/**width: 120px;
+			height: 120px;
+			bottom: 100px;
+			right: 50px;*/
+			width: 90px;
+			height: 90px;
+			bottom: 150px;
+			right: 45px;
+			transition: all 0.3s;
+			opacity: 0.95;
+			filter: Alpha(opacity=80);
+			color: #fff;
+			/**overflow: hidden;
+			display: none;*/
+		}
+
+    </style>
+
+  </head>
+  
+<body class="blue">
+   <header>
+    <div class="container-fluid">
+        
+	  <nav class="navbar navbar-default navbar-fixed-top" style="min-width:1180px;">
+	        <div class="navbar-header" style="height:60px;">
+		        <span class="header-title">
+		           <img src="./images/logo.png"><small class="header-school"></small>
+		        </span>	 
+	        </div>
+	        <div id="navbar" class="navbar-collapse collapse">
+	          <ul class="nav navbar-nav navbar-right header-btn">
+
+                <li id="header-home" class="header-home active" name="home"><a><i class="fa fa-home" style="font-size:120%;"></i><img src="../frame14/img/nav/home.png" style="display:none"></img>首页</a></li>
+                <li id="header-apps" class="header-apps" name="myapps"><a><i class="fa fa-windows"></i>主控</a></li>
+                <li class="header-search" name="search"><a><i class="fa fa-search" style="font-size:120%;"></i>搜索</a></li>
+                <li class="header-mypic" name="mypic" style="display: none;"><a>画像</a></li>
+                <li class="header-theme" name="theme"><a><i class="fa fa-cogs"></i>主题</a></li>
+                <li class="header-fullscreen" name="fullscreen"><a><i class="fa fa-arrows-alt"></i>全屏</a></li>
+                <li class="header-exitfullscreen" name="exitfullscreen" style="display:none;"><a><i class="fa fa-mail-reply"></i>还原</a></li>
+                <li class="header-exit" name="exit"><a><i class="fa fa-sign-out" style="font-size:120%;"></i>退出</a></li>
+
+	            <li class="dropdown header-mores" name="mores">
+	              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i>更多</a>
+	              <ul class="dropdown-menu">
+                      <li class="header-message" name="message"><i class="fa fa-bell"></i>在线消息</li>
+                      <li class="header-myfocus" name="myfocus"><i class="fa fa-heart"></i>我的关注</li>
+                      <li class="header-recentlyuse" name="recentlyuse" style="display: none;"><i class="fa fa-paw"></i>最近使用</li>
+                      <li role="separator" class="divider" style="display: none;"></li>
+                      <li class="header-stustatus" name="stustatus" style="display: none;"><a>学籍</a></li>
+                      <li class="header-exams" name="exam" style="display: none;"><a>考试</a></li>
+                      <li class="header-scores" name="score" style="display: none;"><a>成绩</a></li>
+                      <li role="separator" class="divider"></li>
+                      <li class="header-schoolnotice" name="schoolnotice"><i class="fa fa-volume-up"></i>校内通知</li>
+                      <li class="header-documnet" name="document"><i class="fa fa-cloud-download"></i>文档下载</li>
+                      <li role="separator" class="divider"></li>
+                      <li class="header-course" name="course"><i class="fa fa-table"></i>教学安排</li>
+                      <li role="separator" class="divider"></li>
+                      <li class="header-user" name="user"><i class="fa fa-user"></i>用户信息</li>
+                      <li class="header-usersecret" name="usersecret"><i class="fa fa-user-secret"></i>修改密码</li>
+                      <li role="separator" class="divider"></li>
+                      <li class="header-lock" name="lock" style="display:none;"><i class="fa fa fa-lock"></i>锁屏</li>
+                      <li class="header-recentlyuse" name="recentlyuse"><i class="fa fa-paw"></i>操作日志</li>
+                      <li class="header-feedback" name="feedback" style="display: none;"><i class="fa fa-edit"></i>我要反馈</li>
+                      <li class="header-help" name="help" style="display: '';"><i class="fa fa fa-question-circle"></i>使用帮助</li>
+                      <li role="separator" class="divider"></li>
+                      <li class="header-systemversion" id="systemversion" style="display: none;" name="systemversion"><i class="fa fa-history"></i>回顾经典</li>
+                      <li class="header-systemversion-new" name="systemversion-new" style="display:none;"><i class="fa fa-history"></i>回到新版</li>
+                      <li class="header-exit" name="exit" style="display:none;"><i class="fa fa-sign-out"></i>退出</li>
+	              </ul>
+	            </li>
+	          </ul>
+	        </div><!--/.nav-collapse -->
+	    </nav>        
+        
+    </div>
+	</header>
+	<article style="min-width:1180px;">
+	    <div class="index-left-panel">
+	        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+	        </div>   
+	    </div>
+	    
+	    <div class="row" style="margin: 0px; padding: 0px; border: 0px solid #DDD;">
+	       <div class="row bread-crumb" style="display:'';">
+		       	<div class="col-lg-7 col-md-6 col-sm-5 col-xs-5" id="page-path"></div>
+			    <div class="col-lg-4 col-md-5 col-sm-5 col-xs-4 function-focus">
+		       		<span id="focusFun"></span>
+			       	<span id="banner_plusmenu" style="display: none;"> 
+						<a href="javascript:showPlusMenu();">附加功能</a>
+					</span>		       		
+		       	</div>
+	       </div>
+		   <div class="row index-right-panel">
+		       <iframe width="100%" id="frmDesk" name="frmDesk" src=""></iframe>
+		   </div>
+	    </div>
+	</article>
+	<footer class="fixed" style="min-width:1180px;">
+	    <span class="pull-left control-menu" id="control-menu" name="dedent" title="隐藏菜单"><i class="fa fa-dedent" aria-hidden="true"></i></span>
+	   	<span class="pull-left header-user"><label></label></span>
+	   	<span id="sp_role"></span>
+	    <span class="copyright">Copyright 2020 青果软件集团有限公司</span>
+	    <span class="pull-right yearterm" id="yearterm" style="display: '';">2019-2020学年第一学期</span>
+	    <span class="pull-right edit-pwd" id="edit-pwd" style="display: none;">修改密码</span>
+	</footer>
+	<!-- dialog mask -->
+	<div class="kingo-mask"></div>
+	<div class="dialog-container"></div>
+	
+	<!--隐藏层在最顶层，放在最后-->
+	<div id="bgDiv">   <!--隐藏层，背景遮挡层(半透明)-->
+	</div>
+	<div id="fgDiv">   <!--隐藏层，逻辑业务窗口层-->
+	</div>
+
+    <!--<a href="#" class="bind_hover_card" data-toggle="popover" data-placement="bottom" data-trigger="hover"><img class="hellokingo" src="../robot/images/hello.gif" /></a>-->
+   <a href="#" class="bind_hover_card" data-toggle="popover" data-placement="bottom" data-trigger="hover" style="display: none"><img class="hellokingo" src="../kms/images/hello-hi.gif" /></a>
+
+	<input type="hidden" id="frmdesk_src" name="frmdesk_src" title="当前操作的页面路径" />
+	<input type="hidden" id="menucode_current" name="menucode_current" title="当前操作的菜单id" />
+	<input type="hidden" id="frame_current" name="frame_current" title="当前工作区的的frameId" />
+	
+	<input type="hidden" name="xn" id="xn"/>
+	<input type="hidden" name="xn1" id="xn1"/>
+	<input type="hidden" name="xq_m" id="xq_m"/>
+	<input type="hidden" name="_xq" id="_xq"/>
+    <input type="hidden" name="hid_PasswordPolicy" id="hid_PasswordPolicy" />
+   <input type="hidden" name="hid_hbxckxx" id="hid_hbxckxx" />
+	
+	 <script type="text/javascript" src="../frame/home/js/SetMainInfo.jsp?v=230519" ></script>
+	<script type="text/javascript" src="../custom/js/jquery-1.12.3.min.js"></script>
+	<script type="text/javascript" src="../custom/bootstrap/js/bootstrap.min.js" ></script>
+	<script type="text/javascript" src="../custom/js/jquery-ui-1.12.1.min.js" ></script>
+	<script type="text/javascript" src="../custom/js/dialog.js?v=230423" ></script>
+	<script type="text/javascript" src="../custom/js/base64.2.js"></script>   
+	<script type="text/javascript" src="../custom/js/jquery.fullscreen-min.js"></script>   
+	<script type="text/javascript" src="../js/Common.js" ></script>
+	<script type="text/javascript" src="../js/Window.js?v=20230519" ></script>
+	<script type="text/javascript" src="../js/UserMenuBean.js"></script>
+	<script type="text/javascript" src="../js/AjaxBase.js"></script>
+	<script type="text/javascript" src="../frame/home/js/messages.js"></script>
+	<script type="text/javascript" src="../frame14/menus/js/LeftPopMenu.js"></script>
+    <script type="text/javascript" src="../custom/js/ymPrompt.js"></script>
+   <script type="text/javascript" src="../kms/js/robot.js?v=231128"></script>
+	<script type="text/javascript" src="../frame/home/js/homes.js?v=20231205"></script>
+   <!--
+   <script type="text/javascript" src="../robot/js/robot.js?v=221203"></script>
+   -->
+	<script type="text/javascript" src="../custom/js/jkingo.noprint.js"></script>
+	<script type="text/javascript" src="../custom/js/jwutil.js"></script>
+   <script type="text/javascript" src='../student/js/loadClassPath.js'></script>
+
+    <script type="text/javascript">
+        showHellokingo();
+        document.getElementById("sp_role").innerHTML=_rolestr;
+        jwutil.setYearTerm("xn|xn1|xq_m|_xq",InitData);
+        function showHellokingo() {
+            if ((G_SCHOOL_CODE == "10000" || G_SCHOOL_CODE == "20000") && G_LOGIN_ID == "webmaster"){
+                jQuery("a.bind_hover_card, .hellokingo").css("display","");
+            } else {
+                jQuery("a.bind_hover_card, .hellokingo").css("display","none");
+            }
+        }
+
+        function chkLoginRole(obj){
+            if(obj.value!=""){
+                if(_usergroupcode!=obj.value){
+                    var url = _webRootPath + "jw/common/setYearTerm.action" ;
+                    var params = {
+                                    "xn" : document.getElementById("xn").value,
+                                    "xqM" : document.getElementById("xq_m").value,
+                                    "istop":_istop,
+                                    "groupcode" : obj.value,
+                                    "flag":"1"
+                                  };
+                    kutil.doAjax(url,params,_callBack);
+                }
+            }
+        }
+        // 业务操作后的回调操作
+        function _callBack(response) {
+            var data = JSON.parse(response); // 响应消息转化为JSON, 由json2.js提供此方法
+            var status = data.status ;
+            var message = data.message ;
+            if (status == "200") {
+                var url = _webRootPath + "frame/desk/changeUserGroupcode.action" ;
+                window.location.href=url;
+            }
+        }
+        function InitData() {
+            $("hid_PasswordPolicy").value = _isPasswordPolicy;
+            $("hid_hbxckxx").value=_hbxckxx;
+            if(G_SCHOOL_CODE=="10000" || G_SCHOOL_CODE=="20000"){
+                document.getElementById("systemversion").style.display="";
+			}
+            if(_usertype=="STU" && _wzcsfdl!=""){
+                alert(_wzcsfdl);
+                window.top.location.href = _webBRootPath+"DoLogoutServlet";
+            }
+            else if ("0" == $("hid_PasswordPolicy").value) {
+                doModifyPassword();
+            }
+            else if("2"==$("hid_PasswordPolicy").value) {
+                alert("密码已到期，请修改密码后再使用系统！");
+                doModifyPassword();
+            }
+            else if($("hid_hbxckxx").value=="1"){//存在不阅读禁止使用系统的在线消息
+                doOpenOnlinMessage();
+			}
+            else if (u_istop == "1" && _isManager == "1") {
+                setXnxq();
+            }
+            else if (_usertype == "STU" && G_SCHOOL_CODE == "10718") {//陕西师范大学
+                doOpenXyyj();
+            }
+        }
+        var cKWindow;
+        // 修改密码
+        function doModifyPassword() {
+            var url = _webBRootPath+"frame/desk/showUserModifyPassword4PostLogin.action";
+            var width=window.document.body.offsetWidth;
+            var height=window.document.body.offsetHeight;
+            var kingoDialog = getKingoDialog();
+            var h=365;
+            if(("12872"==G_SCHOOL_CODE || "12764"==G_SCHOOL_CODE || "14045"==G_SCHOOL_CODE || "10842"==G_SCHOOL_CODE || "14502"==G_SCHOOL_CODE || "60006"==G_SCHOOL_CODE) && (G_USER_TYPE=="STU" || G_USER_TYPE=="TEA")) {//杭州职业技术学院、四川建筑职业技术学院、绵阳城市学院、三门峡职业技术学院、皖北卫生职业学院、四川省食品药品学校
+                h=390;
+            }
+            /*
+            ymPrompt.win({message:url,width:400, height:h,title:'',handler:doHanlerUpdatePassword,maxBtn:false,minBtn:false,closeBtn:false,iframe:true});
+            function doHanlerUpdatePassword(tp){
+                var result = tp.flag ;
+                if ("saveOk" == result){
+                    // 密码修改成功，加载桌面
+                    jQuery("#hid_PasswordPolicy").val("1");
+                    window_onload();
+                } else {
+                    // 重新登陆
+                    window.top.location.href = _webBRootPath+"DoLogoutServlet";
+                }
+            }
+            */
+            if (!kingoDialog) {
+                var _json = {"_title":"修改密码","_width":"400px","_height":h+"px","_top":((height-h)/2)+"px","_left":((width-400)/2)+"px","_isStop":true,"_isMove":true,"_imgClose":false,"_imgsrc":"../images/"};
+                cKWindow = new CKWindow(_json);
+                cKWindow.setSrc(url,"100%","100%");
+                cKWindow.openWindow(_json);
+            } else {
+                var _upFrameId = window.frameElement && window.frameElement.id || '';
+                var _parentFrameId = window.parent.frameElement && window.parent.frameElement.id || '';
+                kingoDialog.openModalDialog({"url":url,"title":"修改密码","width":400,"height":h, "upFrameId":_upFrameId,"parentFrameId":_parentFrameId,"ableRefresh":false,"ableFull":false,"ableClose":false});
+            }
+        }
+
+        function CloseWin_UpdatePassword(){
+            doHanlerUpdatePassword();
+            cKWindow.closeWindow();
+        }
+        function doHanlerUpdatePassword() {
+            // 密码修改成功，加载桌面
+            jQuery("#hid_PasswordPolicy").val("1");
+            //window_onload();
+            if($("hid_hbxckxx").value=="1") {//存在不阅读禁止使用系统的在线消息
+                doOpenOnlinMessage();
+            }
+            else if (u_istop == "1" && _isManager == "1") {
+                setXnxq();
+            }
+            else if (_usertype == "STU" && G_SCHOOL_CODE == "10718") {//陕西师范大学
+                doOpenXyyj();
+            }
+        }
+        function doOpenOnlinMessage() {
+            var url = _webBRootPath+"common/popmsg/popmsg.getOnlineMessage.jsp";
+            var kingoDialog = getKingoDialog();
+            var h=400;
+            var width=window.document.body.offsetWidth;
+            var height=window.document.body.offsetHeight;
+            if (!kingoDialog) {
+                var _json = {"_title":"查看在线消息","_width":"450px","_height":h+"px","_top":((height-h)/2)+"px","_left":((width-450)/2)+"px","_isStop":true,"_isMove":true,"_imgClose":false,"_imgsrc":"../images/"};
+                cKWindow = new CKWindow(_json);
+                cKWindow.setSrc(url,"100%","100%");
+                cKWindow.openWindow(_json);
+
+            } else {
+                var _upFrameId = window.frameElement && window.frameElement.id || '';
+                kingoDialog.openModalDialog({"url":url,"title":"查看在线消息","width":450,"height":h, "upFrameId":_upFrameId,"ableRefresh":false,"ableFull":false,"ableClose":false});
+            }
+        }
+        function CloseWin(){
+            doAfterOnlinMessage();
+            cKWindow.closeWindow();
+        }
+        function doAfterOnlinMessage() {
+            // 无必须阅读在线消息时加载桌面
+            jQuery("#hid_hbxckxx").val("0");
+            //window_onload();
+            if (u_istop == "1" && _isManager == "1") {
+                setXnxq();
+            }
+            else if (_usertype == "STU" && G_SCHOOL_CODE == "10718") {//陕西师范大学
+                doOpenXyyj();
+            }
+        }
+        //学业预警
+		function doOpenXyyj() {
+            var loader=new ClassPathLoader("forecastInfo","../student/data/classPath.xml");
+            var path=loader.getClassPath();
+            //Ajax.doPost("../STU_DynamicInitDataAction.do?classPath="+path,"",fInitData);
+            Ajax.doPost("../DyxyyjtzAction.do?xn="+document.getElementById("xn").value+"&xq="+document.getElementById("xq_m").value,"",fInitData);
+        }
+        function fInitData(){
+           //var xmlDoc=this.responseXML.documentElement;
+            //var item_len = xmlDoc.getElementsByTagName("item").length ;
+            var doc=this.responseText;
+            if(doc && doc != "{}") {
+            //if(item_len>0){
+                var url= _webRootPath+"student/stu.xsxj.xjyd.xyyj.html";
+                var dialogId = window.dialogManagement.openModalDialog({"url":url,"title":"学业预警","width":760,"height":580});
+            }
+        }
+    </script>
+  </body>
+</html>

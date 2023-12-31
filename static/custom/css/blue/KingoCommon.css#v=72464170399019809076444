@@ -1,0 +1,288 @@
+/** 青果Web应用通用(全局)风格CSS */
+
+/** 当前选定行底色 */
+.kingo_selected_row {
+	background-color: #ABCADE!important;
+}
+.kingo_footer_bg {
+	background-color: #5DA2D6;
+}
+/** 必须输入项的背景底色 */
+.kingo_input_bg {
+	background-color: #E1C7E1; /** #F2F2F2; #5A5AFF*/
+}
+
+.desk {width: 100%; height:99%; text-align:center; margin: 0 auto; border: 0px solid blue; }
+.desk_header {background: #BDDFF2; line-height: 25px; height: 25px; padding-left: 7px; margin-bottom: 5px;}
+.desk_title {float: left; padding-left: 5px; color: #369542}
+.desk_href  {float: right; padding-right: 10px; }
+.desk_more  {color: #DC713F; text-decoration:none ;}
+.desk_content { 
+	width:100%; 
+	height:auto; 
+	border: 0px solid blue; 
+	background-color: white; 
+	padding-top: 1px; 
+	padding-bottom: 1px; 
+}
+
+/** 业务集成各系统标题底色 */
+.banner_title {
+	background-color: #5DA2D6;
+}
+
+/* banner区域 */
+#banner { background-color: #3485C4; }
+/**
+#nav { background-color: #27A5F9; }
+*/
+
+#banner { background-color: #FFFFFF; }
+/**
+#nav { background-color: #3485C4; }
+*/
+
+/**
+#box{
+	border-top-color:#3485C4;    
+	border-bottom-color:#27A5F9;    
+	border-left-color:#3485C4;    
+	border-right-color:#27A5F9;    
+}			
+*/
+
+/** footer区域 主题色：蓝色 */
+#div_footer{
+	width : 100%;
+	height: 113px;
+	color: white;
+	/**background-color: #3485C4;*/
+	background-color: #0085C2!important;
+}
+
+#div_copyright{
+	clear:both;
+	width: 100%;
+	height: 25px;
+	line-height: 25px;
+	vertical-align: middle;
+	margin-top: 1px;
+	color: white;
+	/**background-color: #3485C4;*/
+	/**background-color: #0085C2;*/
+	background: url(images/bkbottom.png) repeat;
+	border:0px solid red;
+}
+
+/** 桌面(左侧导航栏)部分 */
+.leftmenu_header { 
+	height:40px; 
+	line-height: 40px;
+	padding-top:0px; 
+	background-color: #0085C2;
+	color:white; 
+	padding-left:10px; 
+}
+.leftmenu_content { 
+	padding:0px;
+	margin:0px;
+	background-color:white; 
+}
+/** 桌面(主体分区栏)部分 */
+.desk_header2 { 
+	background-color: #27A5F9!important;
+}
+/* 桌面:我的课表为固定色 */
+#mt_lessonSchedule {
+	background-color: #E3B03B!important;
+}
+
+
+/* V16 Banner 样式 */
+.banner_nav_top{
+	padding-left: 30px;
+	/**background-color: #0085C2;
+	background: url(images/bktop.png) repeat;*/
+	/**
+	height: 39px;
+	line-height: 39px;
+	*/
+	color: #FFFFFF;
+}
+
+/**从上到下的线性渐变
+.banner_nav_top {
+	background: -webkit-linear-gradient(#269ACE,#0085C2); /* Safari 5.1 - 6.0 */
+	background: -o-linear-gradient(#269ACE,#0085C2); /* Opera 11.1 - 12.0 */
+	background: -moz-linear-gradient(#269ACE,#0085C2); /* Firefox 3.6 - 15 */
+	background: linear-gradient(#269ACE,#0085C2); /* 标准的语法 */
+    filter:alpha(opacity=100 finishopacity=50 style=1 startx=0,starty=0,finishx=0,finishy=150) progid:DXImageTransform.Microsoft.gradient(startcolorstr=#269ACE,endcolorstr=#0085C2,gradientType=0);
+    -ms-filter:alpha(opacity=100 finishopacity=50 style=1 startx=0,starty=0,finishx=0,finishy=150) progid:DXImageTransform.Microsoft.gradient(startcolorstr=#269ACE,endcolorstr=#0085C2,gradientType=0);/*IE8*/	
+}
+*/
+/* V16 Banner 样式 */
+.banner_nav_top{
+	padding-left: 30px;
+	/**background-color: #6CB975;*/
+	background: url(images/bktop.png) repeat;
+	/**
+	height: 39px;
+	line-height: 39px;
+	*/
+	color: #FFFFFF;
+}
+.banner_nav_Bottom{
+	height: 60px;
+	border-bottom: 1px solid #DDDDDD;
+	background: url(images/bkmain.png) repeat;
+}
+
+.searchBtn{
+	background-color: #0085C2;
+	border: 1px solid #0085C2;
+}
+
+.searchIpt{
+/**
+	background-color: #2B9DD1;
+	border: 1px solid #2B9DD1;	
+*/	
+}
+
+.button
+{
+    border: 1px solid #0085C2;
+}
+input[type="button"]:hover {
+	background-color: #0085C2;
+	color: #FFFFFF;
+}
+.button_hover
+{
+	background-color: #0085C2!important;
+	color: #FFFFFF!important;
+}
+input[type="button"]:disabled {
+	border: 1px solid #CCCCCC;
+	background-color: #F5FAFF;
+	color: #CCC;
+	cursor: default;
+}
+
+.but20right, input#btnRight {
+    border: 0px;
+    height: 31px;
+    width: 30px;
+    background: url(images/right.gif)!important;
+}
+.but20left, input#btnLeft {
+    border: 0px;
+    height: 31px;
+    width: 30px;
+    background: url(images/left.gif)!important;
+}
+.but20down, input#btnDown {
+    border: 0px;
+    height: 31px;
+    width: 30px;
+    background: url(images/down.gif)!important;
+}
+.but20up, input#btnUp {
+    border: 0px;
+    height: 31px;
+    width: 30px;
+    background: url(images/up.gif)!important;
+}
+.chartsTitle {
+   background-color: #0085C2 ;
+}
+.zdyTableTitle {/* 自定义table表格 标题颜色*/
+   background-color: #0085C2 ;
+}
+
+/* ====== new student and teacher UI (2020.01.16)======*/
+.blue footer{
+	background-color: #0085C2;
+}
+.blue .bread-crumb{
+	background-color:#0085C2;
+	color:#FFFFFF;
+}
+.header-school,
+/**.banner_titleName */
+{
+    color: #0085C2;
+}
+.index-left-panel {
+  background-color: #0085C2;
+}
+.index-left-panel .panel{
+  background-color: #0085C2;
+}
+.panel-default{
+  border-color: #0085C2;
+}
+/**
+.left-menu li:nth-child(odd) {
+  background-color: #0085C2;
+}
+*/
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover {
+    color: #FFF;
+    /*background-color: #0085C2;*/
+	background-color:#1271d5;
+}
+ul.dropdown-menu li .fa, .header-user .fa{
+  color: #0085C2;
+}
+ul.dropdown-menu li:hover {
+  cursor: pointer;
+  color: #0085C2;
+}
+
+div.con:hover {
+    cursor: pointer;
+	/** border: 1px solid #368AE2;
+    background-color: #368AE2; */
+}
+.seconeMenu	.title span {
+   color: #368AE2;				
+}
+.seconeMenu div.item ul:hover {
+    cursor: pointer;
+	border: 1px solid #368AE2;
+    background-color: #368AE2;
+}
+
+.blue .menu-item.active,.blue .menu-item:hover{
+	background-color:#289BCF;
+}
+
+/* ====== new student and teacher UI (2020.01.16)======*/
+
+.navbar-default {
+    background-color: #368AE2;
+    border-color: #e7e7e7;
+}
+.header-school
+{
+    color: #FFFFFF;
+}
+.blue footer{
+	background-color: #368AE2;
+	font-size: 12px;
+}
+.blue .bread-crumb{
+	background-color:#F5F5F5;
+	color:#333;
+}
+.blue .bread-crumb span {
+	cursor:pointer;
+}
+.blue .menu-item.active,.blue .menu-item:hover{
+	background-color:#368AE2;
+}
+ul.dropdown-menu li .fa, .header-user .fa{
+  color: #368AE2;
+}
+

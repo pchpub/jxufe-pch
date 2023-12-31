@@ -1,0 +1,154 @@
+*{
+	margin:0 0;
+	padding:0,0;
+	font-size:12px;
+	font-family:"Arial,宋体";
+	text-decoration: none;
+	list-style: none;
+}
+body{
+	min-width: 980px;
+}
+.container-fluid{
+	padding: 0px;
+}
+.banner_nav_top{
+	padding-left: 30px;
+	background-color: #0085C2;
+	height: 30px;
+	line-height: 30px;
+	/**
+	height: 40px;
+	line-height: 40px;
+	*/
+	color: #FFFFFF;
+}
+.currentUser{
+	margin-left: 30px;
+}
+.nav_menu {
+	margin-right: 30px;
+}
+.nav_menu ul > li{
+	float: left;
+	margin-left: 16px;
+	font-weight: bold;
+}
+.nav_menu ul > li:hover{
+	color: red;
+	cursor: pointer;
+}
+.nav_menu ul > li > img {
+	width: 18px;
+	height: 18px;
+	/**
+	width: 24px;
+	height: 36px;
+	*/
+}
+.banner_nav_Bottom{
+	color: #FFFFFF;
+	height: 60px!important;
+	border-bottom: 1px solid #DDDDDD;
+}
+.banner_logo{
+    display: table-cell;
+    vertical-align: middle;
+	width: 50%;
+	float: left;
+	height: 100%;
+}
+/**
+.banner_titleName{
+	width: 50%;
+	float: left;
+	height: 100%;
+}
+*/
+.nav_menu{
+	width: 46%;
+	float: left;
+	height: 100%;
+}
+.banner_logo > img{
+	/**
+	margin-left: 30px;
+	margin-top: 15px;
+	*/
+	margin-left: 15px;
+	padding-top: 2px;/**8px;*/
+}
+.banner_titleName {
+	vertical-align: middle;
+	font-family:"微软雅黑";
+	font-size: 24px;
+	font-weight: normal;
+	color: #FFFFFF;
+	letter-spacing: 2px;	
+	margin-left: 15px;
+	padding-top: 2px;/**8px;*/
+}
+
+@media screen and (max-width: 1024px) {
+	.banner_titleName > h3{
+		font-family:"微软雅黑";
+		font-weight: normal;
+		text-align: center;
+		color: #FFFFFF;
+		letter-spacing: 0px;	
+		margin-top: 15px;
+	}
+}
+
+.searchDiv{
+	/**
+	width: 300px;
+	margin-top: 20px;
+	*/
+	margin-top: 14px;
+	float: right;
+	padding-right: 30px;
+}
+
+.searchDiv .form-control{
+	height: 30px;
+	font-size: 12px;
+}
+
+.searchDiv .input-group-addon{
+	padding: 0px 0px;
+}
+
+.searchIpt{
+	height: 18px!important\0;
+	width: 180px!important;
+}
+.searchBtn{
+	width:45px;
+	vertical-align: auto !important\0;
+	position:relative !ie;/* IE 6/7 */
+	top:7px !ie;/* IE 6/7 */
+}
+.searchBtn:hover{
+	cursor: pointer;
+	/**background: #E2E1E1;*/
+}
+
+#divUser img {
+	width: 13px;
+	height: 13px;
+}
+
+.currentTime {
+	font-family: "Calibri";
+	float: right;
+	margin-left: 30px;
+}
+.currentUser {
+	font-family: "Calibri";
+	float: right;
+}
+
+.nav_menu .col-xs-12 {
+	padding-right: 0px;
+}

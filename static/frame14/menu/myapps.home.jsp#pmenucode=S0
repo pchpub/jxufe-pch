@@ -1,0 +1,92 @@
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	    <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Expires" content="0">	    
+		<title>我的应用</title>
+		<link rel="stylesheet" href="/custom/bootstrap/css/bootstrap.min.css?t=25315170399037362150763" />
+		<link rel="stylesheet" href="/frame14/menu/myapps.home.css?t=36796170399037362160275" />
+
+		<script type="text/javascript">
+
+			function appendGrayCssFile(fn, fid){
+				var el;
+				var ft='css';
+				if (ft=="css"){
+					el=document.createElement("link");
+					el.setAttribute("id",fid);
+					el.setAttribute("rel", "stylesheet");
+					el.setAttribute("type", "text/css");
+					el.setAttribute("href", fn);
+				}
+				document.getElementsByTagName("head")[0].appendChild(el);
+			}
+
+			var myapps = "" ;
+
+			var xt_allgraytheme = "0";
+			if ("1" == xt_allgraytheme) {
+			    var fid = "";
+			    var fn = "/frame14/menu/myapps.gray.css?t=60352170399037362123894"
+				appendGrayCssFile(fn, fid);
+			}
+
+		</script>
+		
+	</head>
+	<body style="-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;">
+	
+		<div id="home-menu" class="container-fluid">
+			<div class="row">
+				<div class="appTitle">
+					我的应用
+				</div>
+				<div class="appContent" id="content">
+					<div class="item col-md-3 col-sm-4 col-xs-6 con" id="S1"><div class="con-inner row div-bgcolor-1"><div class="item-left col-xs-8">  <ul>    <li><a class="conTitle">学籍信息</a></li>    <li><span class="conRight">学籍档案、异动、辅修和毕业</span></li>  </ul></div><div class="item-right col-xs-4"><img src='../img/myapps/xjxx.png'></img></div></div></div><div class="item col-md-3 col-sm-4 col-xs-6 con" id="S201"><div class="con-inner row div-bgcolor-2"><div class="item-left col-xs-8">  <ul>    <li><a class="conTitle">培养方案</a></li>    <li><span class="conRight">个人培养方案和毕业学分要求</span></li>  </ul></div><div class="item-right col-xs-4"><img src='../img/myapps/pyfa.png'></img></div></div></div><div class="item col-md-3 col-sm-4 col-xs-6 con" id="S202"><div class="con-inner row div-bgcolor-3"><div class="item-left col-xs-8">  <ul>    <li><a class="conTitle">网上选课</a></li>    <li><span class="conRight">正选、补/退选、辅修选和重修选等自主选课</span></li>  </ul></div><div class="item-right col-xs-4"><img src='../img/myapps/wsxk_s.png'></img></div></div></div><div class="item col-md-3 col-sm-4 col-xs-6 con" id="S203"><div class="con-inner row div-bgcolor-4"><div class="item-left col-xs-8">  <ul>    <li><a class="conTitle">教学安排</a></li>    <li><span class="conRight">理论课程、实践环节和实验安排信息</span></li>  </ul></div><div class="item-right col-xs-4"><img src='../img/myapps/jxap_s.png'></img></div></div></div><div class="item col-md-3 col-sm-4 col-xs-6 con" id="S9"><div class="con-inner row div-bgcolor-5"><div class="item-left col-xs-8">  <ul>    <li><a class="conTitle">教学评价</a></li>    <li><span class="conRight">提交问卷调查和教学评价表</span></li>  </ul></div><div class="item-right col-xs-4"><img src='../img/myapps/jxpj.png'></img></div></div></div><div class="item col-md-3 col-sm-4 col-xs-6 con" id="S206"><div class="con-inner row div-bgcolor-6"><div class="item-left col-xs-8">  <ul>    <li><a class="conTitle">交换学习</a></li>    <li><span class="conRight">申请交换学习、提交交换学习课程与成绩</span></li>  </ul></div><div class="item-right col-xs-4"><img src='../img/myapps/jhpy.png'></img></div></div></div><div class="item col-md-3 col-sm-4 col-xs-6 con" id="S204"><div class="con-inner row div-bgcolor-7"><div class="item-left col-xs-8">  <ul>    <li><a class="conTitle">课程考试</a></li>    <li><span class="conRight">缓考/补考申请和考试安排</span></li>  </ul></div><div class="item-right col-xs-4"><img src='../img/myapps/kcks_s.png'></img></div></div></div><div class="item col-md-3 col-sm-4 col-xs-6 con" id="S207"><div class="con-inner row div-bgcolor-8"><div class="item-left col-xs-8">  <ul>    <li><a class="conTitle">课程认定</a></li>    <li><span class="conRight">课程认定</span></li>  </ul></div><div class="item-right col-xs-4"><img src='../img/myapps/jhpy.png'></img></div></div></div><div class="item col-md-3 col-sm-4 col-xs-6 con" id="S402"><div class="con-inner row div-bgcolor-9"><div class="item-left col-xs-8">  <ul>    <li><a class="conTitle">资格考试</a></li>    <li><span class="conRight">英语、计算机等级和普通话等技能考试</span></li>  </ul></div><div class="item-right col-xs-4"><img src='../img/myapps/zgks.png'></img></div></div></div><div class="item col-md-3 col-sm-4 col-xs-6 con" id="S401"><div class="con-inner row div-bgcolor-10"><div class="item-left col-xs-8">  <ul>    <li><a class="conTitle">免修重修</a></li>    <li><span class="conRight">免修重修</span></li>  </ul></div><div class="item-right col-xs-4"><img src='../img/myapps/mxcl.png'></img></div></div></div><div class="item col-md-3 col-sm-4 col-xs-6 con" id="S403"><div class="con-inner row div-bgcolor-11"><div class="item-left col-xs-8">  <ul>    <li><a class="conTitle">学业成绩</a></li>    <li><span class="conRight">学业成绩</span></li>  </ul></div><div class="item-right col-xs-4"><img src='../img/myapps/xycj.png'></img></div></div></div><div class="item col-md-3 col-sm-4 col-xs-6 con" id="S505"><div class="con-inner row div-bgcolor-12"><div class="item-left col-xs-8">  <ul>    <li><a class="conTitle">毕业设计(论文)</a></li>    <li><span class="conRight">选题、中期检查、论文提交、答辩、成绩和推优</span></li>  </ul></div><div class="item-right col-xs-4"><img src='../img/myapps/bysj.png'></img></div></div></div><div class="item col-md-3 col-sm-4 col-xs-6 con" id="SB"><div class="con-inner row div-bgcolor-13"><div class="item-left col-xs-8">  <ul>    <li><a class="conTitle">公共查询</a></li>    <li><span class="conRight">各类课表信息的开放查询</span></li>  </ul></div><div class="item-right col-xs-4"><img src='../img/myapps/ggcx.png'></img></div></div></div>
+				</div>
+			</div>
+		</div>
+		
+	</body>
+	<script type='text/javascript' src='/frame/home/js/SetMainInfo.jsp?random=1511.0'></script>
+	<script type="text/javascript" src="/custom/js/jquery.js"></script>
+	<script type="text/javascript" src="/custom/js/jkingo.noprint.js"></script>
+	<script type='text/javascript' src='/frame14/menu/myapps.home.js?random=1890.0'></script>
+	<!--[if lt IE 9]>		
+	  	<script type="text/javascript" src="/common/js/respond.min.js"></script>
+  		<script type="text/javascript" src="/common/js/html5shiv.min.js"></script>
+  	<![endif]-->     
+	
+	<script type="text/javascript">
+		
+		jQuery(document).ready(function() {
+			// 主功能界面为自适应滚动条
+			jQuery("#frmDesk", parent.document).attr("scrolling","auto");
+			
+			// 依据屏幕宽度留白
+			var w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+			//var h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+			/**
+			if (w > 1480){
+				jQuery("#home-menu").addClass("container-fluid-lg");
+			} else {
+				jQuery("#home-menu").removeClass("container-fluid-lg");
+			}
+			*/
+			
+		})
+		
+	</script>
+	
+</html>

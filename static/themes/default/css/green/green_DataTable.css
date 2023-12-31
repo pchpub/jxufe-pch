@@ -1,0 +1,62 @@
+/*基本样式*/
+*{margin:0px; padding:0px; font-size:12px; font-family: "宋体";}
+
+body{
+	font:12px '宋体';
+    color:#000000;
+    text-align:center;
+    margin:0;
+    /**background:#F2FBF6;*/
+}
+ 
+td {font:12px '宋体'}
+td.red {color:red;}
+tr.H td {font-size:12px;font-family:宋体;min-height:20px;text-align:center;}
+tr.E td,tr.O td {font-size:12px;font-family:宋体;border:#89BFA7 1px solid;
+	padding-left:3px;padding-right:3px;height:20px;line-height:20px;
+	text-overflow:ellipsis;overflow:hidden;white-space:nowrap;}
+	
+tr.C td {font-size:12px;font-family:宋体;color:#FFFFFF;border:#89BFA7 1px solid;
+	padding-left:3px;padding-right:3px;height:20px;line-height:20px;
+	text-overflow:ellipsis;overflow:hidden;white-space:nowrap;}
+	
+tr.E {background-color: #F4FEF9;cursor:pointer;}
+tr.O {background-color: #ffffff;cursor:pointer;}
+tr.C {background-color: #89BFA7;cursor:pointer;}
+
+tr.H {background-color: #BFE5D5; /*#9FBDE0 , dae39d*/text-align:center;}
+
+div.datalist {border:0px #ccc dashed;overflow:auto;
+    text-align:left;}
+div.datalist table{border-collapse:collapse;table-layout:fixed;}
+div.datalist table td input{border:0px;width:100%;padding-right:1px;}
+
+div.pagination{
+	height:22px;
+	line-height:22px;
+	width:100%;
+	color:#0000ff;
+}
+
+div.pagination input {height:16px;text-align:center;border:1px solid #B3B5B4;}
+
+a {
+	font-size: 12px; 
+	text-decoration: none; 
+	font-family: 宋体; 
+	COLOR: #0000FF; 
+}
+
+A:visited 
+{
+	COLOR: #0000FF; 
+	FONT-SIZE: 12px
+}
+
+a:hover 
+{
+	font-size: 12px;
+	color: red;
+	font-family: 宋体;
+	text-decoration: none
+}
