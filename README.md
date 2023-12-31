@@ -10,7 +10,7 @@
   </p>
 </p>
 
-## 目录
+## Contents
 
 - [Install](#install)
 - [Use](#use)
