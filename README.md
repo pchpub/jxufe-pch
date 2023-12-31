@@ -65,7 +65,9 @@ Before installing and running JXUFE-PCH, please ensure your system meets the fol
 
 #### Q1: How to use precompiled programs?
 
-download the latest release from [here](https://github.com/pchpub/jxufe-pch/releases/tag/alpha-releases)
+1. download the latest release from [here](https://github.com/pchpub/jxufe-pch/releases/tag/alpha-releases)
+2. download the [static resource](https://github.com/pchpub/jxufe-pch/tree/master/static)
+3. configure the [config.json](https://github.com/pchpub/jxufe-pch/blob/master/config.example.json)(rename from config.example.json to config.json)
 
 #### Q2: How to use the source code?
 
