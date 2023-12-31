@@ -1,4 +1,4 @@
-use std::{str::FromStr, time::Duration};
+use std::{env, str::FromStr, time::Duration};
 
 // use actix_files::Files;
 use actix_web::{get, post, web, App, HttpRequest, HttpResponse, HttpServer, Responder};
@@ -246,7 +246,14 @@ async fn web_default_proxy(req: HttpRequest, body: web::Bytes) -> HttpResponse {
 fn main() -> std::io::Result<()> {
     let rt = tokio::runtime::Runtime::new().unwrap();
 
-    let config = PchConfig::new("./config.json").unwrap();
+    let args = env::args().collect::<Vec<String>>();
+    let path = if args.len() > 1 {
+        args[1].as_str()
+    } else {
+        "./config.toml"
+    };
+
+    let config = PchConfig::new(path).unwrap();
 
     let web_main = HttpServer::new(move || {
         App::new()
