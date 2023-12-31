@@ -2,7 +2,7 @@
 <p align="center">
   <h1 align="center">JXUFE-PCH</h1>
   <p align="center">
-    A simple server to access the broken educational administration system of Jiangxi University of Finance and Economics
+    A simple server to access the fucking educational administration system of Jiangxi University of Finance and Economics
     <br />
     <a href="https://github.com/pchpub/jxufe-pch/issues">Report Bug</a>
     ·
