@@ -1,59 +1,56 @@
-
+<h1 align="center">JXUFE-PCH</h1>
 <p align="center">
-  <h1 align="center">JXUFE-PCH</h1>
-  <p align="center">
-    A simple server to access the fucking educational administration system of Jiangxi University of Finance and Economics
-    <br />
-    <a href="https://github.com/pchpub/jxufe-pch/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/pchpub/jxufe-pch/pulls">PR</a>
-  </p>
+  A simple server to access the fucking educational administration system of Jiangxi University of Finance and Economics
+  <br />
+  <a href="https://github.com/pchpub/jxufe-pch/issues">Report Bug</a>
+  ·
+  <a href="https://github.com/pchpub/jxufe-pch/pulls">PR</a>
 </p>
 
-## Contents
+## Table of Contents
 
-- [Install](#install)
-- [Use](#use)
+- [Installation](#installation)
+- [Usage](#usage)
 - [Author](#author)
 - [License](#license)
 
-### Install
+### Installation
 
-1. Install rust
+1. **Install Rust:**
 
    ```sh
    curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
    ```
 
-2. Clone the repo
+2. **Clone the Repository**
 
    ```sh
    git clone https://github.com/pchpub/jxufe-pch.git
    ```
 
-3. Compile
+3. **Compile the Code**
 
    ```sh
    cd jxufe-pch
    cargo build --profile==fast
    ```
 
-4. Rename config.json & Edit it
+4. **Configure**
 
    ```sh
    mv config.example.json config.json
    vim config.json
    ```
 
-5. Run
+5. **Run the Server**
 
    ```sh
    cargo run --profile==fast
    ```
 
-### Use
+### Usage
 
-   Open your browser and access http://[your ip address]:[your port in config.json]
+   Open your browser and navigate to `http://[your-ip-address]:[port-in-config.json]`
 
 ### Author
 
