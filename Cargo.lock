@@ -292,6 +292,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "async-lock"
+version = "2.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "287272293e9d8c41773cec55e365490fe034813a2f172f502d6ddcf75b2f582b"
+dependencies = [
+ "event-listener",
+]
+
+[[package]]
 name = "autocfg"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -430,6 +439,17 @@ dependencies = [
  "cfg-if",
  "encoding_rs",
  "memchr",
+]
+
+[[package]]
+name = "chashmap-async"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0e040eb99fdc6ab52714dab2337c0a9e516cfdeac3dbee4bc64075418e661229"
+dependencies = [
+ "async-lock",
+ "owning_ref_async",
+ "stable_deref_trait",
 ]
 
 [[package]]
@@ -584,6 +604,12 @@ dependencies = [
  "libc",
  "windows-sys 0.52.0",
 ]
+
+[[package]]
+name = "event-listener"
+version = "2.5.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0206175f82b8d6bf6652ff7d71a1e27fd2e4efde587fd368662814d6ec1d9ce0"
 
 [[package]]
 name = "fancy-regex"
@@ -925,6 +951,7 @@ dependencies = [
  "base64",
  "bincode",
  "chardetng",
+ "chashmap-async",
  "chrono",
  "encoding_rs",
  "encoding_rs_io",
@@ -1134,6 +1161,15 @@ dependencies = [
  "libc",
  "pkg-config",
  "vcpkg",
+]
+
+[[package]]
+name = "owning_ref_async"
+version = "0.4.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "eced64c79e8f6191d4a2b3cbc79813f0cf624bdd19ac271c25e07a4c13124120"
+dependencies = [
+ "stable_deref_trait",
 ]
 
 [[package]]
@@ -1624,6 +1660,12 @@ dependencies = [
  "libc",
  "windows-sys 0.48.0",
 ]
+
+[[package]]
+name = "stable_deref_trait"
+version = "1.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 
 [[package]]
 name = "syn"

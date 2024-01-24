@@ -22,14 +22,14 @@ pub async fn save_cache(source: &str, data: &WebPageBody) -> io::Result<()> {
     save_data(data, &path).await
 }
 
-pub async fn save_data<T: AsRef<Path>>(data: &WebPageBody, path: &T) -> io::Result<()> {
+async fn save_data<T: AsRef<Path>>(data: &WebPageBody, path: &T) -> io::Result<()> {
     let encoded: Vec<u8> = bincode::serialize(data).unwrap();
     let mut file = File::create(path.as_ref()).await?;
     file.write_all(&encoded).await?;
     Ok(())
 }
 
-pub async fn load_data<T: AsRef<Path>>(path: &T) -> io::Result<WebPageBody> {
+async fn load_data<T: AsRef<Path>>(path: &T) -> io::Result<WebPageBody> {
     let mut file = File::open(path.as_ref()).await?;
     let mut contents = Vec::new();
     file.read_to_end(&mut contents).await?;

@@ -261,12 +261,15 @@ fn main() -> std::io::Result<()> {
             .service(web_login_post)
             .default_service(web::route().to(web_default_proxy))
     })
-    .bind(("0.0.0.0", config.port))
-    .unwrap()
+    .bind(("[::]", config.port))?
+    .bind(("0.0.0.0", config.port))?
     .keep_alive(Duration::from_secs(1200))
     .run();
 
-    println!("Listen on: http://0.0.0.0:{}", config.port);
+    println!(
+        "Listen on: http://0.0.0.0:{0} & http://[::]:{0}",
+        config.port
+    );
 
     rt.block_on(async { join!(web_main).0 })
 }
