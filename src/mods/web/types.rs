@@ -47,8 +47,8 @@ impl CacheList {
         }
     }
 
-    pub fn add(&mut self, key: String, value: SingleCache) {
-        self.list.insert(key, value);
+    pub async fn add(&mut self, key: String, value: SingleCache) {
+        self.list.insert(key, value).await;
     }
 
     pub async fn get(&self, key: &str) -> Option<SingleCache> {
